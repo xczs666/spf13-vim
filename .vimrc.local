@@ -11,3 +11,10 @@ language messages zh_CN.utf-8
 let mapleader = ","
 let g:mapleader = ","
 let g:C_MapLeader=","
+
+
+
+nmap <F1> :tabnew
+nmap <F2> :tabprevious<CR>
+nmap <F3> :tabnext<CR>
+nnoremap <silent> <F4> :TagbarToggle<CR>
