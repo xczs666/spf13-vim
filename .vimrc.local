@@ -12,7 +12,10 @@ let mapleader = ","
 let g:mapleader = ","
 let g:C_MapLeader=","
 
+"windows剪切板设为默认寄存器
+set clipboard+=unnamed
 
+"hi cursorline guifg=magenta cyan orange purple violet seagreen slateblue darkred
 
 nmap <F1> :tabnew
 nmap <F2> :tabprevious<CR>
