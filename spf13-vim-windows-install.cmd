@@ -31,6 +31,7 @@ IF NOT EXIST "%APP_PATH%" (
 call mklink "%HOME%\.vimrc" "%APP_PATH%\.vimrc"
 call mklink "%HOME%\_vimrc" "%APP_PATH%\.vimrc"
 call mklink "%HOME%\.vimrc.fork" "%APP_PATH%\.vimrc.fork"
+call mklink "%HOME%\.vimrc.local" "%APP_PATH%\.vimrc.local"
 call mklink "%HOME%\.vimrc.bundles" "%APP_PATH%\.vimrc.bundles"
 call mklink "%HOME%\.vimrc.bundles.fork" "%APP_PATH%\.vimrc.bundles.fork"
 call mklink "%HOME%\.vimrc.before" "%APP_PATH%\.vimrc.before"
