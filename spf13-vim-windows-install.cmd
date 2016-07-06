@@ -18,7 +18,7 @@ REM    limitations under the License.
 
 @set APP_PATH=%HOME%\.spf13-vim-3
 IF NOT EXIST "%APP_PATH%" (
-    call git clone -b 3.0 https://github.com/xcz666/spf13-vim.git "%APP_PATH%"
+    call git clone -b 3.0 --depth=1 https://github.com/xczs666/spf13-vim.git "%APP_PATH%"
 ) ELSE (
     @set ORIGINAL_DIR=%CD%
     echo updating spf13-vim
@@ -43,7 +43,7 @@ IF NOT EXIST "%APP_PATH%\.vim\bundle" (
 )
 
 IF NOT EXIST "%HOME%/.vim/bundle/vundle" (
-    call git clone https://github.com/gmarik/vundle.git "%HOME%/.vim/bundle/vundle"
+    call git clone --depth=1 https://github.com/gmarik/vundle.git "%HOME%/.vim/bundle/vundle"
 ) ELSE (
   call cd "%HOME%/.vim/bundle/vundle"
   call git pull
