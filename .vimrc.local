@@ -22,6 +22,7 @@ set guioptions+=b
 
 "json文件格式化
 autocmd FileType json noremap <silent> <leader>jf :call FormatJson()<cr>
+autocmd FileType xml noremap <silent> <leader>xf :call FormatXml()<cr>
 
 
 nmap <F1> :tabnew
@@ -56,6 +57,44 @@ nnoremap <silent> <F4> :TagbarToggle<CR>
 "    \}
 
 
+function! FormatXml ()
+    " Locate block of code to be considered (same indentation, no blanks)
+    let indent_pat = '^' . matchstr(getline('.'), '^\s*') . '\S'
+    let firstline  = search('^\%('. indent_pat . '\)\@!','bnW') + 1
+    let lastline   = search('^\%('. indent_pat . '\)\@!', 'nW') - 1
+    if lastline < 0
+        let lastline = line('$')
+    endif
+    "<aaa><cr><bbb>
+    exec firstline . "," . lastline . 's/<[-_:A-z0-9]\+>\(\s*<[-_:A-z0-9]\+>\)\@=/&\r/ge'
+
+    " Locate block of code to be considered (same indentation, no blanks)
+    let firstline  = search('^\%(.\)\@!','bnW') + 1
+    let lastline   = search('^\%(.\)\@!', 'nW') - 1
+    if lastline < 0
+        let lastline = line('$')
+    endif
+    "</aaa><cr>
+    exec firstline . "," . lastline . 's,</[-_:A-z0-9]\+>\s*\($\)\@!,&\r,ge'
+
+    " Locate block of code to be considered (same indentation, no blanks)
+    let firstline  = search('^\%(.\)\@!','bnW') + 1
+    let lastline   = search('^\%(.\)\@!', 'nW') - 1
+    if lastline < 0
+        let lastline = line('$')
+    endif
+    "><cr><aaa/>
+    exec firstline . "," . lastline . 's,\(>\)\@<=\s*<[-_:A-z0-9]\+/>,\r&,ge'
+
+    " Locate block of code to be considered (same indentation, no blanks)
+    let firstline  = search('^\%(.\)\@!','bnW') + 1
+    let lastline   = search('^\%(.\)\@!', 'nW') - 1
+    if lastline < 0
+        let lastline = line('$')
+    endif
+    "<aaa/><cr><
+    exec firstline . "," . lastline . 's,<[-_:A-z0-9]\+/>\s*\(<\)\@=,&\r,ge'
+endfunction
 
 function! FormatJson ()
     " Locate block of code to be considered (same indentation, no blanks)
