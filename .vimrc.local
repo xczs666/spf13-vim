@@ -66,6 +66,7 @@ function! FormatJson ()
         let lastline = line('$')
     endif
     exec firstline . "," . lastline . 's/,\($\)\@!/,\r/ge'
+
     " Locate block of code to be considered (same indentation, no blanks)
     let firstline  = search('^\%(.\)\@!','bnW') + 1
     let lastline   = search('^\%(.\)\@!', 'nW') - 1
@@ -73,7 +74,17 @@ function! FormatJson ()
         let lastline = line('$')
     endif
     "key=value] => key=value<cr>]
-    exec firstline . "," . lastline . 's/^[^{\[]\+\([\]}]\)\@=/&\r/ge'
+    exec firstline . "," . lastline . 's/^[^{\[\]}]\+\([\]}]\)\@=/&\r/ge'
+
+    " Locate block of code to be considered (same indentation, no blanks)
+    let firstline  = search('^\%(.\)\@!','bnW') + 1
+    let lastline   = search('^\%(.\)\@!', 'nW') - 1
+    if lastline < 0
+        let lastline = line('$')
+    endif
+    "^[... => [<cr>]
+    exec firstline . "," . lastline . 's/^[{\[]\($\)\@!/&\r/ge'
+
     " Locate block of code to be considered (same indentation, no blanks)
     let firstline  = search('^\%(.\)\@!','bnW') + 1
     let lastline   = search('^\%(.\)\@!', 'nW') - 1
@@ -81,8 +92,23 @@ function! FormatJson ()
         let lastline = line('$')
     endif
     "...[... => ...[<cr>
-    exec firstline . "," . lastline . 's/[^\[{][\[{]\(\S*$\)\@!/&\r/ge'
+    exec firstline . "," . lastline . 'g/[^\]}]/s/[^\[{][\[{]\($\)\@!/&\r/ge'
 
+    " Locate block of code to be considered (same indentation, no blanks)
+    let firstline  = search('^\%(.\)\@!','bnW') + 1
+    let lastline   = search('^\%(.\)\@!', 'nW') - 1
+    if lastline < 0
+        let lastline = line('$')
+    endif
     "[[... => [<cr>[
-    exec firstline . "," . lastline . 's/[\[{]\([\[{]\)\@=/&\r/ge'
+    exec firstline . "," . lastline . 's/[\[{][^\[{]*\([\[{]\)\@=/&\r/ge'
+
+    " Locate block of code to be considered (same indentation, no blanks)
+    let firstline  = search('^\%(.\)\@!','bnW') + 1
+    let lastline   = search('^\%(.\)\@!', 'nW') - 1
+    if lastline < 0
+        let lastline = line('$')
+    endif
+    "]] => ]<cr>]
+    exec firstline . "," . lastline . 's/[\]}][^\]}]*\([\]}]\)\@=/&\r/ge'
 endfunction
