@@ -21,10 +21,10 @@ set guioptions+=b
 "hi cursorline guifg=magenta cyan orange purple violet seagreen slateblue darkred
 
 "json文件格式化
-noremap <unique><silent> <leader>jf :call FormatJson()<cr>
+nnoremap <unique><silent> <leader>jf :call FormatJson()<cr>
 "xml文件格式化，需要libxml2支持，在百度云盘中有
-noremap <unique><silent> <leader>xf :call FormatXml()<cr>
-noremap <unique><silent> <leader>xi :%!xmllint --encode utf8 --pretty 1 --recover - 2>/dev/null<cr>
+nnoremap <unique><silent> <leader>xf :call FormatXml()<cr>
+nnoremap <unique><silent> <leader>xi :%!xmllint --encode utf8 --pretty 1 --recover - 2>/dev/null<cr>
 vnoremap <unique><silent> <leader>xi :!xmllint --encode utf8 --pretty 1 --recover - 2>/dev/null<cr>
 
 
