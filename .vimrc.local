@@ -21,11 +21,11 @@ set guioptions+=b
 "hi cursorline guifg=magenta cyan orange purple violet seagreen slateblue darkred
 
 "json文件格式化
-autocmd FileType json noremap <silent> <leader>jf :call FormatJson()<cr>
+noremap <silent> <leader>jf :call FormatJson()<cr>
 "xml文件格式化，需要libxml2支持，在百度云盘中有
-autocmd FileType xml noremap <silent> <leader>xf :call FormatXml()<cr>
-autocmd FileType xml noremap <silent> <leader>xi :%!xmllint --encode utf8 --pretty 1 --recover - 2>/dev/null<cr>
-autocmd FileType xml vnoremap <silent> <leader>xi :!xmllint --encode utf8 --pretty 1 --recover - 2>/dev/null<cr>
+noremap <silent> <leader>xf :call FormatXml()<cr>
+noremap <silent> <leader>xi :%!xmllint --encode utf8 --pretty 1 --recover - 2>/dev/null<cr>
+vnoremap <silent> <leader>xi :!xmllint --encode utf8 --pretty 1 --recover - 2>/dev/null<cr>
 
 
 nmap <F1> :tabnew
@@ -60,11 +60,10 @@ nnoremap <silent> <F4> :TagbarToggle<CR>
 "    \}
 
 
-function! FormatXml ()
+function FormatXml() range
     " Locate block of code to be considered (same indentation, no blanks)
-    let indent_pat = '^' . matchstr(getline('.'), '^\s*') . '\S'
-    let firstline  = search('^\%('. indent_pat . '\)\@!','bnW') + 1
-    let lastline   = search('^\%('. indent_pat . '\)\@!', 'nW') - 1
+    let firstline  = search('^\%(.\)\@!','bnW') + 1
+    let lastline   = search('^\%(.\)\@!', 'nW') - 1
     if lastline < 0
         let lastline = line('$')
     endif
@@ -108,11 +107,10 @@ function! FormatXml ()
     exec firstline . "," . lastline . '!xmllint --encode utf8 --pretty 1 --recover - 2>/dev/null'
 endfunction
 
-function! FormatJson ()
+function FormatJson() range
     " Locate block of code to be considered (same indentation, no blanks)
-    let indent_pat = '^' . matchstr(getline('.'), '^\s*') . '\S'
-    let firstline  = search('^\%('. indent_pat . '\)\@!','bnW') + 1
-    let lastline   = search('^\%('. indent_pat . '\)\@!', 'nW') - 1
+    let firstline  = search('^\%(.\)\@!','bnW') + 1
+    let lastline   = search('^\%(.\)\@!', 'nW') - 1
     if lastline < 0
         let lastline = line('$')
     endif
@@ -165,5 +163,14 @@ function! FormatJson ()
 
     " Locate block of code to be considered (same indentation, no blanks)
     let firstline  = search('^\%(.\)\@!','bnW') + 1
+    let lastline   = search('^\%(.\)\@!', 'nW') - 1
+    if lastline < 0
+        let lastline = line('$')
+    endif
+    let centline = lastline - firstline
     exec firstline
+    let save_ft = &filetype
+    set filetype=json
+    exec "normal " . centline . "=="
+    let &filetype=save_ft
 endfunction
