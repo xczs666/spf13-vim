@@ -21,11 +21,11 @@ set guioptions+=b
 "hi cursorline guifg=magenta cyan orange purple violet seagreen slateblue darkred
 
 "json文件格式化
-noremap <silent> <leader>jf :call FormatJson()<cr>
+noremap <unique><silent> <leader>jf :call FormatJson()<cr>
 "xml文件格式化，需要libxml2支持，在百度云盘中有
-noremap <silent> <leader>xf :call FormatXml()<cr>
-noremap <silent> <leader>xi :%!xmllint --encode utf8 --pretty 1 --recover - 2>/dev/null<cr>
-vnoremap <silent> <leader>xi :!xmllint --encode utf8 --pretty 1 --recover - 2>/dev/null<cr>
+noremap <unique><silent> <leader>xf :call FormatXml()<cr>
+noremap <unique><silent> <leader>xi :%!xmllint --encode utf8 --pretty 1 --recover - 2>/dev/null<cr>
+vnoremap <unique><silent> <leader>xi :!xmllint --encode utf8 --pretty 1 --recover - 2>/dev/null<cr>
 
 
 nmap <F1> :tabnew
@@ -62,115 +62,115 @@ nnoremap <silent> <F4> :TagbarToggle<CR>
 
 function FormatXml() range
     " Locate block of code to be considered (same indentation, no blanks)
-    let firstline  = search('^\%(.\)\@!','bnW') + 1
-    let lastline   = search('^\%(.\)\@!', 'nW') - 1
-    if lastline < 0
-        let lastline = line('$')
+    let l:firstline  = search('^\%(.\)\@!','bnW') + 1
+    let l:lastline   = search('^\%(.\)\@!', 'nW') - 1
+    if l:lastline < 0
+        let l:lastline = line('$')
     endif
     "<aaa><cr><bbb>
-    exec firstline . "," . lastline . 's/<[-_:A-z0-9]\+>\(\s*<[-_:A-z0-9]\+>\)\@=/&\r/ge'
+    exec l:firstline . "," . l:lastline . 's/<[-_:A-z0-9]\+>\(\s*<[-_:A-z0-9]\+>\)\@=/&\r/ge'
 
     " Locate block of code to be considered (same indentation, no blanks)
-    let firstline  = search('^\%(.\)\@!','bnW') + 1
-    let lastline   = search('^\%(.\)\@!', 'nW') - 1
-    if lastline < 0
-        let lastline = line('$')
+    let l:firstline  = search('^\%(.\)\@!','bnW') + 1
+    let l:lastline   = search('^\%(.\)\@!', 'nW') - 1
+    if l:lastline < 0
+        let l:lastline = line('$')
     endif
     "</aaa><cr>
-    exec firstline . "," . lastline . 's,</[-_:A-z0-9]\+>\s*\($\)\@!,&\r,ge'
+    exec l:firstline . "," . l:lastline . 's,</[-_:A-z0-9]\+>\s*\($\)\@!,&\r,ge'
 
     " Locate block of code to be considered (same indentation, no blanks)
-    let firstline  = search('^\%(.\)\@!','bnW') + 1
-    let lastline   = search('^\%(.\)\@!', 'nW') - 1
-    if lastline < 0
-        let lastline = line('$')
+    let l:firstline  = search('^\%(.\)\@!','bnW') + 1
+    let l:lastline   = search('^\%(.\)\@!', 'nW') - 1
+    if l:lastline < 0
+        let l:lastline = line('$')
     endif
     "><cr><aaa/>
-    exec firstline . "," . lastline . 's,\(>\)\@<=\s*<[-_:A-z0-9]\+/>,\r&,ge'
+    exec l:firstline . "," . l:lastline . 's,\(>\)\@<=\s*<[-_:A-z0-9]\+/>,\r&,ge'
 
     " Locate block of code to be considered (same indentation, no blanks)
-    let firstline  = search('^\%(.\)\@!','bnW') + 1
-    let lastline   = search('^\%(.\)\@!', 'nW') - 1
-    if lastline < 0
-        let lastline = line('$')
+    let l:firstline  = search('^\%(.\)\@!','bnW') + 1
+    let l:lastline   = search('^\%(.\)\@!', 'nW') - 1
+    if l:lastline < 0
+        let l:lastline = line('$')
     endif
     "<aaa/><cr><
-    exec firstline . "," . lastline . 's,<[-_:A-z0-9]\+/>\s*\(<\)\@=,&\r,ge'
+    exec l:firstline . "," . l:lastline . 's,<[-_:A-z0-9]\+/>\s*\(<\)\@=,&\r,ge'
 
     " Locate block of code to be considered (same indentation, no blanks)
-    let firstline  = search('^\%(.\)\@!','bnW') + 1
-    let lastline   = search('^\%(.\)\@!', 'nW') - 1
-    if lastline < 0
-        let lastline = line('$')
+    let l:firstline  = search('^\%(.\)\@!','bnW') + 1
+    let l:lastline   = search('^\%(.\)\@!', 'nW') - 1
+    if l:lastline < 0
+        let l:lastline = line('$')
     endif
     "使用xmllint格式化
-    exec firstline . "," . lastline . '!xmllint --encode utf8 --pretty 1 --recover - 2>/dev/null'
+    exec l:firstline . "," . l:lastline . '!xmllint --encode utf8 --pretty 1 --recover - 2>/dev/null'
 endfunction
 
 function FormatJson() range
     " Locate block of code to be considered (same indentation, no blanks)
-    let firstline  = search('^\%(.\)\@!','bnW') + 1
-    let lastline   = search('^\%(.\)\@!', 'nW') - 1
-    if lastline < 0
-        let lastline = line('$')
+    let l:firstline  = search('^\%(.\)\@!','bnW') + 1
+    let l:lastline   = search('^\%(.\)\@!', 'nW') - 1
+    if l:lastline < 0
+        let l:lastline = line('$')
     endif
-    exec firstline . "," . lastline . 's/,\($\)\@!/,\r/ge'
+    exec l:firstline . "," . l:lastline . 's/,\($\)\@!/,\r/ge'
 
     " Locate block of code to be considered (same indentation, no blanks)
-    let firstline  = search('^\%(.\)\@!','bnW') + 1
-    let lastline   = search('^\%(.\)\@!', 'nW') - 1
-    if lastline < 0
-        let lastline = line('$')
+    let l:firstline  = search('^\%(.\)\@!','bnW') + 1
+    let l:lastline   = search('^\%(.\)\@!', 'nW') - 1
+    if l:lastline < 0
+        let l:lastline = line('$')
     endif
     "key=value] => key=value<cr>]
-    exec firstline . "," . lastline . 's/^[^{\[\]}]\+\([\]}]\)\@=/&\r/ge'
+    exec l:firstline . "," . l:lastline . 's/^[^{\[\]}]\+\([\]}]\)\@=/&\r/ge'
 
     " Locate block of code to be considered (same indentation, no blanks)
-    let firstline  = search('^\%(.\)\@!','bnW') + 1
-    let lastline   = search('^\%(.\)\@!', 'nW') - 1
-    if lastline < 0
-        let lastline = line('$')
+    let l:firstline  = search('^\%(.\)\@!','bnW') + 1
+    let l:lastline   = search('^\%(.\)\@!', 'nW') - 1
+    if l:lastline < 0
+        let l:lastline = line('$')
     endif
     "^[... => [<cr>]
-    exec firstline . "," . lastline . 's/^[{\[]\($\)\@!/&\r/ge'
+    exec l:firstline . "," . l:lastline . 's/^[{\[]\($\)\@!/&\r/ge'
 
     " Locate block of code to be considered (same indentation, no blanks)
-    let firstline  = search('^\%(.\)\@!','bnW') + 1
-    let lastline   = search('^\%(.\)\@!', 'nW') - 1
-    if lastline < 0
-        let lastline = line('$')
+    let l:firstline  = search('^\%(.\)\@!','bnW') + 1
+    let l:lastline   = search('^\%(.\)\@!', 'nW') - 1
+    if l:lastline < 0
+        let l:lastline = line('$')
     endif
     "...[... => ...[<cr>
-    exec firstline . "," . lastline . 'g/[^\]}]/s/[^\[{][\[{]\($\)\@!/&\r/ge'
+    exec l:firstline . "," . l:lastline . 'g/[^\]}]/s/[^\[{][\[{]\($\)\@!/&\r/ge'
 
     " Locate block of code to be considered (same indentation, no blanks)
-    let firstline  = search('^\%(.\)\@!','bnW') + 1
-    let lastline   = search('^\%(.\)\@!', 'nW') - 1
-    if lastline < 0
-        let lastline = line('$')
+    let l:firstline  = search('^\%(.\)\@!','bnW') + 1
+    let l:lastline   = search('^\%(.\)\@!', 'nW') - 1
+    if l:lastline < 0
+        let l:lastline = line('$')
     endif
     "[[... => [<cr>[
-    exec firstline . "," . lastline . 's/[\[{][^\[{]*\([\[{]\)\@=/&\r/ge'
+    exec l:firstline . "," . l:lastline . 's/[\[{][^\[{]*\([\[{]\)\@=/&\r/ge'
 
     " Locate block of code to be considered (same indentation, no blanks)
-    let firstline  = search('^\%(.\)\@!','bnW') + 1
-    let lastline   = search('^\%(.\)\@!', 'nW') - 1
-    if lastline < 0
-        let lastline = line('$')
+    let l:firstline  = search('^\%(.\)\@!','bnW') + 1
+    let l:lastline   = search('^\%(.\)\@!', 'nW') - 1
+    if l:lastline < 0
+        let l:lastline = line('$')
     endif
     "]] => ]<cr>]
-    exec firstline . "," . lastline . 's/[\]}][^\]}]*\([\]}]\)\@=/&\r/ge'
+    exec l:firstline . "," . l:lastline . 's/[\]}][^\]}]*\([\]}]\)\@=/&\r/ge'
 
     " Locate block of code to be considered (same indentation, no blanks)
-    let firstline  = search('^\%(.\)\@!','bnW') + 1
-    let lastline   = search('^\%(.\)\@!', 'nW') - 1
-    if lastline < 0
-        let lastline = line('$')
+    let l:firstline  = search('^\%(.\)\@!','bnW') + 1
+    let l:lastline   = search('^\%(.\)\@!', 'nW') - 1
+    if l:lastline < 0
+        let l:lastline = line('$')
     endif
-    let centline = lastline - firstline
-    exec firstline
-    let save_ft = &filetype
+    let l:centline = l:lastline - l:firstline
+    exec l:firstline
+    let l:save_ft = &filetype
     set filetype=json
-    exec "normal " . centline . "=="
-    let &filetype=save_ft
+    exec "normal " . l:centline . "=="
+    let &filetype=l:save_ft
 endfunction
