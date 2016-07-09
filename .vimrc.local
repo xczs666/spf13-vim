@@ -22,7 +22,10 @@ set guioptions+=b
 
 "json文件格式化
 autocmd FileType json noremap <silent> <leader>jf :call FormatJson()<cr>
+"xml文件格式化，需要libxml2支持，在百度云盘中有
 autocmd FileType xml noremap <silent> <leader>xf :call FormatXml()<cr>
+autocmd FileType xml noremap <silent> <leader>xi :%!xmllint --encode utf8 --pretty 1 --recover - 2>/dev/null<cr>
+autocmd FileType xml vnoremap <silent> <leader>xi :!xmllint --encode utf8 --pretty 1 --recover - 2>/dev/null<cr>
 
 
 nmap <F1> :tabnew
@@ -94,6 +97,15 @@ function! FormatXml ()
     endif
     "<aaa/><cr><
     exec firstline . "," . lastline . 's,<[-_:A-z0-9]\+/>\s*\(<\)\@=,&\r,ge'
+
+    " Locate block of code to be considered (same indentation, no blanks)
+    let firstline  = search('^\%(.\)\@!','bnW') + 1
+    let lastline   = search('^\%(.\)\@!', 'nW') - 1
+    if lastline < 0
+        let lastline = line('$')
+    endif
+    "使用xmllint格式化
+    exec firstline . "," . lastline . '!xmllint --encode utf8 --pretty 1 --recover - 2>/dev/null'
 endfunction
 
 function! FormatJson ()
