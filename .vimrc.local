@@ -12,11 +12,16 @@ let mapleader = ","
 let g:mapleader = ","
 let g:C_MapLeader=","
 
-"windows剪切板设为默认寄存器
-set clipboard+=unnamed
+if has("gui_running")
+    "windows剪切板设为默认寄存器
+    set clipboard+=unnamed
 
-"添加水平滚动条
-set guioptions+=b
+    "添加水平滚动条
+    set guioptions+=b
+endif
+
+"部分操作时自动保存文件
+set autowrite
 
 "hi cursorline guifg=magenta cyan orange purple violet seagreen slateblue darkred
 
