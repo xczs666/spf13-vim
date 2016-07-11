@@ -32,6 +32,8 @@ nmap <F1> :tabnew
 nmap <F2> :tabprevious<CR>
 nmap <F3> :tabnext<CR>
 nnoremap <silent> <F4> :TagbarToggle<CR>
+inoremap <C-v> <esc>:set paste<cr>a<C-R>+<esc>:set nopaste<cr>
+
 
 
 "Rainbow 对xml格式化有影响
