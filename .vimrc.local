@@ -20,8 +20,8 @@ if has("gui_running")
     set guioptions+=b
 endif
 
-"部分操作时自动保存文件
-set autowrite
+"自动保存文件
+"set autowriteall
 
 "hi cursorline guifg=magenta cyan orange purple violet seagreen slateblue darkred
 
