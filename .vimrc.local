@@ -20,6 +20,21 @@ if has("gui_running")
     set guioptions+=b
 endif
 
+"airblade/vim-gitgutter 插件 在git文件中自动显示修改
+set updatetime=250
+"Xuyuanp/nerdtree-git-plugin 插件，在NERDTree插件中显示git文件状态
+let g:NERDTreeIndicatorMapCustom = {
+    \ "Modified"  : "*",
+    \ "Staged"    : "+",
+    \ "Untracked" : "☆",
+    \ "Renamed"   : "→",
+    \ "Unmerged"  : "═",
+    \ "Deleted"   : "×",
+    \ "Dirty"     : "※",
+    \ "Clean"     : "√",
+    \ "Unknown"   : "?"
+    \ }
+
 "自动保存文件
 "set autowriteall
 
