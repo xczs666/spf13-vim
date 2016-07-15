@@ -21,7 +21,8 @@ if has("gui_running")
 endif
 
 "airblade/vim-gitgutter 插件 在git文件中自动显示修改
-set updatetime=250
+"set updatetime=250
+let g:gitgutter_enabled = 0
 "Xuyuanp/nerdtree-git-plugin 插件，在NERDTree插件中显示git文件状态
 let g:NERDTreeIndicatorMapCustom = {
     \ "Modified"  : "*",
