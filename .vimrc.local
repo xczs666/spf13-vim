@@ -12,6 +12,8 @@ set nospell
 
 language messages zh_CN.utf-8
 
+au BufNewFile,BufRead *.groovy  setf groovy
+
 let mapleader = ","
 let g:mapleader = ","
 let g:C_MapLeader=","
