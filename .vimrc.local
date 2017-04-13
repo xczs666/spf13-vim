@@ -143,6 +143,7 @@ function FormatJson() range
     if l:lastline < 0
         let l:lastline = line('$')
     endif
+    ", => ,<cr>
     exec l:firstline . "," . l:lastline . 's/,\($\)\@!/,\r/ge'
 
     " Locate block of code to be considered (same indentation, no blanks)
@@ -161,7 +162,7 @@ function FormatJson() range
         let l:lastline = line('$')
     endif
     "^[... => [<cr>]
-    exec l:firstline . "," . l:lastline . 's/^[{\[]\($\)\@!/&\r/ge'
+    exec l:firstline . "," . l:lastline . 's/^[{\[]\([}\],$]\)\@!/&\r/ge'
 
     " Locate block of code to be considered (same indentation, no blanks)
     let l:firstline  = search('^\%(.\)\@!','bnW') + 1
@@ -170,7 +171,7 @@ function FormatJson() range
         let l:lastline = line('$')
     endif
     "...[... => ...[<cr>
-    exec l:firstline . "," . l:lastline . 'g/[^\]}]/s/[^\[{][\[{]\($\)\@!/&\r/ge'
+    exec l:firstline . "," . l:lastline . 'g/[^\]}]/s/[^\[{][\[{]\([}\]$]\)\@!/&\r/ge'
 
     " Locate block of code to be considered (same indentation, no blanks)
     let l:firstline  = search('^\%(.\)\@!','bnW') + 1
@@ -189,6 +190,24 @@ function FormatJson() range
     endif
     "]] => ]<cr>]
     exec l:firstline . "," . l:lastline . 's/[\]}][^\]}]*\([\]}]\)\@=/&\r/ge'
+
+    " Locate block of code to be considered (same indentation, no blanks)
+    let l:firstline  = search('^\%(.\)\@!','bnW') + 1
+    let l:lastline   = search('^\%(.\)\@!', 'nW') - 1
+    if l:lastline < 0
+        let l:lastline = line('$')
+    endif
+    "[..., => [<cr>...,
+    exec l:firstline . "," . l:lastline . 's/\([\[{]\)\@<=[^\]}]*,\@=/\r&/ge'
+
+"    " 起括号在同一行还是换行
+"    let l:firstline  = search('^\%(.\)\@!','bnW') + 1
+"    let l:lastline   = search('^\%(.\)\@!', 'nW') - 1
+"    if l:lastline < 0
+"        let l:lastline = line('$')
+"    endif
+"    "=[ => =<cr>[
+"    exec l:firstline . "," . l:lastline . 's/\([:=]\)\([\[{]$\)/\1\r\2/ge'
 
     " Locate block of code to be considered (same indentation, no blanks)
     let l:firstline  = search('^\%(.\)\@!','bnW') + 1
