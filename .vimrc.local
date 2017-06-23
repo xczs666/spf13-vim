@@ -59,6 +59,8 @@ nmap <F1> :tabnew
 nmap <F2> :tabprevious<CR>
 nmap <F3> :tabnext<CR>
 nnoremap <silent> <F4> :TagbarToggle<CR>
+"让vim编辑的文件有版本管理
+nnoremap <F5> :UndotreeToggle<cr>
 inoremap <C-v> <esc>:set paste<cr>a<C-R>+<esc>:set nopaste<cr>
 
 
