@@ -1,4 +1,5 @@
-colorscheme soruby
+"colorscheme soruby
+colorscheme desert
 set guifont=Consolas:h14
 
 set encoding=utf-8
@@ -7,6 +8,8 @@ set fileencoding=utf-8
 set fileencodings=UCS-bom,utf-8,gb18030,gbk,latin1
 
 language messages zh_CN.utf-8
+
+set nospell
 
 let mapleader = ","
 let g:mapleader = ","
@@ -52,9 +55,11 @@ vnoremap <unique><silent> <leader>xi :!xmllint --encode utf8 --pretty 1 --recove
 nmap <F1> :tabnew
 nmap <F2> :tabprevious<CR>
 nmap <F3> :tabnext<CR>
+nnoremap <F5>  :UndotreeToggle<CR>
 nnoremap <silent> <F4> :TagbarToggle<CR>
 inoremap <C-v> <esc>:set paste<cr>a<C-R>+<esc>:set nopaste<cr>
 
+let autosave=5
 
 
 "Rainbow 对xml格式化有影响
