@@ -7,9 +7,14 @@ set termencoding=utf-8
 set fileencoding=utf-8
 set fileencodings=UCS-bom,utf-8,gb18030,gbk,latin1
 
+set ignorecase
+set smartcase
+set nospell
+
 language messages zh_CN.utf-8
 
 set nospell
+au BufNewFile,BufRead *.groovy  setf groovy
 
 let mapleader = ","
 let g:mapleader = ","
@@ -55,8 +60,9 @@ vnoremap <unique><silent> <leader>xi :!xmllint --encode utf8 --pretty 1 --recove
 nmap <F1> :tabnew
 nmap <F2> :tabprevious<CR>
 nmap <F3> :tabnext<CR>
-nnoremap <F5>  :UndotreeToggle<CR>
 nnoremap <silent> <F4> :TagbarToggle<CR>
+"让vim编辑的文件有版本管理
+nnoremap <F5> :UndotreeToggle<cr>
 inoremap <C-v> <esc>:set paste<cr>a<C-R>+<esc>:set nopaste<cr>
 
 let autosave=5
@@ -142,6 +148,7 @@ function FormatJson() range
     if l:lastline < 0
         let l:lastline = line('$')
     endif
+    ", => ,<cr>
     exec l:firstline . "," . l:lastline . 's/,\($\)\@!/,\r/ge'
 
     " Locate block of code to be considered (same indentation, no blanks)
@@ -160,7 +167,7 @@ function FormatJson() range
         let l:lastline = line('$')
     endif
     "^[... => [<cr>]
-    exec l:firstline . "," . l:lastline . 's/^[{\[]\($\)\@!/&\r/ge'
+    exec l:firstline . "," . l:lastline . 's/^[{\[]\([}\],$]\)\@!/&\r/ge'
 
     " Locate block of code to be considered (same indentation, no blanks)
     let l:firstline  = search('^\%(.\)\@!','bnW') + 1
@@ -169,7 +176,7 @@ function FormatJson() range
         let l:lastline = line('$')
     endif
     "...[... => ...[<cr>
-    exec l:firstline . "," . l:lastline . 'g/[^\]}]/s/[^\[{][\[{]\($\)\@!/&\r/ge'
+    exec l:firstline . "," . l:lastline . 'g/[^\]}]/s/[^\[{][\[{]\([}\]$]\)\@!/&\r/ge'
 
     " Locate block of code to be considered (same indentation, no blanks)
     let l:firstline  = search('^\%(.\)\@!','bnW') + 1
@@ -188,6 +195,24 @@ function FormatJson() range
     endif
     "]] => ]<cr>]
     exec l:firstline . "," . l:lastline . 's/[\]}][^\]}]*\([\]}]\)\@=/&\r/ge'
+
+    " Locate block of code to be considered (same indentation, no blanks)
+    let l:firstline  = search('^\%(.\)\@!','bnW') + 1
+    let l:lastline   = search('^\%(.\)\@!', 'nW') - 1
+    if l:lastline < 0
+        let l:lastline = line('$')
+    endif
+    "[..., => [<cr>...,
+    exec l:firstline . "," . l:lastline . 's/\([\[{]\)\@<=[^\]}]*,\@=/\r&/ge'
+
+"    " 起括号在同一行还是换行
+"    let l:firstline  = search('^\%(.\)\@!','bnW') + 1
+"    let l:lastline   = search('^\%(.\)\@!', 'nW') - 1
+"    if l:lastline < 0
+"        let l:lastline = line('$')
+"    endif
+"    "=[ => =<cr>[
+"    exec l:firstline . "," . l:lastline . 's/\([:=]\)\([\[{]$\)/\1\r\2/ge'
 
     " Locate block of code to be considered (same indentation, no blanks)
     let l:firstline  = search('^\%(.\)\@!','bnW') + 1
