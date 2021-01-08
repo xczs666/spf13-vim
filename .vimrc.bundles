@@ -104,12 +104,14 @@
             Bundle 'scrooloose/nerdtree'
             Bundle 'altercation/vim-colors-solarized'
             Bundle 'spf13/vim-colors'
+            " cs ys ds S
             Bundle 'tpope/vim-surround'
             Bundle 'tpope/vim-repeat'
             Bundle 'rhysd/conflict-marker.vim'
             Bundle 'jiangmiao/auto-pairs'
             Bundle 'ctrlpvim/ctrlp.vim'
             Bundle 'tacahiroy/ctrlp-funky'
+            " <C-n> <C-p> <C-x> <A-n>
             Bundle 'terryma/vim-multiple-cursors'
             Bundle 'vim-scripts/sessionman.vim'
             Bundle 'matchit.zip'

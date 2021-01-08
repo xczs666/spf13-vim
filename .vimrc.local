@@ -10,6 +10,7 @@ set fileencodings=UCS-bom,utf-8,gb18030,gbk,latin1
 set ignorecase
 set smartcase
 set nospell
+set clipboard+=unnamed
 
 language messages zh_CN.utf-8
 
