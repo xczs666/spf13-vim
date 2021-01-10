@@ -1,6 +1,7 @@
+"soruby
 "colorscheme soruby
-colorscheme desert
-set guifont=Consolas:h14
+colorscheme onedark
+set guifont=Menlo:h18
 
 set encoding=utf-8
 set termencoding=utf-8
@@ -10,11 +11,9 @@ set fileencodings=UCS-bom,utf-8,gb18030,gbk,latin1
 set ignorecase
 set smartcase
 set nospell
-set clipboard+=unnamed
 
 language messages zh_CN.utf-8
 
-set nospell
 au BufNewFile,BufRead *.groovy  setf groovy
 
 let mapleader = ","
@@ -56,17 +55,42 @@ nnoremap <unique><silent> <leader>jf :call FormatJson()<cr>
 nnoremap <unique><silent> <leader>xf :call FormatXml()<cr>
 nnoremap <unique><silent> <leader>xi :%!xmllint --encode utf8 --pretty 1 --recover - 2>/dev/null<cr>
 vnoremap <unique><silent> <leader>xi :!xmllint --encode utf8 --pretty 1 --recover - 2>/dev/null<cr>
+vnoremap <unique><silent> <leader>fp :call FormatPrivate()<cr>
+nnoremap <unique><silent> <leader>fp :call FormatPrivate()<cr>
+vnoremap <unique><silent> <leader>fr :call FormatResponse()<cr>
+vnoremap <unique><silent> <leader>fm :call FormatMapper()<cr>
 
+" :help indent-guides
+nmap <silent> <Leader>ig <Plug>IndentGuidesToggle
+nmap <silent> <Leader>ie <Plug>IndentGuidesEnable
+nmap <silent> <Leader>id <Plug>IndentGuidesDisable
 
+" easymotion插件
+" 忽略大小写
+let g:EasyMotion_smartcase = 1
+nmap ss <Plug>(easymotion-s2)
+
+" TRADER_NAME	商户名称
+" -->
+" // 商户名称
+" @JsonProperty("TRADER_NAME")
+" private String traderName;
+" 0f	d$O// pV:s/\t//gjyypkI@JsonProperty("lxxA")jVuV:s/_\(.\)/\u\1/geIprivate String A;j0
+
+" active_time	生效时间
+" -->
+" // 生效时间
+" @Column(name = "active_time")
+" private String activeTime;
+" 0f	r d$O//pjyypV:s/_\([a-z]\)/\u\1/geki@Column(krkbname = "krkbA")jIprivate String A;j
 nmap <F1> :tabnew
 nmap <F2> :tabprevious<CR>
 nmap <F3> :tabnext<CR>
 nnoremap <silent> <F4> :TagbarToggle<CR>
-"让vim编辑的文件有版本管理
 nnoremap <F5> :UndotreeToggle<cr>
+vnoremap <C-c> y
 inoremap <C-v> <esc>:set paste<cr>a<C-R>+<esc>:set nopaste<cr>
 
-let autosave=5
 
 
 "Rainbow 对xml格式化有影响
@@ -227,4 +251,37 @@ function FormatJson() range
     set filetype=json
     exec "normal " . l:centline . "=="
     let &filetype=l:save_ft
+endfunction
+
+
+
+function FormatPrivate() range
+    let top = a:firstline
+    let size = a:lastline - a:firstline + 1
+    while size > 0
+        exe top . "," . top . 'normal 0/[ \t]d$O//p0llr jVuV:s/_\([a-z]\)/\u\1/egIprivate String A;j0'
+        let size -= 1
+        let top += 2
+    endwhile
+endfunction
+
+
+function FormatResponse() range
+    let top = a:firstline
+    let size = a:lastline - a:firstline + 1
+    while size > 0
+        exe top . "," . top . 'normal yypkVuV:s/_\(.\)/\u\1/egIthis.A = (StringJacontent.get(lxi"lxA");j'
+        let size -= 1
+        let top += 1
+    endwhile
+endfunction
+
+function FormatMapper() range
+    let top = a:firstline
+    let size = a:lastline - a:firstline + 1
+    while size > 0
+        exe top . "," . top . 'normal yypkVuV:s/_\(.\)/\u\1/egI<rule source="lxA" target="lxJxA"/>j'
+        let size -= 1
+        let top += 1
+    endwhile
 endfunction

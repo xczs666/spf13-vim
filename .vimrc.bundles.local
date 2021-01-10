@@ -1,3 +1,6 @@
 Bundle 'Xuyuanp/nerdtree-git-plugin'
 Bundle 'airblade/vim-gitgutter'
-Bundle 'DrawIt'
+Bundle 'vim-scripts/DrawIt'
+" gr
+Bundle 'vim-scripts/ReplaceWithRegister'
+Bundle 'tommcdo/vim-exchange'
