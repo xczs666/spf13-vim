@@ -1008,6 +1008,12 @@
         endif
     " }
 
+    " deoplete {
+        if count(g:spf13_bundle_groups, 'deoplete')
+            let g:deoplete#enable_at_startup = 1
+        endif
+    " }
+
     " FIXME: Isn't this for Syntastic to handle?
     " Haskell post write lint and check with ghcmod
     " $ `cabal install ghcmod` if missing and ensure
@@ -1249,3 +1255,12 @@
         endif
     endif
 " }
+
+autocmd FileType java set omnifunc=javacomplete#Complete
+autocmd FileType python set omnifunc=pythoncomplete#Complete
+autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
+autocmd FileType php set omnifunc=phpcomplete#CompletePHP
+autocmd FileType c set omnifunc=ccomplete#Complete
