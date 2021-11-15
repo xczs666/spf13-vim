@@ -92,7 +92,7 @@
     " In your .vimrc.before.local file
     " list only the plugin groups you will use
     if !exists('g:spf13_bundle_groups')
-        let g:spf13_bundle_groups=['general', 'writing', 'programming', 'deoplete', 'java', 'php', 'ruby', 'python', 'javascript', 'html', 'misc',]
+        let g:spf13_bundle_groups=['general', 'writing', 'programming',  'git', 'deoplete', 'java', 'php', 'ruby', 'python', 'javascript', 'html', 'misc']
     endif
 
     " To override all the included bundles, add the following to your
@@ -102,11 +102,21 @@
 
     " General {
         if count(g:spf13_bundle_groups, 'general')
+            " 插件管理
+            Plug 'junegunn/vim-plug'
+            " 插入模式下快捷键
+            Plug 'tpope/vim-rsi'
+            " 主题
+            Plug 'joshdick/onedark.vim'
             Plug 'scrooloose/nerdtree'
             Plug 'altercation/vim-colors-solarized'
             Plug 'spf13/vim-colors'
             " cs ys ds S
             Plug 'tpope/vim-surround'
+            " 快捷交换
+            Plug 'tommcdo/vim-exchange'
+            " 画图
+            Plug 'vim-scripts/DrawIt'
             Plug 'tpope/vim-repeat'
             Plug 'rhysd/conflict-marker.vim'
             Plug 'jiangmiao/auto-pairs'
@@ -115,7 +125,7 @@
             " <C-n> <C-p> <C-x> <A-n>
             Plug 'terryma/vim-multiple-cursors'
             Plug 'vim-scripts/sessionman.vim'
-            if (has("python") || has("python3")) && exists('g:spf13_use_powerline') && !exists('g:spf13_use_old_powerline')
+            if (has("python3") || has("python")) && exists('g:spf13_use_powerline') && !exists('g:spf13_use_old_powerline')
                 Plug 'Lokaltog/powerline', {'rtp':'/powerline/bindings/vim'}
             elseif exists('g:spf13_use_powerline') && exists('g:spf13_use_old_powerline')
                 Plug 'Lokaltog/vim-powerline'
@@ -139,6 +149,14 @@
             Plug 'kana/vim-textobj-user'
             Plug 'kana/vim-textobj-indent'
             Plug 'gcmt/wildfire.vim'
+        endif
+    " }
+
+    " git {
+        if count(g:spf13_bundle_groups, 'git')
+            " A plugin of NERDTree showing git status flags.
+            Plug 'Xuyuanp/nerdtree-git-plugin'
+            Plug 'airblade/vim-gitgutter'
         endif
     " }
 

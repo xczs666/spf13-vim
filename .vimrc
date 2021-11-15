@@ -57,7 +57,7 @@
           set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,$HOME/.vim/after
         endif
     " }
-    
+
     " Arrow Key Fix {
         " https://github.com/spf13/spf13-vim/issues/780
         if &term[:4] == "xterm" || &term[:5] == 'screen' || &term[:3] == 'rxvt'
@@ -458,6 +458,37 @@
 
 " Plugins {
 
+    " general {
+        if count(g:spf13_bundle_groups, 'general')
+            if isdirectory(expand("~/.vim/bundle/vim-easymotion"))
+                " easymotion插件
+                " 忽略大小写
+                let g:EasyMotion_smartcase = 1
+                nmap ss <Plug>(easymotion-s2)
+            endif
+        endif
+    " }
+
+    " git {
+        if count(g:spf13_bundle_groups, 'git')
+            " airblade/vim-gitgutter 插件 在git文件中自动显示修改
+            " set updatetime=250
+            let g:gitgutter_enabled = 0
+            " Xuyuanp/nerdtree-git-plugin 插件，在NERDTree插件中显示git文件状态
+            let g:NERDTreeGitStatusIndicatorMapCustom = {
+                \ "Modified"  : "*",
+                \ "Staged"    : "+",
+                \ "Untracked" : "☆",
+                \ "Renamed"   : "→",
+                \ "Unmerged"  : "═",
+                \ "Deleted"   : "×",
+                \ "Dirty"     : "※",
+                \ "Clean"     : "√",
+                \ "Unknown"   : "?"
+                    \ }
+        endif
+    " }
+
     " GoLang {
         if count(g:spf13_bundle_groups, 'go')
             let g:go_highlight_functions = 1
@@ -479,7 +510,6 @@
             au FileType go nmap <leader>co <Plug>(go-coverage)
         endif
         " }
-
 
     " TextObj Sentence {
         if count(g:spf13_bundle_groups, 'writing')
@@ -626,7 +656,7 @@
 
     " PyMode {
         " Disable if python support not present
-        if !has('python') && !has('python3')
+        if !has('python3') && !has('python')
             let g:pymode = 0
         endif
 
@@ -1011,6 +1041,14 @@
     " deoplete {
         if count(g:spf13_bundle_groups, 'deoplete')
             let g:deoplete#enable_at_startup = 1
+            autocmd FileType java setlocal omnifunc=javacomplete#Complete
+            autocmd FileType python set omnifunc=pythoncomplete#Complete
+            autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+            autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+            autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+            autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
+            autocmd FileType php set omnifunc=phpcomplete#CompletePHP
+            autocmd FileType c set omnifunc=ccomplete#Complete
         endif
     " }
 
@@ -1067,9 +1105,6 @@
             endif
         endif
     " }
-
-
-
 " }
 
 " GUI Settings {
@@ -1203,23 +1238,23 @@
         endfor
         return s:is_fork
     endfunction
-     
+
     function! s:ExpandFilenameAndExecute(command, file)
         execute a:command . " " . expand(a:file, ":p")
     endfunction
-     
+
     function! s:EditSpf13Config()
         call <SID>ExpandFilenameAndExecute("tabedit", "~/.vimrc")
         call <SID>ExpandFilenameAndExecute("vsplit", "~/.vimrc.before")
         call <SID>ExpandFilenameAndExecute("vsplit", "~/.vimrc.bundles")
-     
+
         execute bufwinnr(".vimrc") . "wincmd w"
         call <SID>ExpandFilenameAndExecute("split", "~/.vimrc.local")
         wincmd l
         call <SID>ExpandFilenameAndExecute("split", "~/.vimrc.before.local")
         wincmd l
         call <SID>ExpandFilenameAndExecute("split", "~/.vimrc.bundles.local")
-     
+
         if <SID>IsSpf13Fork()
             execute bufwinnr(".vimrc") . "wincmd w"
             call <SID>ExpandFilenameAndExecute("split", "~/.vimrc.fork")
@@ -1228,10 +1263,10 @@
             wincmd l
             call <SID>ExpandFilenameAndExecute("split", "~/.vimrc.bundles.fork")
         endif
-     
+
         execute bufwinnr(".vimrc.local") . "wincmd w"
     endfunction
-     
+
     execute "noremap " . s:spf13_edit_config_mapping " :call <SID>EditSpf13Config()<CR>"
     execute "noremap " . s:spf13_apply_config_mapping . " :source ~/.vimrc<CR>"
 " }
@@ -1256,11 +1291,3 @@
     endif
 " }
 
-autocmd FileType java set omnifunc=javacomplete#Complete
-autocmd FileType python set omnifunc=pythoncomplete#Complete
-autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
-autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
-autocmd FileType php set omnifunc=phpcomplete#CompletePHP
-autocmd FileType c set omnifunc=ccomplete#Complete
