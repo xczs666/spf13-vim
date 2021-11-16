@@ -1040,7 +1040,8 @@
 
     " deoplete {
         if count(g:spf13_bundle_groups, 'deoplete')
-            let g:deoplete#enable_at_startup = 1
+            " 先关闭，打开影响性能
+            let g:deoplete#enable_at_startup = 0
 
             " tab 补全
             function! s:check_back_space() abort "{{{
