@@ -464,7 +464,17 @@
                 " easymotion插件
                 " 忽略大小写
                 let g:EasyMotion_smartcase = 1
-                nmap ss <Plug>(easymotion-s2)
+                nmap s <Plug>(easymotion-s2)
+                nmap t <Plug>(easymotion-t2)
+                " Gif config
+                map  / <Plug>(easymotion-sn)
+                omap / <Plug>(easymotion-tn)
+
+                " These `n` & `N` mappings are options. You do not have to map `n` & `N` to EasyMotion.
+                " Without these mappings, `n` & `N` works fine. (These mappings just provide
+                " different highlight method and have some other features )
+                map  n <Plug>(easymotion-next)
+                map  N <Plug>(easymotion-prev)
             endif
         endif
     " }
