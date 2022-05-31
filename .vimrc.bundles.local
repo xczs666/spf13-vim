@@ -1,6 +1,4 @@
-Bundle 'Xuyuanp/nerdtree-git-plugin'
-Bundle 'airblade/vim-gitgutter'
-Bundle 'vim-scripts/DrawIt'
-" gr
-Bundle 'vim-scripts/ReplaceWithRegister'
-Bundle 'tommcdo/vim-exchange'
+" gr 匹配替换
+Plug 'vim-scripts/ReplaceWithRegister'
+" 切换输入法
+Plug 'ybian/smartim'

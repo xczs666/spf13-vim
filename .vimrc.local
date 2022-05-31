@@ -28,22 +28,6 @@ if has("gui_running")
     set guioptions+=b
 endif
 
-"airblade/vim-gitgutter 插件 在git文件中自动显示修改
-"set updatetime=250
-let g:gitgutter_enabled = 0
-"Xuyuanp/nerdtree-git-plugin 插件，在NERDTree插件中显示git文件状态
-let g:NERDTreeIndicatorMapCustom = {
-    \ "Modified"  : "*",
-    \ "Staged"    : "+",
-    \ "Untracked" : "☆",
-    \ "Renamed"   : "→",
-    \ "Unmerged"  : "═",
-    \ "Deleted"   : "×",
-    \ "Dirty"     : "※",
-    \ "Clean"     : "√",
-    \ "Unknown"   : "?"
-    \ }
-
 "自动保存文件
 "set autowriteall
 
@@ -59,16 +43,21 @@ vnoremap <unique><silent> <leader>fp :call FormatPrivate()<cr>
 nnoremap <unique><silent> <leader>fp :call FormatPrivate()<cr>
 vnoremap <unique><silent> <leader>fr :call FormatResponse()<cr>
 vnoremap <unique><silent> <leader>fm :call FormatMapper()<cr>
+vnoremap <unique><silent> <leader>fw :call DelChineseWidth()<cr>
 
 " :help indent-guides
 nmap <silent> <Leader>ig <Plug>IndentGuidesToggle
 nmap <silent> <Leader>ie <Plug>IndentGuidesEnable
 nmap <silent> <Leader>id <Plug>IndentGuidesDisable
 
-" easymotion插件
-" 忽略大小写
-let g:EasyMotion_smartcase = 1
-nmap ss <Plug>(easymotion-s2)
+" :help insert.txt
+" :help usr_24.txt
+"inoremap <C-A> <Home>
+"inoremap <C-E> <End>
+"inoremap <C-B> <Left>
+"inoremap <C-J> <Down>
+"inoremap <C-K> <Up>
+"inoremap <C-F> <Right>
 
 " TRADER_NAME	商户名称
 " -->
@@ -91,7 +80,16 @@ nnoremap <F5> :UndotreeToggle<cr>
 vnoremap <C-c> y
 inoremap <C-v> <esc>:set paste<cr>a<C-R>+<esc>:set nopaste<cr>
 
-
+" smartim输入法切换配置 begin
+" see https://cloud.tencent.com/developer/article/1877309
+" see https://blog.csdn.net/lxyoucan/article/details/114365153
+let g:smartim_default = 'com.apple.keylayout.ABC'
+inoremap <C-c> <esc>
+"临时禁用输入法切换插件，可以极大提升宏运行的效率
+nnoremap <silent><leader>s0 <cmd>let g:smartim_disable = 1<CR>
+"开启输入法切换插件
+nnoremap <silent><leader>s1 <cmd>let g:smartim_disable = 0<CR>
+" smartim输入法切换配置 end
 
 "Rainbow 对xml格式化有影响
 "let g:rainbow_active = 0
@@ -284,4 +282,29 @@ function FormatMapper() range
         let size -= 1
         let top += 1
     endwhile
+endfunction
+
+" add by xcz 2021.2.21
+" 修复Monodraw软件生成的图形中文偏移问题
+" 删除中文之后的多余字符，因为unicode编码中文是3字节，宽度却是2字节，导致偏移
+function DelChineseWidth() range
+    let s:top = a:firstline
+    let s:tail = a:lastline
+    execute "normal \<ESC>:" .. s:top .. "\<cr>"
+    let s:begin = getpos('.')
+    execute "normal /[\u4e00-\u9fa5]\<cr>"
+    while line('.') <= s:tail
+        let s:c_str=matchstr(getline('.')[getcurpos()[2]-1:],'[\u4e00-\u9fa5]\+')
+        exec "normal " .. strchars(s:c_str) .. "l"
+        exec "normal " .. (strwidth(s:c_str)-strchars(s:c_str)) .. "x"
+        let s:pre_pos = getpos('.')
+        execute "normal /[\u4e00-\u9fa5]\<cr>"
+        let s:now_pos = getpos('.')
+        if s:now_pos[1] < s:pre_pos[1]
+            break
+        elseif s:now_pos[1] == s:pre_pos[1] && s:now_pos[2] < s:pre_pos[2]
+            break
+        endif
+    endwhile
+    call setpos('.', s:begin)
 endfunction
