@@ -557,6 +557,17 @@
         if isdirectory(expand("~/.vim/bundle/matchit.zip"))
             let b:match_ignorecase = 1
         endif
+        " see https://github.com/preservim/vim-markdown
+        if isdirectory(expand("~/.vim/bundle/vim-markdown"))
+            " 禁用进入折叠
+            let g:vim_markdown_folding_disabled = 1
+            " TOC 窗口自动调整
+            let g:vim_markdown_toc_autofit = 1
+            " 为某些语法设置了隐藏
+            set conceallevel=2
+            " 删除线使用两个波浪号。~~Scratch this.~~
+            let g:vim_markdown_strikethrough = 1
+        endif
     " }
 
     " OmniComplete {
@@ -647,6 +658,19 @@
             vmap <Leader>a,, :Tabularize /,\zs<CR>
             nmap <Leader>a<Bar> :Tabularize /<Bar><CR>
             vmap <Leader>a<Bar> :Tabularize /<Bar><CR>
+        endif
+    " }
+
+    " smartim {
+        if isdirectory(expand("~/.vim/bundle/smartim"))
+            " see https://cloud.tencent.com/developer/article/1877309
+            " see https://blog.csdn.net/lxyoucan/article/details/114365153
+            let g:smartim_default = 'com.apple.keylayout.ABC'
+            inoremap <C-c> <esc>
+            "临时禁用输入法切换插件，可以极大提升宏运行的效率
+            nnoremap <silent><leader>s0 <cmd>let g:smartim_disable = 1<CR>
+            "开启输入法切换插件
+            nnoremap <silent><leader>s1 <cmd>let g:smartim_disable = 0<CR>
         endif
     " }
 
