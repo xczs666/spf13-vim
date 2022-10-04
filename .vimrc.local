@@ -11,6 +11,7 @@ set fileencodings=UCS-bom,utf-8,gb18030,gbk,latin1
 set ignorecase
 set smartcase
 set nospell
+set nrformats=bin
 
 language messages zh_CN.utf-8
 
@@ -79,6 +80,8 @@ nnoremap <silent> <F4> :TagbarToggle<CR>
 nnoremap <F5> :UndotreeToggle<cr>
 vnoremap <C-c> y
 inoremap <C-v> <esc>:set paste<cr>a<C-R>+<esc>:set nopaste<cr>
+inoremap jk <esc>
+vnoremap . :normal! .<CR>
 
 " smartim输入法切换配置 begin
 " see https://cloud.tencent.com/developer/article/1877309
@@ -90,6 +93,22 @@ nnoremap <silent><leader>s0 <cmd>let g:smartim_disable = 1<CR>
 "开启输入法切换插件
 nnoremap <silent><leader>s1 <cmd>let g:smartim_disable = 0<CR>
 " smartim输入法切换配置 end
+
+"airblade/vim-gitgutter 插件 在git文件中自动显示修改
+"set updatetime=250
+let g:gitgutter_enabled = 0
+"Xuyuanp/nerdtree-git-plugin 插件，在NERDTree插件中显示git文件状态
+let g:NERDTreeGitStatusIndicatorMapCustom = {
+    \ "Modified"  : "*",
+    \ "Staged"    : "+",
+    \ "Untracked" : "☆",
+    \ "Renamed"   : "→",
+    \ "Unmerged"  : "═",
+    \ "Deleted"   : "×",
+    \ "Dirty"     : "※",
+    \ "Clean"     : "√",
+    \ "Unknown"   : "?"
+    \ }
 
 "Rainbow 对xml格式化有影响
 "let g:rainbow_active = 0

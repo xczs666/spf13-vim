@@ -2,3 +2,5 @@
 Plug 'vim-scripts/ReplaceWithRegister'
 " 切换输入法
 Plug 'ybian/smartim'
+
+"Plug 'jbyuki/venn.nvim'
