@@ -4,3 +4,4 @@ Plug 'vim-scripts/ReplaceWithRegister'
 Plug 'ybian/smartim'
 
 "Plug 'jbyuki/venn.nvim'
+Plug 'kana/vim-arpeggio'

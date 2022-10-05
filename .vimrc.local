@@ -83,6 +83,12 @@ inoremap <C-v> <esc>:set paste<cr>a<C-R>+<esc>:set nopaste<cr>
 inoremap jk <esc>
 vnoremap . :normal! .<CR>
 
+nnoremap <C-H> <C-W><C-H>
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+
+
 " smartim输入法切换配置 begin
 " see https://cloud.tencent.com/developer/article/1877309
 " see https://blog.csdn.net/lxyoucan/article/details/114365153
