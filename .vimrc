@@ -464,8 +464,8 @@
                 " easymotion插件
                 " 忽略大小写
                 let g:EasyMotion_smartcase = 1
-                nmap s <Plug>(easymotion-s2)
-                nmap t <Plug>(easymotion-t2)
+                nmap s <Plug>(easymotion-sn)
+                nmap t <Plug>(easymotion-tn)
                 " Gif config 注释掉，并不好用
                 " map  / <Plug>(easymotion-sn)
                 " omap / <Plug>(easymotion-tn)
@@ -478,7 +478,7 @@
             endif
             if isdirectory(expand("~/.vim/bundle/vim-rsi"))
                 " :help rsi
-                let g:rsi_no_meta = 1
+                set timeoutlen=100
             endif
         endif
     " }
