@@ -1,7 +1,7 @@
-" gr 匹配替换
-Plug 'vim-scripts/ReplaceWithRegister'
 " 切换输入法
 Plug 'ybian/smartim'
 
+" 画图
 "Plug 'jbyuki/venn.nvim'
-Plug 'kana/vim-arpeggio'
+" 同时按键映射
+"Plug 'kana/vim-arpeggio'

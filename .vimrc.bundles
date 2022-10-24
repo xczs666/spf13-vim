@@ -111,9 +111,11 @@
             Plug 'scrooloose/nerdtree'
             Plug 'altercation/vim-colors-solarized'
             Plug 'spf13/vim-colors'
+            " gr 匹配替换
+            Plug 'vim-scripts/ReplaceWithRegister'
             " cs ys ds S
             Plug 'tpope/vim-surround'
-            " 快捷交换
+            " 快捷交换 cx cxc
             Plug 'tommcdo/vim-exchange'
             " 画图
             Plug 'vim-scripts/DrawIt'

@@ -476,6 +476,10 @@
                 " map  n <Plug>(easymotion-next)
                 " map  N <Plug>(easymotion-prev)
             endif
+            if isdirectory(expand("~/.vim/bundle/vim-rsi"))
+                " :help rsi
+                let g:rsi_no_meta = 1
+            endif
         endif
     " }
 
