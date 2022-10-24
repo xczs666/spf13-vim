@@ -123,7 +123,11 @@
             Plug 'ctrlpvim/ctrlp.vim'
             Plug 'tacahiroy/ctrlp-funky'
             " <C-n> <C-p> <C-x> <A-n>
-            Plug 'terryma/vim-multiple-cursors'
+            " Plug 'terryma/vim-multiple-cursors'
+            " <C-n> Ctrl-Down/Up Shift-Arrows n/N [/] q Q
+            Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+            " i a I A   n l   aa ia
+            Plug 'wellle/targets.vim'
             Plug 'vim-scripts/sessionman.vim'
             if (has("python3") || has("python")) && exists('g:spf13_use_powerline') && !exists('g:spf13_use_old_powerline')
                 Plug 'Lokaltog/powerline', {'rtp':'/powerline/bindings/vim'}
@@ -146,8 +150,8 @@
             Plug 'mhinz/vim-signify'
             Plug 'tpope/vim-abolish'
             Plug 'osyo-manga/vim-over'
-            Plug 'kana/vim-textobj-user'
-            Plug 'kana/vim-textobj-indent'
+            "Plug 'kana/vim-textobj-user'
+            "Plug 'kana/vim-textobj-indent'
             Plug 'gcmt/wildfire.vim'
         endif
     " }
