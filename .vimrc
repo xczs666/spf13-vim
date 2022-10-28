@@ -478,7 +478,7 @@
             endif
             if isdirectory(expand("~/.vim/bundle/vim-rsi"))
                 " :help rsi
-                set timeoutlen=100
+                set timeoutlen=2000
             endif
         endif
     " }
