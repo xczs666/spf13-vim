@@ -155,6 +155,8 @@
             Plug 'kana/vim-textobj-user'
             "Plug 'kana/vim-textobj-indent'
             Plug 'gcmt/wildfire.vim'
+            " 按键提示
+            Plug 'liuchengxu/vim-which-key'
         endif
     " }
 

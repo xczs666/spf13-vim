@@ -275,12 +275,13 @@
     " character) add the following to your .vimrc.before.local file:
     "   let g:spf13_leader='\'
     if !exists('g:spf13_leader')
-        let mapleader = ','
+        " 注意按键要用双引号
+        let mapleader = "\<Space>"
     else
         let mapleader=g:spf13_leader
     endif
     if !exists('g:spf13_localleader')
-        let maplocalleader = '_'
+        let maplocalleader = ','
     else
         let maplocalleader=g:spf13_localleader
     endif
@@ -477,8 +478,14 @@
                 " map  N <Plug>(easymotion-prev)
             endif
             if isdirectory(expand("~/.vim/bundle/vim-rsi"))
-                " :help rsi
-                set timeoutlen=2000
+                " :help rsi, vim-which-key
+                set timeoutlen=500
+                nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
+            endif
+            if isdirectory(expand("~/.vim/bundle/vim-which-key"))
+                " https://github.com/liuchengxu/vim-which-key
+                nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
+                nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
             endif
         endif
     " }

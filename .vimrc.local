@@ -17,9 +17,9 @@ language messages zh_CN.utf-8
 
 au BufNewFile,BufRead *.groovy  setf groovy
 
-let mapleader = ","
-let g:mapleader = ","
-let g:C_MapLeader=","
+" let mapleader = "\<Space>"
+" let g:mapleader = "\<Space>"
+" let g:C_MapLeader="\<Space>"
 
 if has("gui_running")
     "windows剪切板设为默认寄存器
