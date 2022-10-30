@@ -480,7 +480,6 @@
             if isdirectory(expand("~/.vim/bundle/vim-rsi"))
                 " :help rsi, vim-which-key
                 set timeoutlen=500
-                nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
             endif
             if isdirectory(expand("~/.vim/bundle/vim-which-key"))
                 " https://github.com/liuchengxu/vim-which-key

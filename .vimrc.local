@@ -35,16 +35,16 @@ endif
 "hi cursorline guifg=magenta cyan orange purple violet seagreen slateblue darkred
 
 "json文件格式化
-nnoremap <unique><silent> <leader>jf :call FormatJson()<cr>
+nnoremap <unique><silent> <localleader>jf :call FormatJson()<cr>
 "xml文件格式化，需要libxml2支持，在百度云盘中有
-nnoremap <unique><silent> <leader>xf :call FormatXml()<cr>
-nnoremap <unique><silent> <leader>xi :%!xmllint --encode utf8 --pretty 1 --recover - 2>/dev/null<cr>
-vnoremap <unique><silent> <leader>xi :!xmllint --encode utf8 --pretty 1 --recover - 2>/dev/null<cr>
-vnoremap <unique><silent> <leader>fp :call FormatPrivate()<cr>
-nnoremap <unique><silent> <leader>fp :call FormatPrivate()<cr>
-vnoremap <unique><silent> <leader>fr :call FormatResponse()<cr>
-vnoremap <unique><silent> <leader>fm :call FormatMapper()<cr>
-vnoremap <unique><silent> <leader>fw :call DelChineseWidth()<cr>
+nnoremap <unique><silent> <localleader>xf :call FormatXml()<cr>
+nnoremap <unique><silent> <localleader>xi :%!xmllint --encode utf8 --pretty 1 --recover - 2>/dev/null<cr>
+vnoremap <unique><silent> <localleader>xi :!xmllint --encode utf8 --pretty 1 --recover - 2>/dev/null<cr>
+vnoremap <unique><silent> <localleader>fp :call FormatPrivate()<cr>
+nnoremap <unique><silent> <localleader>fp :call FormatPrivate()<cr>
+vnoremap <unique><silent> <localleader>fr :call FormatResponse()<cr>
+vnoremap <unique><silent> <localleader>fm :call FormatMapper()<cr>
+vnoremap <unique><silent> <localleader>fw :call DelChineseWidth()<cr>
 
 " :help indent-guides
 nmap <silent> <Leader>ig <Plug>IndentGuidesToggle
