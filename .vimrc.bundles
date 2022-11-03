@@ -150,10 +150,21 @@
                 Plug 'vim-scripts/restore_view.vim'
             endif
             Plug 'mhinz/vim-signify'
+            " crm MixedCase
+            " crc camelCase
+            " crs snake_case
+            " cru UPPER_CASE
+            " cr- dash-case
+            " cr. dot.case
+            " cr space case
+            " crt Title Case
+            " :h abolish
+            " :%S/facilit{y, ies}/building{,s}/g
             Plug 'tpope/vim-abolish'
             Plug 'osyo-manga/vim-over'
             Plug 'kana/vim-textobj-user'
             "Plug 'kana/vim-textobj-indent'
+            "<ENTER> <BS>
             Plug 'gcmt/wildfire.vim'
             " 按键提示
             Plug 'liuchengxu/vim-which-key'
