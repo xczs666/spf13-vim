@@ -465,8 +465,8 @@
                 " easymotion插件
                 " 忽略大小写
                 let g:EasyMotion_smartcase = 1
-                nmap s <Plug>(easymotion-sn)
-                nmap t <Plug>(easymotion-tn)
+                nmap s <Plug>(easymotion-s2)
+                " nmap t <Plug>(easymotion-tn)
                 " Gif config 注释掉，并不好用
                 " map  / <Plug>(easymotion-sn)
                 " omap / <Plug>(easymotion-tn)
