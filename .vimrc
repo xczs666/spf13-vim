@@ -307,7 +307,7 @@
     " If you prefer that functionality, add the following to your
     " .vimrc.before.local file:
     "   let g:spf13_no_easyWindows = 1
-    if !exists('g:spf13_no_easyWindows')
+    if !exists('g:spf13_no_easyWindows') && !count(g:spf13_bundle_groups, 'tmux')
         map <C-J> <C-W>j<C-W>_
         map <C-K> <C-W>k<C-W>_
         map <C-L> <C-W>l<C-W>_
@@ -317,6 +317,9 @@
     " Wrapped lines goes down/up to next row, rather than next line in file.
     noremap j gj
     noremap k gk
+
+    " splite window
+    nnoremap <silent> vv <C-w>v
 
     " End/Start of line motion keys act relative to row/wrap width in the
     " presence of `:set wrap`, and relative to line for `:set nowrap`.
@@ -1107,6 +1110,7 @@
             autocmd FileType c set omnifunc=ccomplete#Complete
         endif
     " }
+
 
     " FIXME: Isn't this for Syntastic to handle?
     " Haskell post write lint and check with ghcmod

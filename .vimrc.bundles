@@ -92,7 +92,7 @@
     " In your .vimrc.before.local file
     " list only the plugin groups you will use
     if !exists('g:spf13_bundle_groups')
-        let g:spf13_bundle_groups=['general', 'writing', 'programming',  'git', 'tabnine','java', 'php', 'ruby', 'python', 'javascript', 'html', 'misc']
+        let g:spf13_bundle_groups=['general', 'tmux', 'writing', 'programming',  'git', 'tabnine', 'java', 'php', 'ruby', 'python', 'javascript', 'html', 'misc']
     endif
 
     " To override all the included bundles, add the following to your
@@ -168,6 +168,13 @@
             Plug 'gcmt/wildfire.vim'
             " 按键提示
             Plug 'liuchengxu/vim-which-key'
+        endif
+    " }
+
+    " tmux {
+        if count(g:spf13_bundle_groups, 'tmux')
+            " <C-j> <C-k> <C-l> <C-h>
+            Plug 'christoomey/vim-tmux-navigator'
         endif
     " }
 
