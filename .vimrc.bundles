@@ -172,6 +172,10 @@
             "Plug 'kdheepak/lazygit.nvim'
             " 浮动终端，很炫
             Plug 'voldikss/vim-floaterm'
+            " FZF
+            Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+            " 支持FZF替换现有终端
+            Plug 'voldikss/fzf-floaterm'
         endif
     " }
 
