@@ -783,7 +783,7 @@
             nnoremap <silent> <leader>ge :Gedit<CR>
             " Mnemonic _i_nteractive
             nnoremap <silent> <leader>gi :Git add -p %<CR>
-            nnoremap <silent> <leader>gg :SignifyToggle<CR>
+            "nnoremap <silent> <leader>gg :SignifyToggle<CR>
         endif
     "}
 
@@ -804,6 +804,7 @@
             nnoremap   <silent>   <F12>   :FloatermToggle<CR>
             tnoremap   <silent>   <F12>   <C-\><C-n>:FloatermToggle<CR>
             nnoremap   <silent>   <c-t>   :FloatermToggle<CR>
+            nnoremap   <leader>gg :FloatermNew lazygit<CR>
             let g:floaterm_width=0.8
             let g:floaterm_height=0.8
             let g:floaterm_autoclose=2
