@@ -45,9 +45,10 @@
 
     " Basics {
         set nocompatible        " Must be first line
-        if !WINDOWS()
-            set shell=/bin/sh
-        endif
+        "if !WINDOWS()
+            "set shell=/bin/sh
+            "set shell=$SHELL
+        "endif
     " }
 
     " Windows Compatible {
@@ -786,6 +787,29 @@
         endif
     "}
 
+    " lazygit {
+        if isdirectory(expand("~/.vim/bundle/lazygit.nvim"))
+            nnoremap <silent> <leader>gg :LazyGit<CR>
+        endif
+    " }
+
+    " floaterm {
+        if isdirectory(expand("~/.vim/bundle/vim-floaterm"))
+            nnoremap   <silent>   <F7>    :FloatermNew<CR>
+            tnoremap   <silent>   <F7>    <C-\><C-n>:FloatermNew<CR>
+            nnoremap   <silent>   <F8>    :FloatermPrev<CR>
+            tnoremap   <silent>   <F8>    <C-\><C-n>:FloatermPrev<CR>
+            nnoremap   <silent>   <F9>    :FloatermNext<CR>
+            tnoremap   <silent>   <F9>    <C-\><C-n>:FloatermNext<CR>
+            nnoremap   <silent>   <F12>   :FloatermToggle<CR>
+            tnoremap   <silent>   <F12>   <C-\><C-n>:FloatermToggle<CR>
+            nnoremap   <silent>   <c-t>   :FloatermToggle<CR>
+            let g:floaterm_width=0.8
+            let g:floaterm_height=0.8
+            let g:floaterm_autoclose=2
+        endif
+    " }
+
     " YouCompleteMe {
         if count(g:spf13_bundle_groups, 'youcompleteme')
             let g:acp_enableAtStartup = 0
@@ -942,6 +966,7 @@
             let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
             let g:neocomplete#sources#omni#input_patterns.ruby = '[^. *\t]\.\h\w*\|\h\w*::'
     " }
+
     " neocomplcache {
         elseif count(g:spf13_bundle_groups, 'neocomplcache')
             let g:acp_enableAtStartup = 0

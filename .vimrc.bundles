@@ -168,6 +168,10 @@
             Plug 'gcmt/wildfire.vim'
             " 按键提示
             Plug 'liuchengxu/vim-which-key'
+            " neovim 插件
+            "Plug 'kdheepak/lazygit.nvim'
+            " 浮动终端，很炫
+            Plug 'voldikss/vim-floaterm'
         endif
     " }
 
