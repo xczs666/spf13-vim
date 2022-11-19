@@ -171,6 +171,7 @@
             Plug 'voldikss/vim-floaterm'
             " FZF
             Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+            " Files GFiles GFiles? Buffers History History: History/ Helptags Filetypes Maps
             Plug 'junegunn/fzf.vim'
             " 支持FZF替换现有终端
             Plug 'voldikss/fzf-floaterm'
