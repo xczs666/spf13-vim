@@ -57,11 +57,17 @@
         if WINDOWS()
           set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,$HOME/.vim/after
         endif
+
         " https://neovide.dev/configuration.html
         if exists("g:neovide")
             let g:neovide_input_macos_alt_is_meta = v:true
             "let g:neovide_cursor_trail_size = 0.1
             let g:neovide_cursor_vfx_mode = "railgun"
+        endif
+
+        " macvim
+        if OSX() && has("gui_running") && !exists("g:neovide")
+            set macmeta
         endif
     " }
 
