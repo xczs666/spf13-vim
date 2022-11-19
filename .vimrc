@@ -465,6 +465,27 @@
 
     " general {
         if count(g:spf13_bundle_groups, 'general')
+            if isdirectory(expand("~/.vim/bundle/vim-rsi"))
+                " :help rsi, vim-which-key
+                set timeoutlen=500
+            endif
+            if isdirectory(expand("~/.vim/bundle/vim-which-key"))
+                " https://github.com/liuchengxu/vim-which-key
+                nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
+                nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
+            endif
+        endif
+    " }
+
+    " neovim {
+        if has('nvim')
+            if isdirectory(expand("~/.vim/bundle/leap.nvim"))
+                lua require('leap').add_default_mappings()
+            endif
+            if isdirectory(expand("~/.vim/bundle/flit.nvim"))
+                lua require('flit').setup()
+            endif
+        else
             if isdirectory(expand("~/.vim/bundle/vim-easymotion"))
                 " easymotion插件
                 " 忽略大小写
@@ -481,17 +502,9 @@
                 " map  n <Plug>(easymotion-next)
                 " map  N <Plug>(easymotion-prev)
             endif
-            if isdirectory(expand("~/.vim/bundle/vim-rsi"))
-                " :help rsi, vim-which-key
-                set timeoutlen=500
-            endif
-            if isdirectory(expand("~/.vim/bundle/vim-which-key"))
-                " https://github.com/liuchengxu/vim-which-key
-                nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
-                nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
-            endif
         endif
     " }
+
 
     " git {
         if count(g:spf13_bundle_groups, 'git')
@@ -796,16 +809,16 @@
     " floaterm {
         if isdirectory(expand("~/.vim/bundle/vim-floaterm"))
             nnoremap   <silent>   <F7>    :FloatermNew<CR>
-            tnoremap   <silent>   <F7>    <C-\><C-n>:FloatermNew<CR>
+            tnoremap   <silent>   <F7>    <C-\><C-n>:FloatermNew --cwd==<buffer><CR>
             nnoremap   <silent>   <F8>    :FloatermPrev<CR>
             tnoremap   <silent>   <F8>    <C-\><C-n>:FloatermPrev<CR>
             nnoremap   <silent>   <F9>    :FloatermNext<CR>
             tnoremap   <silent>   <F9>    <C-\><C-n>:FloatermNext<CR>
             nnoremap   <silent>   <F12>   :FloatermToggle<CR>
             tnoremap   <silent>   <F12>   <C-\><C-n>:FloatermToggle<CR>
-            nnoremap   <silent>   <c-t>   :FloatermToggle<CR>
-            nnoremap   <leader>gg :FloatermNew lazygit<CR>
-            nnoremap   <leader>fd :FZF<CR>
+            nnoremap   <silent>   <c-t>   :FloatermNew --cwd=<buffer><CR>
+            nnoremap   <leader>gg :FloatermNew --cwd=<buffer> lazygit<CR>
+            nnoremap   <leader>fd :Files %:p:h<CR>
             " ctrl+6	近被编辑的两个文件之间的切换
             " :b1~n	编辑开的文件， 1~n 是缓冲区文件列表的序号
             " :hide bn :bdelete n

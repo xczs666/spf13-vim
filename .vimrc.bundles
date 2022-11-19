@@ -141,7 +141,6 @@
             endif
             Plug 'powerline/fonts'
             Plug 'bling/vim-bufferline'
-            Plug 'easymotion/vim-easymotion'
             Plug 'jistr/vim-nerdtree-tabs'
             Plug 'flazz/vim-colorschemes'
             Plug 'mbbill/undotree'
@@ -168,14 +167,25 @@
             Plug 'gcmt/wildfire.vim'
             " 按键提示
             Plug 'liuchengxu/vim-which-key'
-            " neovim 插件
-            "Plug 'kdheepak/lazygit.nvim'
             " 浮动终端，很炫
             Plug 'voldikss/vim-floaterm'
             " FZF
             Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+            Plug 'junegunn/fzf.vim'
             " 支持FZF替换现有终端
             Plug 'voldikss/fzf-floaterm'
+        endif
+    " }
+
+    " neovim {
+        if has('nvim')
+            " neovim 插件
+            "Plug 'kdheepak/lazygit.nvim'
+            " s S x X gs
+            Plug 'ggandor/leap.nvim'
+            Plug 'ggandor/flit.nvim'
+        else
+            Plug 'easymotion/vim-easymotion'
         endif
     " }
 
