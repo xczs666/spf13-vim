@@ -825,7 +825,6 @@
             tnoremap   <silent>   <F12>   <C-\><C-n>:FloatermToggle<CR>
             nnoremap   <silent>   <c-t>   :FloatermNew --cwd=<buffer><CR>
             nnoremap   <leader>gg :FloatermNew --cwd=<buffer> lazygit<CR>
-            nnoremap   <leader>fd :Files %:p:h<CR>
             " ctrl+6	近被编辑的两个文件之间的切换
             " :b1~n	编辑开的文件， 1~n 是缓冲区文件列表的序号
             " :hide bn :bdelete n
@@ -834,6 +833,13 @@
             let g:floaterm_width=0.8
             let g:floaterm_height=0.8
             let g:floaterm_autoclose=2
+        endif
+    " }
+
+    " fzf {
+        if isdirectory(expand("~/.vim/bundle/fzf.vim"))
+            nnoremap   <leader>fd :Files %:p:h<CR>
+            nnoremap   <leader>hi :History<CR>
         endif
     " }
 
