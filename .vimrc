@@ -825,6 +825,16 @@
         endif
     " }
 
+    " auto save {
+        if isdirectory(expand("~/.vim/bundle/vim-auto-save"))
+            let g:auto_save = 1
+            " do not display the auto-save notification
+            let g:auto_save_silent = 1
+            " :h autocmd-events
+            let g:auto_save_events = ["InsertLeave", "TextChanged"]
+        endif
+    " }
+
     " floaterm {
         if isdirectory(expand("~/.vim/bundle/vim-floaterm"))
             nnoremap   <silent>   <F7>    :FloatermNew<CR>
