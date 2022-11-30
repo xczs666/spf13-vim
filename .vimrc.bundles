@@ -331,7 +331,8 @@
         if count(g:spf13_bundle_groups, 'html')
             Plug 'vim-scripts/HTML-AutoCloseTag'
             Plug 'hail2u/vim-css3-syntax'
-            Plug 'gorodinskiy/vim-coloresque'
+            " 和undoTree有冲突
+            "Plug 'gko/vim-coloresque'
             Plug 'tpope/vim-haml'
             Plug 'mattn/emmet-vim'
         endif
