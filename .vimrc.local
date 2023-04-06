@@ -330,3 +330,20 @@ function DelChineseWidth() range
     endwhile
     call setpos('.', s:begin)
 endfunction
+
+
+function! ToggleIsNot()
+    let l:word = expand('<cword>')
+    if l:word[0:4] ==# 'isNot'
+        let l:new_word = 'is' . l:word[5:]
+    elseif l:word[0:1] ==# 'is'
+        let l:new_word = 'isNot' . l:word[2:]
+    else
+        echo "No matching prefix found."
+        return
+    endif
+
+    execute "normal ciw" . l:new_word
+endfunction
+
+nnoremap ! :silent! call ToggleIsNot()<CR>
