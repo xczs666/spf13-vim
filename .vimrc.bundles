@@ -119,6 +119,8 @@
             Plug 'tommcdo/vim-exchange'
             " 画图
             Plug 'vim-scripts/DrawIt'
+            " f F t T 快捷移动提示
+            Plug 'unblevable/quick-scope'
             Plug 'tpope/vim-repeat'
             Plug 'rhysd/conflict-marker.vim'
             Plug 'jiangmiao/auto-pairs'
@@ -186,6 +188,8 @@
             " s S x X gs
             Plug 'ggandor/leap.nvim'
             Plug 'ggandor/flit.nvim'
+            Plug 'nvim-lua/plenary.nvim'
+            Plug 'sindrets/diffview.nvim'
         else
             Plug 'easymotion/vim-easymotion'
         endif
@@ -225,6 +229,8 @@
             Plug 'scrooloose/nerdcommenter'
             Plug 'tpope/vim-commentary'
             Plug 'godlygeek/tabular'
+            " 对齐 https://github.com/junegunn/vim-easy-align
+            Plug 'junegunn/vim-easy-align'
             Plug 'luochen1990/rainbow'
             if executable('ctags')
                 Plug 'majutsushi/tagbar'

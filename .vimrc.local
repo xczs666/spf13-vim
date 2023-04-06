@@ -13,7 +13,7 @@ set smartcase
 set nospell
 set nrformats=bin
 set relativenumber
-
+set lazyredraw
 
 language messages zh_CN.utf-8
 
@@ -75,7 +75,7 @@ nmap <silent> <Leader>id <Plug>IndentGuidesDisable
 " @Column(name = "active_time")
 " private String activeTime;
 " 0f	r d$O//pjyypV:s/_\([a-z]\)/\u\1/geki@Column(krkbname = "krkbA")jIprivate String A;j
-nmap <F1> :tabnew
+nmap <F1> :tabnew 
 nmap <F2> :tabprevious<CR>
 nmap <F3> :tabnext<CR>
 nnoremap <silent> <F4> :TagbarToggle<CR>

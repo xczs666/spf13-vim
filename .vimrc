@@ -341,6 +341,18 @@
     " splite window
     nnoremap <silent> vv <C-w>v
 
+    " move
+    nnoremap <C-d> <C-d>zz
+    nnoremap <C-u> <C-u>zz
+    " Go to the first non-blank character of a line
+    noremap 0 ^
+    " Just in case you need to go to the very beginning of a line
+    noremap ^ 0
+
+    nnoremap n nzzzv
+    nnoremap N Nzzzv
+
+
     " End/Start of line motion keys act relative to row/wrap width in the
     " presence of `:set wrap`, and relative to line for `:set nowrap`.
     " Default vim behaviour is to act relative to text line in both cases
@@ -832,6 +844,16 @@
             let g:auto_save_silent = 1
             " :h autocmd-events
             let g:auto_save_events = ["InsertLeave", "TextChanged"]
+        endif
+    " }
+
+    " vim-easy-align {
+        if isdirectory(expand("~/.vim/bundle/vim-easy-align"))
+            " https://github.com/junegunn/vim-easy-align 对齐
+            " Start interactive EasyAlign in visual mode (e.g. vipga)
+            xmap ga <Plug>(EasyAlign)
+            " Start interactive EasyAlign for a motion/text object (e.g. gaip)
+            nmap ga <Plug>(EasyAlign)
         endif
     " }
 
