@@ -505,6 +505,10 @@
                 nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
                 nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
             endif
+            if isdirectory(expand("~/.vim/bundle/CamelCaseMotion"))
+                " https://github.com/bkad/CamelCaseMotion
+                let g:camelcasemotion_key = '<leader>'
+            endif
         endif
     " }
 
@@ -869,11 +873,11 @@
             tnoremap   <silent>   <F12>   <C-\><C-n>:FloatermToggle<CR>
             nnoremap   <silent>   <c-t>   :FloatermNew --cwd=<buffer><CR>
             nnoremap   <leader>gg :FloatermNew --cwd=<buffer> lazygit<CR>
-            " ctrl+6	近被编辑的两个文件之间的切换
+            " ctrl+6	近被编辑的两个文件之间的切换 buffer
             " :b1~n	编辑开的文件， 1~n 是缓冲区文件列表的序号
             " :hide bn :bdelete n
-            nnoremap   <leader>bn :bn<CR>
-            nnoremap   <leader>bp :bp<CR>
+            " nnoremap   <leader>bn :bn<CR>
+            " nnoremap   <leader>bp :bp<CR>
             let g:floaterm_width=0.8
             let g:floaterm_height=0.8
             let g:floaterm_autoclose=2

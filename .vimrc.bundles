@@ -121,6 +121,8 @@
             Plug 'vim-scripts/DrawIt'
             " f F t T 快捷移动提示
             Plug 'unblevable/quick-scope'
+            " <leader>w/b/e 内部单词移动
+            Plug 'bkad/CamelCaseMotion'
             Plug 'tpope/vim-repeat'
             Plug 'rhysd/conflict-marker.vim'
             Plug 'jiangmiao/auto-pairs'
