@@ -520,25 +520,32 @@
             if isdirectory(expand("~/.vim/bundle/flit.nvim"))
                 lua require('flit').setup()
             endif
-        else
-            if isdirectory(expand("~/.vim/bundle/vim-easymotion"))
-                " easymotion插件
-                " 忽略大小写
-                let g:EasyMotion_smartcase = 1
-                nmap s <Plug>(easymotion-s2)
-                " nmap t <Plug>(easymotion-tn)
-                " Gif config 注释掉，并不好用
-                " map  / <Plug>(easymotion-sn)
-                " omap / <Plug>(easymotion-tn)
-
-                " " These `n` & `N` mappings are options. You do not have to map `n` & `N` to EasyMotion.
-                " " Without these mappings, `n` & `N` works fine. (These mappings just provide
-                " " different highlight method and have some other features )
-                " map  n <Plug>(easymotion-next)
-                " map  N <Plug>(easymotion-prev)
-            endif
         endif
-    " }
+        if isdirectory(expand("~/.vim/bundle/vim-easymotion"))
+            " easymotion插件
+            " leap map s "if !hasmapto('s', 'n')
+            if mapcheck("s") == ""
+                nmap s <Plug>(easymotion-s2)
+            endif
+            " 忽略大小写
+            let g:EasyMotion_smartcase = 1
+            " nmap t <Plug>(easymotion-tn)
+            " Gif config 注释掉，并不好用
+            " map  / <Plug>(easymotion-sn)
+            " omap / <Plug>(easymotion-tn)
+
+            " " These `n` & `N` mappings are options. You do not have to map `n` & `N` to EasyMotion.
+            " " Without these mappings, `n` & `N` works fine. (These mappings just provide
+            " " different highlight method and have some other features )
+            " map  n <Plug>(easymotion-next)
+            " map  N <Plug>(easymotion-prev)
+            map <leader><leader>l <Plug>(easymotion-lineforward)
+            map <leader><leader>j <Plug>(easymotion-j)
+            map <leader><leader>k <Plug>(easymotion-k)
+            map <leader><leader>h <Plug>(easymotion-linebackward)
+            let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
+        endif
+        " }
 
 
     " git {

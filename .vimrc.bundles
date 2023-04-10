@@ -183,7 +183,7 @@
         endif
     " }
 
-    " neovim {
+    " 跳转 {
         if has('nvim')
             " neovim 插件
             "Plug 'kdheepak/lazygit.nvim'
@@ -192,9 +192,8 @@
             Plug 'ggandor/flit.nvim'
             Plug 'nvim-lua/plenary.nvim'
             Plug 'sindrets/diffview.nvim'
-        else
-            Plug 'easymotion/vim-easymotion'
         endif
+        Plug 'easymotion/vim-easymotion'
     " }
 
     " tmux {
