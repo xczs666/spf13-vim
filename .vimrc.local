@@ -31,6 +31,15 @@ if has("gui_running")
     set guioptions+=b
 endif
 
+"noremap <D-v> "+p
+"vnoremap <D-v> "+p
+"noremap <D-c> "+y
+"vnoremap <D-c> "+y
+"nnoremap <D-V> :set paste<CR>"+gP:set nopaste<CR>
+"vnoremap <C-c> y
+"inoremap <C-v> <esc>:set paste<cr>a<C-R>+<esc>:set nopaste<cr>
+
+
 "自动保存文件
 "set autowriteall
 
@@ -80,8 +89,6 @@ nmap <F2> :tabprevious<CR>
 nmap <F3> :tabnext<CR>
 nnoremap <silent> <F4> :TagbarToggle<CR>
 nnoremap <F5> :UndotreeToggle<cr>
-vnoremap <C-c> y
-inoremap <C-v> <esc>:set paste<cr>a<C-R>+<esc>:set nopaste<cr>
 "inoremap jk <esc>
 vnoremap . :normal! .<CR>
 
