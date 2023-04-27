@@ -57,6 +57,10 @@ vnoremap <unique><silent> <localleader>fr :call FormatResponse()<cr>
 vnoremap <unique><silent> <localleader>fm :call FormatMapper()<cr>
 vnoremap <unique><silent> <localleader>fw :call DelChineseWidth()<cr>
 
+" 拷贝文件全路径
+nnoremap <unique><silent> <leader>cp :let @+ = expand('%:p')<cr>
+" 拷贝文件名
+nnoremap <unique><silent> <leader>cpn :let @+ = expand('%')<cr>
 " :help indent-guides
 nmap <silent> <Leader>ig <Plug>IndentGuidesToggle
 nmap <silent> <Leader>ie <Plug>IndentGuidesEnable
