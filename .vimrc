@@ -491,6 +491,10 @@
     " fullscreen mode for GVIM and Terminal, need 'wmctrl' in you PATH
     map <silent> <F11> :call system("wmctrl -ir " . v:windowid . " -b toggle,fullscreen")<CR>
 
+    " 拷贝文件全路径
+    nnoremap <unique><silent> <leader>cp :let @+ = expand('%:p')<cr>
+    " 拷贝文件名
+    nnoremap <unique><silent> <leader>cpn :let @+ = expand('%')<cr>
 " }
 
 " Plugins {
