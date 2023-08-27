@@ -645,6 +645,24 @@
         endif
     " }
 
+    " markdown {
+        " https://github.com/SidOfc/mkdx#examples
+        " <CR>和<TAB> 有冲突 可以 verbose imap <CR> 查看,应该是imap <buffer><silent> <Cr> <Plug>(mkdx-enter)
+        " 可以call confirm("shifto","&Yes\n&No", 1) debug
+        if isdirectory(expand("~/.vim/bundle/mkdx"))
+            " 自动进位编号需要md后缀的文件:au TextChanged *.md silent! call mkdx#OnChange()
+            autocmd BufNewFile,BufRead *.md set filetype=markdown | imap <buffer><silent> <Cr> <Plug>(mkdx-enter)
+            let g:mkdx#settings = { 'highlight': { 'enable': 1 },
+                        \ 'enter': { 'o': 1, 'shifto': 1 },
+                        \ 'links': { 'external': { 'enable': 1 } },
+                        \ 'toc': { 'text': 'Table of Contents', 'update_on_write': 1 },
+                        \ 'fold': { 'enable': 1 },
+                        \ 'insert_indent_mappings': 1}
+            let g:polyglot_disabled = ['markdown'] " for vim-polyglot users, it loads Plasticboy's markdown
+                                                   " plugin which unfortunately interferes with mkdx list indentation.
+        endif
+    " }
+
     " OmniComplete {
         " To disable omni complete, add the following to your .vimrc.before.local file:
         "   let g:spf13_no_omni_complete = 1

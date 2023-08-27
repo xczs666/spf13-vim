@@ -93,7 +93,7 @@
     " list only the plugin groups you will use
     if !exists('g:spf13_bundle_groups')
         " coc/tabnine to complete
-        let g:spf13_bundle_groups=['general', 'tmux', 'writing', 'programming',  'git', 'coc', 'java', 'php', 'ruby', 'python', 'javascript', 'html', 'misc', 'db']
+        let g:spf13_bundle_groups=['general', 'tmux', 'writing', 'programming',  'git', 'coc', 'java', 'php', 'ruby', 'python', 'javascript', 'html', 'misc', 'db', 'markdown']
     endif
 
     " To override all the included bundles, add the following to your
@@ -382,7 +382,6 @@
     " Misc {
         if count(g:spf13_bundle_groups, 'misc')
             Plug 'rust-lang/rust.vim'
-            Plug 'preservim/vim-markdown'
             Plug 'spf13/vim-preview'
             Plug 'tpope/vim-cucumber'
             Plug 'cespare/vim-toml'
@@ -391,6 +390,12 @@
         endif
     " }
 
+    " markdown {
+        if count(g:spf13_bundle_groups, 'markdown')
+            "Plug 'preservim/vim-markdown'
+            Plug 'SidOfc/mkdx'
+        endif
+    " }
     " db {
         if count(g:spf13_bundle_groups, 'db')
             " DBUI, DB
