@@ -273,7 +273,8 @@
     " Remove trailing whitespaces and ^M chars
     " To disable the stripping of whitespace, add the following to your
     " .vimrc.before.local file:
-    "   let g:spf13_keep_trailing_whitespace = 1
+    " 在保存时自动删除行尾空白字符,和<C-V>有冲突
+    " let g:spf13_keep_trailing_whitespace = 1
     autocmd FileType c,cpp,java,go,php,javascript,puppet,python,rust,twig,xml,yml,perl,sql autocmd BufWritePre <buffer> if !exists('g:spf13_keep_trailing_whitespace') | call StripTrailingWhitespace() | endif
     "autocmd FileType go autocmd BufWritePre <buffer> Fmt
     autocmd BufNewFile,BufRead *.html.twig set filetype=html.twig
@@ -903,6 +904,60 @@
         endif
     " }
 
+    " coc {
+        if isdirectory(expand("~/.vim/bundle/coc.nvim"))
+            " see https://github.com/neoclide/coc.nvim
+
+            " Having longer updatetime (default is 4000 ms = 4s) leads to noticeable
+            " delays and poor user experience
+            set updatetime=300
+
+            " Always show the signcolumn, otherwise it would shift the text each time
+            " diagnostics appear/become resolved
+            set signcolumn=yes
+
+            " Use tab for trigger completion with characters ahead and navigate
+            " NOTE: There's always complete item selected by default, you may want to enable
+            " no select by `"suggest.noselect": true` in your configuration file
+            " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+            " other plugin before putting this into your config
+            inoremap <silent><expr> <TAB>
+                        \ coc#pum#visible() ? coc#pum#next(1) :
+                        \ CheckBackspace() ? "\<Tab>" :
+                        \ coc#refresh()
+            inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+
+            " Make <CR> to accept selected completion item or notify coc.nvim to format
+            " <C-g>u breaks current undo, please make your own choice
+            inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                        \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+            function! CheckBackspace() abort
+                let col = col('.') - 1
+                return !col || getline('.')[col - 1]  =~# '\s'
+            endfunction
+
+            " Use <c-space> to trigger completion
+            if has('nvim')
+                inoremap <silent><expr> <c-space> coc#refresh()
+            else
+                inoremap <silent><expr> <c-@> coc#refresh()
+            endif
+            " Highlight the symbol and its references when holding the cursor
+            autocmd CursorHold * silent call CocActionAsync('highlight')
+
+            " Remap <C-f> and <C-b> to scroll float windows/popups
+            if has('nvim-0.4.0') || has('patch-8.2.0750')
+                nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+                nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+                inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+                inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+                vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+                vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+            endif
+        endif
+    " }
+
     " YouCompleteMe {
         if count(g:spf13_bundle_groups, 'youcompleteme')
             let g:acp_enableAtStartup = 0
@@ -1160,6 +1215,7 @@
             let g:neocomplcache_omni_patterns.ruby = '[^. *\t]\.\h\w*\|\h\w*::'
             let g:neocomplcache_omni_patterns.go = '\h\w*\.\?'
     " }
+ 
     " Normal Vim omni-completion {
     " To disable omni complete, add the following to your .vimrc.before.local file:
     "   let g:spf13_no_omni_complete = 1

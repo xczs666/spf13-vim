@@ -17,6 +17,10 @@ set lazyredraw
 
 language messages zh_CN.utf-8
 
+
+"let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+"let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+
 au BufNewFile,BufRead *.groovy  setf groovy
 
 " let mapleader = "\<Space>"
@@ -37,7 +41,7 @@ endif
 "vnoremap <D-c> "+y
 "nnoremap <D-V> :set paste<CR>"+gP:set nopaste<CR>
 "vnoremap <C-c> y
-"inoremap <C-v> <esc>:set paste<cr>a<C-R>+<esc>:set nopaste<cr>
+" <esc>:set paste<cr>a<C-R>+<esc>:set nopaste<cr>
 
 
 "自动保存文件
