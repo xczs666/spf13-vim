@@ -66,6 +66,103 @@ nmap <silent> <Leader>ig <Plug>IndentGuidesToggle
 nmap <silent> <Leader>ie <Plug>IndentGuidesEnable
 nmap <silent> <Leader>id <Plug>IndentGuidesDisable
 
+" 编号自动更正
+nnoremap <unique><silent> <leader>fn :call UpdateNumberedList()<cr>
+
+
+fun! UpdateNumberedList()
+  let lnum       = line('.')
+  let num_pat    = '^>\? *\d\.[0-9.]*'
+  let result     = []
+  let init_depth = -1
+
+  while (indent(lnum) > 0 && prevnonblank(lnum - 1) == lnum - 1)
+    let lnum -= 1
+  endwhile
+
+  if (match(getline(lnum), num_pat) > -1)
+    let start_lnum  = lnum
+    let end_lnum    = lnum
+    let indent_size = shiftwidth()
+
+    while (nextnonblank(start_lnum - 1) == start_lnum - 1)
+      let start_lnum -= 1
+    endwhile
+
+    while (nextnonblank(end_lnum + 1) == end_lnum + 1)
+      let end_lnum += 1
+    endwhile
+
+    for lnum in range(start_lnum, end_lnum)
+      let raw_line = getline(lnum)
+      let line     = substitute(raw_line, '^ *>', '', '')
+      let depth    = len(get(matchlist(line, '^ *'), 0, '')) / indent_size
+      let line     = substitute(line, '^ *', '', '')
+      let prev     = get(result, -1)
+      let has_prev = type(prev) == type({})
+      let nums     = []
+
+      if init_depth == -1
+        let init_depth = depth
+      endif
+
+      let idx_depth = depth - init_depth
+
+      if (match(line, num_pat) > -1)
+        if (has_prev)
+          let idx_depth = min([idx_depth, prev.idx_depth + 1])
+          let depth = min([depth, prev.depth + 1])
+          let nums  = copy(prev.nums)
+
+          if idx_depth > prev.idx_depth
+            call add(nums, 1)
+          elseif idx_depth < prev.idx_depth
+            let nums = nums[0:idx_depth]
+            let nums[idx_depth] += 1
+          elseif idx_depth == prev.idx_depth
+            let nums[idx_depth] += 1
+          endif
+        else
+          call add(nums, 1)
+        endif
+
+        call add(result, {
+              \ 'quoted': match(raw_line, '^ *>') > -1,
+              \ 'lnum': lnum,
+              \ 'depth': depth,
+              \ 'idx_depth': idx_depth,
+              \ 'lines': [line],
+              \ 'nums': nums
+              \ })
+      elseif (has_prev)
+        call add(prev.lines, line)
+      endif
+    endfor
+  endif
+
+  for item in result
+    let indent = repeat(' ', indent_size * item.depth)
+    let quote  = item.quoted ? '> ' : ''
+    let lnum   = item.lnum
+    let line   = substitute(item.lines[0], num_pat, join(item.nums, '.') . '.', '')
+
+    call setline(lnum, quote . indent . line)
+
+    if (len(item.lines) > 1)
+      let sp_pat        = '^>\? *\(\([0-9.]\+\|[' . join(g:mkdx#settings.tokens.enter, '') . ']\)\( \[.\]\)\? \|\[.\]\)'
+      let item_syms     = get(matchlist(line, sp_pat), 1, '')
+      let inline_indent = repeat(' ', len(item_syms))
+
+      for inline_line in item.lines[1:]
+        let lnum += 1
+        call setline(lnum, quote . indent . inline_indent . inline_line)
+      endfor
+    endif
+  endfor
+
+  return result
+endfun
+
 " :help insert.txt
 " :help usr_24.txt
 "inoremap <C-A> <Home>
