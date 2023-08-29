@@ -647,19 +647,55 @@
 
     " markdown {
         " https://github.com/SidOfc/mkdx#examples
+        " t,ll,lt,',ln,][,/,b,`,s, , ,j,``,[[,]],i,I,gf,gx
         " <CR>和<TAB> 有冲突 可以 verbose imap <CR> 查看,应该是imap <buffer><silent> <Cr> <Plug>(mkdx-enter)
         " 可以call confirm("shifto","&Yes\n&No", 1) debug
         if isdirectory(expand("~/.vim/bundle/mkdx"))
             " 自动进位编号需要md后缀的文件:au TextChanged *.md silent! call mkdx#OnChange()
-            autocmd BufNewFile,BufRead *.md set filetype=markdown | imap <buffer><silent> <Cr> <Plug>(mkdx-enter)
+            " <leader>b 和 CamelCaseMotion冲突了
+            autocmd BufNewFile,BufRead *.md set filetype=markdown|imap <buffer><silent> <Cr> <Plug>(mkdx-enter)|nmap <buffer> <leader>b <Plug>(mkdx-text-bold-n)|vmap <buffer> <leader>b <Plug>(mkdx-text-bold-v)
             let g:mkdx#settings = { 'highlight': { 'enable': 1 },
                         \ 'enter': { 'o': 1, 'shifto': 1 },
                         \ 'links': { 'external': { 'enable': 1 } },
                         \ 'toc': { 'text': 'Table of Contents', 'update_on_write': 1 },
                         \ 'fold': { 'enable': 1 },
                         \ 'insert_indent_mappings': 1}
-            let g:polyglot_disabled = ['markdown'] " for vim-polyglot users, it loads Plasticboy's markdown
-                                                   " plugin which unfortunately interferes with mkdx list indentation.
+            let g:polyglot_disabled = ['markdown'] " for vim-polyglot users, it loads Plasticboy's markdown plugin which unfortunately interferes with mkdx list indentation.
+
+            fun! s:MkdxGoToHeader(header)
+                " given a line: '  84: # Header'
+                " this will match the number 84 and move the cursor to the start of that line
+                call cursor(str2nr(get(matchlist(a:header, ' *\([0-9]\+\)'), 1, '')), 1)
+            endfun
+
+            fun! s:MkdxFormatHeader(key, val)
+                let text = get(a:val, 'text', '')
+                let lnum = get(a:val, 'lnum', '')
+
+                " if the text is empty or no lnum is present, return the empty string
+                if (empty(text) || empty(lnum)) | return text | endif
+
+                " We can't jump to it if we dont know the line number so that must be present in the outpt line.
+                " We also add extra padding up to 4 digits, so I hope your markdown files don't grow beyond 99.9k lines ;)
+                return repeat(' ', 4 - strlen(lnum)) . lnum . ': ' . text
+            endfun
+
+            fun! s:MkdxFzfQuickfixHeaders()
+                " passing 0 to mkdx#QuickfixHeaders causes it to return the list instead of opening the quickfix list
+                " this allows you to create a 'source' for fzf.
+                " first we map each item (formatted for quickfix use) using the function MkdxFormatHeader()
+                " then, we strip out any remaining empty headers.
+                let headers = filter(map(mkdx#QuickfixHeaders(0), function('<SID>MkdxFormatHeader')), 'v:val != ""')
+
+                " run the fzf function with the formatted data and as a 'sink' (action to execute on selected entry)
+                " supply the MkdxGoToHeader() function which will parse the line, extract the line number and move the cursor to it.
+                call fzf#run(fzf#wrap(
+                            \ {'source': headers, 'sink': function('<SID>MkdxGoToHeader') }
+                            \ ))
+            endfun
+
+            " finally, map it -- in this case, I mapped it to overwrite the default action for toggling quickfix (<PREFIX>I)
+            nnoremap <silent> <Leader>I :call <SID>MkdxFzfQuickfixHeaders()<Cr>
         endif
     " }
 
