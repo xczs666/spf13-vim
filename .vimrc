@@ -655,6 +655,7 @@
             " <leader>b 和 CamelCaseMotion冲突了
             autocmd BufNewFile,BufRead *.md set filetype=markdown|imap <buffer><silent> <Cr> <Plug>(mkdx-enter)|nmap <buffer> <leader>b <Plug>(mkdx-text-bold-n)|vmap <buffer> <leader>b <Plug>(mkdx-text-bold-v)
             let g:mkdx#settings = { 'highlight': { 'enable': 1 },
+                        \ 'tab': { 'enable': 0 },
                         \ 'enter': { 'o': 1, 'shifto': 1 },
                         \ 'links': { 'external': { 'enable': 1 } },
                         \ 'toc': { 'text': 'Table of Contents', 'update_on_write': 1 },
