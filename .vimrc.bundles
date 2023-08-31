@@ -181,6 +181,8 @@
             " 支持FZF替换现有终端
             Plug 'voldikss/fzf-floaterm'
             Plug '907th/vim-auto-save'
+            " ;bc 计算器
+            Plug 'vim-scripts/bccalc.vim'
         endif
     " }
 
