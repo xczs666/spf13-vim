@@ -967,7 +967,8 @@
 
             " Having longer updatetime (default is 4000 ms = 4s) leads to noticeable
             " delays and poor user experience
-            set updatetime=300
+            " 消息显示时间限制
+            set updatetime=1000
 
             " Always show the signcolumn, otherwise it would shift the text each time
             " diagnostics appear/become resolved
