@@ -656,7 +656,7 @@
             autocmd BufNewFile,BufRead *.md set filetype=markdown|imap <buffer><silent> <Cr> <Plug>(mkdx-enter)|nmap <buffer> <leader>b <Plug>(mkdx-text-bold-n)|vmap <buffer> <leader>b <Plug>(mkdx-text-bold-v)
             let g:mkdx#settings = { 'highlight': { 'enable': 1 },
                         \ 'tab': { 'enable': 0 },
-                        \ 'enter': { 'o': 1, 'shifto': 1 },
+                        \ 'enter': { 'o': 1, 'shift': 1, 'shifto': 1 },
                         \ 'links': { 'external': { 'enable': 1 } },
                         \ 'toc': { 'text': 'Table of Contents', 'update_on_write': 1 },
                         \ 'fold': { 'enable': 1 },
@@ -954,6 +954,8 @@
 
     " fzf {
         if isdirectory(expand("~/.vim/bundle/fzf.vim"))
+            " let g:fzf_preview_window = ['right,50%', 'ctrl-/']
+            " let g:fzf_preview_window = ['hidden,right,50%,<70(up,40%)', 'ctrl-/']
             nnoremap   <leader>fd :Files %:p:h<CR>
             nnoremap   <leader>hi :History<CR>
         endif

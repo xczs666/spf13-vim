@@ -69,6 +69,24 @@ nmap <silent> <Leader>id <Plug>IndentGuidesDisable
 " 编号自动更正
 nnoremap <unique><silent> <leader>fn :call UpdateNumberedList()<cr>
 
+" 行列转换
+vnoremap <leader>f\| :!awk -F'\|' '{for(i=1;i<=NF;i++) a[i,NR]=$i}END{for(i=1;i<=NF;i++) {for(j=1;j<=NR;j++) printf a[i,j] "\|";print ""}}'<CR>
+vnoremap <leader>f, :!awk -F',' '{for(i=1;i<=NF;i++) a[i,NR]=$i}END{for(i=1;i<=NF;i++) {for(j=1;j<=NR;j++) printf a[i,j] ",";print ""}}'<CR>
+vnoremap <leader>f: :!awk -F':' '{for(i=1;i<=NF;i++) a[i,NR]=$i}END{for(i=1;i<=NF;i++) {for(j=1;j<=NR;j++) printf a[i,j] ":";print ""}}'<CR>
+vnoremap <leader>ft :!awk -F'\t' '{for(i=1;i<=NF;i++) a[i,NR]=$i}END{for(i=1;i<=NF;i++) {for(j=1;j<=NR;j++) printf a[i,j] "\t";print ""}}'<CR>
+
+" /ALTER TABLE/ {
+"     # gsub(/[0-9]{8}/, sprintf("%08d", count++))
+"     # gsub(/[0-9]{8}/, sprintf("%02d%06d", (1+(count/3)), count++%3))
+"     gsub(/[0-9]{8}/, sprintf("%08d", strftime("%Y%m%d", mktime("2022 01 01 00 00 00") + (count++ * 86400))))
+"     print
+"     next
+" }
+" {
+"     print
+" }
+"
+" !gawk '/TABLE/ {gsub(/[0-9]{8}_[0-9]{8}/, sprintf("\%08d_\%08d", strftime("\%Y\%m\%d", mktime("2022 01 01 00 00 00") + (count/3 * 86400)),count++\%3));print;next}{print}'
 
 fun! UpdateNumberedList()
   let lnum       = line('.')

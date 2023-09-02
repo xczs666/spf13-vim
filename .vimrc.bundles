@@ -116,7 +116,7 @@
             Plug 'vim-scripts/ReplaceWithRegister'
             " cs ys ds S
             Plug 'tpope/vim-surround'
-            " 快捷交换 cx cxc
+            " 快捷交换 cx cxc cxx
             Plug 'tommcdo/vim-exchange'
             " 画图
             Plug 'vim-scripts/DrawIt'
@@ -183,6 +183,8 @@
             Plug '907th/vim-auto-save'
             " ;bc 计算器
             Plug 'vim-scripts/bccalc.vim'
+            " ii ai aI
+            Plug 'michaeljsmith/vim-indent-object'
         endif
     " }
 
