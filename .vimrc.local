@@ -210,7 +210,7 @@ nnoremap <silent> <F4> :TagbarToggle<CR>
 nnoremap <F5> :UndotreeToggle<cr>
 "inoremap jk <esc>
 vnoremap . :normal! .<CR>
-nnoremap <leader>it :silent !open -a iTerm .<CR>
+nnoremap <leader>it :silent !env VIMRUNTIME="" VIM="" open -a iTerm .<CR>
 
 " smartim输入法切换配置 begin
 " see https://cloud.tencent.com/developer/article/1877309
