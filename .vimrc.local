@@ -70,10 +70,14 @@ nmap <silent> <Leader>id <Plug>IndentGuidesDisable
 nnoremap <unique><silent> <leader>fn :call UpdateNumberedList()<cr>
 
 " 行列转换
-vnoremap <leader>f\| :!awk -F'\|' '{for(i=1;i<=NF;i++) a[i,NR]=$i}END{for(i=1;i<=NF;i++) {for(j=1;j<=NR;j++) printf a[i,j] "\|";print ""}}'<CR>
-vnoremap <leader>f, :!awk -F',' '{for(i=1;i<=NF;i++) a[i,NR]=$i}END{for(i=1;i<=NF;i++) {for(j=1;j<=NR;j++) printf a[i,j] ",";print ""}}'<CR>
-vnoremap <leader>f: :!awk -F':' '{for(i=1;i<=NF;i++) a[i,NR]=$i}END{for(i=1;i<=NF;i++) {for(j=1;j<=NR;j++) printf a[i,j] ":";print ""}}'<CR>
-vnoremap <leader>ft :!awk -F'\t' '{for(i=1;i<=NF;i++) a[i,NR]=$i}END{for(i=1;i<=NF;i++) {for(j=1;j<=NR;j++) printf a[i,j] "\t";print ""}}'<CR>
+nnoremap <leader>f\| :call Transpose("\|")<CR>:Tabularize /\|<CR>
+vnoremap <leader>f\| :call Transpose("\|")<CR>
+nnoremap <leader>f, :call Transpose(",")<CR>:Tabularize /,<CR>
+vnoremap <leader>f, :call Transpose(",")<CR>
+nnoremap <leader>ft :call Transpose("\t")<CR>:Tabularize /\t<CR>
+vnoremap <leader>ft :call Transpose("\t")<CR>
+nnoremap <leader>f: :call Transpose(":")<CR>:Tabularize /:<CR>
+vnoremap <leader>f: :call Transpose(":")<CR>
 
 " /ALTER TABLE/ {
 "     # gsub(/[0-9]{8}/, sprintf("%08d", count++))
@@ -87,6 +91,31 @@ vnoremap <leader>ft :!awk -F'\t' '{for(i=1;i<=NF;i++) a[i,NR]=$i}END{for(i=1;i<=
 " }
 "
 " !gawk '/TABLE/ {gsub(/[0-9]{8}_[0-9]{8}/, sprintf("\%08d_\%08d", strftime("\%Y\%m\%d", mktime("2022 01 01 00 00 00") + (count/3 * 86400)),count++\%3));print;next}{print}'
+
+function! Transpose(includepat) range
+    let top = a:firstline
+    let bot = a:lastline
+    if a:includepat != '' && top == bot
+        if top < 0 || top > line('$') || getline(top) !~ a:includepat
+            return
+        endif
+        while top > 1 && getline(top-1) =~ a:includepat
+            let top -= 1
+        endwhile
+        while bot < line('$') && getline(bot+1) =~ a:includepat
+            let bot += 1
+        endwhile
+    endif
+    let range = top . ',' . bot
+    if a:includepat == ''
+        let command="!gawk '{for(i=1;i<=NF;i++) a[i,NR]=$i}END{for(i=1;i<=NF;i++) {for(j=1;j<=NR;j++) printf a[i,j] ;print \"\"}}'"
+    else
+        let command="!gawk -F'" . a:includepat . "' '{for(i=1;i<=NF;i++) a[i,NR]=$i}END{for(i=1;i<=NF;i++) {for(j=1;j<=NR;j++) printf a[i,j] \"" . a:includepat . "\";print \"\"}}'"
+    endif
+    exe range . command
+    exec
+endfunction
+
 
 fun! UpdateNumberedList()
   let lnum       = line('.')
