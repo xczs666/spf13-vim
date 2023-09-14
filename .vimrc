@@ -654,12 +654,15 @@
             " 自动进位编号需要md后缀的文件:au TextChanged *.md silent! call mkdx#OnChange()
             " <leader>b 和 CamelCaseMotion冲突了
             autocmd BufNewFile,BufRead *.md set filetype=markdown|imap <buffer><silent> <Cr> <Plug>(mkdx-enter)|nmap <buffer> <leader>b <Plug>(mkdx-text-bold-n)|vmap <buffer> <leader>b <Plug>(mkdx-text-bold-v)
+            " 折叠粗体,斜体等
+            set conceallevel=2
             let g:mkdx#settings = { 'highlight': { 'enable': 1 },
                         \ 'tab': { 'enable': 0 },
+                        \ 'table': { 'align': {'default': 'left'} },
                         \ 'enter': { 'o': 1, 'shift': 1, 'shifto': 1 },
-                        \ 'links': { 'external': { 'enable': 1 } },
+                        \ 'links': { 'external': { 'enable': 1, 'conceal': 1 } },
                         \ 'toc': { 'text': 'Table of Contents', 'update_on_write': 1 },
-                        \ 'fold': { 'enable': 1 },
+                        \ 'fold': { 'enable': 1, 'components': ['toc', 'fence'] },
                         \ 'insert_indent_mappings': 1}
             let g:polyglot_disabled = ['markdown'] " for vim-polyglot users, it loads Plasticboy's markdown plugin which unfortunately interferes with mkdx list indentation.
 
