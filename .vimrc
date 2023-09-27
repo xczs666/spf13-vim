@@ -496,6 +496,8 @@
     nnoremap <unique><silent> <leader>cp :let @+ = expand('%:p')<cr>
     " 拷贝文件名
     nnoremap <unique><silent> <leader>cpn :let @+ = expand('%')<cr>
+    " 用Finder选定文件
+    nnoremap <unique><silent> <leader>op :silent !open -R "%:p"<cr>
 " }
 
 " Plugins {
@@ -598,6 +600,8 @@
 
     " TextObj Sentence {
         if count(g:spf13_bundle_groups, 'writing')
+            " 印刷字体的引号
+            let g:textobj#quote#educate = 0
             augroup textobj_sentence
               autocmd!
               autocmd FileType markdown call textobj#sentence#init()
@@ -653,7 +657,9 @@
         if isdirectory(expand("~/.vim/bundle/mkdx"))
             " 自动进位编号需要md后缀的文件:au TextChanged *.md silent! call mkdx#OnChange()
             " <leader>b 和 CamelCaseMotion冲突了
-            autocmd BufNewFile,BufRead *.md set filetype=markdown|imap <buffer><silent> <Cr> <Plug>(mkdx-enter)|nmap <buffer> <leader>b <Plug>(mkdx-text-bold-n)|vmap <buffer> <leader>b <Plug>(mkdx-text-bold-v)
+            " autocmd BufNewFile,BufRead *.md set filetype=markdown|imap <buffer><silent> <Cr> <Plug>(mkdx-enter)|nmap <buffer> <leader>b <Plug>(mkdx-text-bold-n)|vmap <buffer> <leader>b <Plug>(mkdx-text-bold-v)
+            autocmd BufNewFile,BufRead *.md set filetype=markdown|inoremap <buffer><silent> <Cr> <C-R>=mkdx#EnterHandler()<Cr>|nmap <buffer> <leader>b <Plug>(mkdx-text-bold-n)|vmap <buffer> <leader>b <Plug>(mkdx-text-bold-v)
+
             " 折叠粗体,斜体等
             set conceallevel=2
             let g:mkdx#settings = { 'highlight': { 'enable': 1 },

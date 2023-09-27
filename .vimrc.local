@@ -79,6 +79,11 @@ vnoremap <leader>ft :call Transpose("\t")<CR>
 nnoremap <leader>f: :call Transpose(":")<CR>:Tabularize /:<CR>
 vnoremap <leader>f: :call Transpose(":")<CR>
 
+vnoremap <leader>uc :!uniq -c \| awk '$1>1 {print $0}'<CR>
+
+nnoremap <leader>st vip:s/\t/\|/g<CR>
+
+
 " /ALTER TABLE/ {
 "     # gsub(/[0-9]{8}/, sprintf("%08d", count++))
 "     # gsub(/[0-9]{8}/, sprintf("%02d%06d", (1+(count/3)), count++%3))
