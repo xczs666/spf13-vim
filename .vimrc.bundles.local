@@ -1,5 +1,3 @@
-" 切换输入法
-Plug 'ybian/smartim'
 " 画图
 "Plug 'jbyuki/venn.nvim'
 " 同时按键映射

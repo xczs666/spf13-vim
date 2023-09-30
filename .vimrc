@@ -221,9 +221,9 @@
         " Broken down into easily includeable segments
         set statusline=%<%f\                     " Filename
         set statusline+=%w%h%m%r                 " Options
-        if !exists('g:override_spf13_bundles')
-            set statusline+=%{fugitive#statusline()} " Git Hotness
-        endif
+        "if !exists('g:override_spf13_bundles')
+        "    set statusline+=%{fugitive#statusline()} " Git Hotness
+        "endif
         set statusline+=\ [%{&ff}/%Y]            " Filetype
         set statusline+=\ [%{getcwd()}]          " Current dir
         set statusline+=%=%-14.(%l,%c%V%)\ %p%%  " Right aligned file nav info
@@ -508,7 +508,7 @@
                 " :help rsi, vim-which-key
                 set timeoutlen=500
             endif
-            if isdirectory(expand("~/.vim/bundle/vim-which-key"))
+            if !has('nvim') && isdirectory(expand("~/.vim/bundle/vim-which-key"))
                 " https://github.com/liuchengxu/vim-which-key
                 nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
                 nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
@@ -519,42 +519,6 @@
             endif
         endif
     " }
-
-    " neovim {
-        if has('nvim')
-            if isdirectory(expand("~/.vim/bundle/leap.nvim"))
-                lua require('leap').add_default_mappings()
-            endif
-            if isdirectory(expand("~/.vim/bundle/flit.nvim"))
-                lua require('flit').setup()
-            endif
-        endif
-        if isdirectory(expand("~/.vim/bundle/vim-easymotion"))
-            " easymotion插件
-            " leap map s "if !hasmapto('s', 'n')
-            if mapcheck("s") == ""
-                nmap s <Plug>(easymotion-s2)
-            endif
-            " 忽略大小写
-            let g:EasyMotion_smartcase = 1
-            " nmap t <Plug>(easymotion-tn)
-            " Gif config 注释掉，并不好用
-            " map  / <Plug>(easymotion-sn)
-            " omap / <Plug>(easymotion-tn)
-
-            " " These `n` & `N` mappings are options. You do not have to map `n` & `N` to EasyMotion.
-            " " Without these mappings, `n` & `N` works fine. (These mappings just provide
-            " " different highlight method and have some other features )
-            " map  n <Plug>(easymotion-next)
-            " map  N <Plug>(easymotion-prev)
-            map <leader><leader>l <Plug>(easymotion-lineforward)
-            map <leader><leader>j <Plug>(easymotion-j)
-            map <leader><leader>k <Plug>(easymotion-k)
-            map <leader><leader>h <Plug>(easymotion-linebackward)
-            let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
-        endif
-        " }
-
 
     " git {
         if count(g:spf13_bundle_groups, 'git')
@@ -1430,6 +1394,35 @@
         "set term=builtin_ansi       " Make arrow and other keys work
     endif
 
+    " neovim {
+        if has('nvim')
+            source ~/.config/nvim/lazy-conf.lua
+        elseif isdirectory(expand("~/.vim/bundle/vim-easymotion"))
+            " easymotion插件
+            " leap map s "if !hasmapto('s', 'n')
+            if mapcheck("s") == ""
+                nmap s <Plug>(easymotion-s2)
+            endif
+            " 忽略大小写
+            let g:EasyMotion_smartcase = 1
+            " nmap t <Plug>(easymotion-tn)
+            " Gif config 注释掉，并不好用
+            " map  / <Plug>(easymotion-sn)
+            " omap / <Plug>(easymotion-tn)
+
+            " " These `n` & `N` mappings are options. You do not have to map `n` & `N` to EasyMotion.
+            " " Without these mappings, `n` & `N` works fine. (These mappings just provide
+            " " different highlight method and have some other features )
+            " map  n <Plug>(easymotion-next)
+            " map  N <Plug>(easymotion-prev)
+            map <leader><leader>l <Plug>(easymotion-lineforward)
+            map <leader><leader>j <Plug>(easymotion-j)
+            map <leader><leader>k <Plug>(easymotion-k)
+            map <leader><leader>h <Plug>(easymotion-linebackward)
+            let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
+        endif
+        " }
+
 " }
 
 " Functions {
@@ -1591,4 +1584,3 @@
         endif
     endif
 " }
-

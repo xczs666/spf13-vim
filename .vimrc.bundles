@@ -93,7 +93,7 @@
     " list only the plugin groups you will use
     if !exists('g:spf13_bundle_groups')
         " coc/tabnine to complete
-        let g:spf13_bundle_groups=['general', 'tmux', 'writing', 'programming',  'git', 'coc', 'java', 'php', 'ruby', 'python', 'javascript', 'html', 'misc', 'db', 'markdown']
+        let g:spf13_bundle_groups=['general', 'tmux', 'programming',  'git', 'coc', 'java', 'php', 'ruby', 'python', 'javascript', 'html', 'misc', 'db', 'markdown']
     endif
 
     " To override all the included bundles, add the following to your
@@ -115,7 +115,8 @@
             " gr 匹配替换
             Plug 'vim-scripts/ReplaceWithRegister'
             " cs ys ds S
-            Plug 'tpope/vim-surround'
+            " Plug 'tpope/vim-surround'
+            Plug 'machakann/vim-sandwich'
             " 快捷交换 cx cxc cxx
             Plug 'tommcdo/vim-exchange'
             " 画图
@@ -147,7 +148,7 @@
             Plug 'powerline/fonts'
             Plug 'bling/vim-bufferline'
             Plug 'jistr/vim-nerdtree-tabs'
-            Plug 'flazz/vim-colorschemes'
+            "Plug 'flazz/vim-colorschemes'
             Plug 'mbbill/undotree'
             Plug 'nathanaelkane/vim-indent-guides'
             if !exists('g:spf13_no_views')
@@ -174,31 +175,35 @@
             Plug 'liuchengxu/vim-which-key'
             " 浮动终端，很炫
             Plug 'voldikss/vim-floaterm'
+            " 支持FZF替换现有终端
+            Plug 'voldikss/fzf-floaterm'
             " FZF
             Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
             " Files GFiles GFiles? Buffers History History: History/ Helptags Filetypes Maps
             Plug 'junegunn/fzf.vim'
-            " 支持FZF替换现有终端
-            Plug 'voldikss/fzf-floaterm'
             Plug '907th/vim-auto-save'
             " ;bc 计算器
             Plug 'vim-scripts/bccalc.vim'
             " ii ai aI
             Plug 'michaeljsmith/vim-indent-object'
+            " 切换输入法
+            Plug 'ybian/smartim'
         endif
     " }
 
     " 跳转 {
-        if has('nvim')
-            " neovim 插件
-            "Plug 'kdheepak/lazygit.nvim'
-            " s S x X gs
-            Plug 'ggandor/leap.nvim'
-            Plug 'ggandor/flit.nvim'
-            Plug 'nvim-lua/plenary.nvim'
-            Plug 'sindrets/diffview.nvim'
+        if !has('nvim')
+            Plug 'easymotion/vim-easymotion'
+        "else
+        "    " neovim 插件
+        "    "Plug 'kdheepak/lazygit.nvim'
+        "    " s S x X gs
+        "    " Plug 'ggandor/leap.nvim'
+        "    Plug 'folke/flash.nvim'
+        "    Plug 'ggandor/flit.nvim'
+        "    Plug 'nvim-lua/plenary.nvim'
+        "    Plug 'sindrets/diffview.nvim'
         endif
-        Plug 'easymotion/vim-easymotion'
     " }
 
     " tmux {
@@ -212,7 +217,7 @@
         if count(g:spf13_bundle_groups, 'git')
             " A plugin of NERDTree showing git status flags.
             Plug 'Xuyuanp/nerdtree-git-plugin'
-            Plug 'airblade/vim-gitgutter'
+            " Plug 'airblade/vim-gitgutter'
         endif
     " }
 
@@ -427,3 +432,7 @@
 " }
 " call vundle#end()
 call plug#end()
+" 将sandwich映射为surround
+" if !has('nvim')
+"     runtime macros/sandwich/keymap/surround.vim
+" endif
