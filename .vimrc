@@ -459,7 +459,7 @@
 
     " Allow using the repeat operator with a visual selection (!)
     " http://stackoverflow.com/a/8064607/127816
-    vnoremap . :normal .<CR>
+    " vnoremap . :normal .<CR>
 
     " For when you forget to sudo.. Really Write the file.
     cmap w!! w !sudo tee % >/dev/null
@@ -674,7 +674,7 @@
     " OmniComplete {
         " To disable omni complete, add the following to your .vimrc.before.local file:
         "   let g:spf13_no_omni_complete = 1
-        if !exists('g:spf13_no_omni_complete')
+        if !has("nvim") && !exists('g:spf13_no_omni_complete')
             if has("autocmd") && exists("+omnifunc")
                 autocmd Filetype *
                     \if &omnifunc == "" |
@@ -725,7 +725,7 @@
     " }
 
     " NerdTree {
-        if isdirectory(expand("~/.vim/bundle/nerdtree"))
+        if !has("nvim") && isdirectory(expand("~/.vim/bundle/nerdtree"))
             " map <C-e> <plug>NERDTreeTabsToggle<CR>
             map <leader>e :NERDTreeFind<CR>
             nmap <leader>nt :NERDTreeFind<CR>
@@ -795,7 +795,7 @@
             let g:pymode = 0
         endif
 
-        if isdirectory(expand("~/.vim/bundle/python-mode"))
+        if !has("nvim") && isdirectory(expand("~/.vim/bundle/python-mode"))
             let g:pymode_lint_checkers = ['pyflakes']
             let g:pymode_trim_whitespaces = 0
             let g:pymode_options = 0
@@ -846,7 +846,7 @@
     "}
 
     " TagBar {
-        if isdirectory(expand("~/.vim/bundle/tagbar/"))
+        if !has("nvim") && isdirectory(expand("~/.vim/bundle/tagbar/"))
             nnoremap <silent> <leader>tt :TagbarToggle<CR>
         endif
     "}
@@ -858,7 +858,7 @@
     "}
 
     " Fugitive {
-        if isdirectory(expand("~/.vim/bundle/vim-fugitive/"))
+        if !has("nvim") && isdirectory(expand("~/.vim/bundle/vim-fugitive/"))
             nnoremap <silent> <leader>gs :Gstatus<CR>
             nnoremap <silent> <leader>gd :Gdiff<CR>
             nnoremap <silent> <leader>gc :Gcommit<CR>
@@ -891,7 +891,7 @@
     " }
 
     " vim-easy-align {
-        if isdirectory(expand("~/.vim/bundle/vim-easy-align"))
+        if !has("nvim") && isdirectory(expand("~/.vim/bundle/vim-easy-align"))
             " https://github.com/junegunn/vim-easy-align 对齐
             " Start interactive EasyAlign in visual mode (e.g. vipga)
             xmap ga <Plug>(EasyAlign)
@@ -934,7 +934,7 @@
     " }
 
     " fzf {
-        if isdirectory(expand("~/.vim/bundle/fzf.vim"))
+        if !has("nvim") && isdirectory(expand("~/.vim/bundle/fzf.vim"))
             " let g:fzf_preview_window = ['right,50%', 'ctrl-/']
             " let g:fzf_preview_window = ['hidden,right,50%,<70(up,40%)', 'ctrl-/']
             nnoremap   <leader>fd :Files %:p:h<CR>
@@ -1367,7 +1367,7 @@
 
         " See `:echo g:airline_theme_map` for some more choices
         " Default in terminal vim is 'dark'
-        if isdirectory(expand("~/.vim/bundle/vim-airline-themes/"))
+        if !has("nvim") && isdirectory(expand("~/.vim/bundle/vim-airline-themes/"))
             if !has("nvim") && !exists('g:airline_theme')
                 let g:airline_theme = 'solarized'
             endif
