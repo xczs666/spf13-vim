@@ -901,7 +901,7 @@
     " }
 
     " floaterm {
-        if isdirectory(expand("~/.vim/bundle/vim-floaterm"))
+        if !has("nvim") && isdirectory(expand("~/.vim/bundle/vim-floaterm"))
             nnoremap   <silent>   <F7>    :FloatermNew<CR>
             tnoremap   <silent>   <F7>    <C-\><C-n>:FloatermNew --cwd==<buffer><CR>
             nnoremap   <silent>   <F8>    :FloatermPrev<CR>
@@ -920,6 +920,16 @@
             let g:floaterm_width=0.8
             let g:floaterm_height=0.8
             let g:floaterm_autoclose=2
+        else
+            autocmd TermEnter term://*toggleterm#*
+                        \ tnoremap <silent><c-t> <Cmd>exe v:count1 . "ToggleTerm"<CR>
+
+            " By applying the mappings this way you can pass a count to your
+            " mapping to open a specific window.
+            " For example: 2<C-t> will open terminal 2
+            " nnoremap <silent><c-t> <Cmd>exe v:count1 . "ToggleTerm direction=float"<CR>
+            nnoremap <silent><c-t> <Cmd>exe v:count1 . "ToggleTerm"<CR>
+            inoremap <silent><c-t> <Esc><Cmd>exe v:count1 . "ToggleTerm"<CR>
         endif
     " }
 
