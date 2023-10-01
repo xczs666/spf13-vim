@@ -191,7 +191,7 @@
 
 " Vim UI {
 
-    if !exists('g:override_spf13_bundles') && filereadable(expand("~/.vim/bundle/vim-colors-solarized/colors/solarized.vim"))
+    if !has("nvim") && !exists('g:override_spf13_bundles') && filereadable(expand("~/.vim/bundle/vim-colors-solarized/colors/solarized.vim"))
         let g:solarized_termcolors=256
         let g:solarized_termtrans=1
         let g:solarized_contrast="normal"
@@ -360,7 +360,7 @@
     " Default vim behaviour is to act relative to text line in both cases
     " If you prefer the default behaviour, add the following to your
     " .vimrc.before.local file:
-    "   let g:spf13_no_wrapRelMotion = 1
+    let g:spf13_no_wrapRelMotion = 1
     if !exists('g:spf13_no_wrapRelMotion')
         " Same for 0, home, end, etc
         function! WrapRelativeMotion(key, ...)
@@ -417,8 +417,6 @@
             command! -bang QA qa<bang>
             command! -bang Qa qa<bang>
         endif
-
-        cmap Tabe tabe
     endif
 
     " Yank from the cursor to the end of the line, to be consistent with C and D.
@@ -479,7 +477,7 @@
 
     " Map <Leader>ff to display all lines with keyword under cursor
     " and ask which one to jump to
-    nmap <Leader>ff [I:let nr = input("Which one: ")<Bar>exe "normal " . nr ."[\t"<CR>
+    nmap <Leader>go [I:let nr = input("Which one: ")<Bar>exe "normal " . nr ."[\t"<CR>
 
     " Easier horizontal scrolling
     map zl zL
@@ -935,7 +933,7 @@
     " }
 
     " coc {
-        if isdirectory(expand("~/.vim/bundle/coc.nvim"))
+        if !has("nvim") && isdirectory(expand("~/.vim/bundle/coc.nvim"))
             " see https://github.com/neoclide/coc.nvim
 
             " Having longer updatetime (default is 4000 ms = 4s) leads to noticeable
@@ -1360,7 +1358,7 @@
         " See `:echo g:airline_theme_map` for some more choices
         " Default in terminal vim is 'dark'
         if isdirectory(expand("~/.vim/bundle/vim-airline-themes/"))
-            if !exists('g:airline_theme')
+            if !has("nvim") && !exists('g:airline_theme')
                 let g:airline_theme = 'solarized'
             endif
             if !exists('g:airline_powerline_fonts')
@@ -1388,7 +1386,7 @@
             endif
         endif
     else
-        if &term == 'xterm' || &term == 'screen'
+        if !has("nvim") && (&term == 'xterm' || &term == 'screen')
             set t_Co=256            " Enable 256 colors to stop the CSApprox warning and make xterm vim shine
         endif
         "set term=builtin_ansi       " Make arrow and other keys work
@@ -1396,7 +1394,7 @@
 
     " neovim {
         if has('nvim')
-            source ~/.config/nvim/lazy-conf.lua
+            source ~/.config/nvim/config.lua
         elseif isdirectory(expand("~/.vim/bundle/vim-easymotion"))
             " easymotion插件
             " leap map s "if !hasmapto('s', 'n')
