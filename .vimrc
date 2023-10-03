@@ -58,13 +58,6 @@
           set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,$HOME/.vim/after
         endif
 
-        " https://neovide.dev/configuration.html
-        if exists("g:neovide")
-            let g:neovide_input_macos_alt_is_meta = v:true
-            "let g:neovide_cursor_trail_size = 0.1
-            let g:neovide_cursor_vfx_mode = "railgun"
-        endif
-
         " macvim
         if OSX() && has("gui_running") && !exists("g:neovide")
             set macmeta
@@ -120,7 +113,7 @@
     set mousehide               " Hide the mouse cursor while typing
     scriptencoding utf-8
 
-    if has('clipboard')
+    if !has("nvim") && has('clipboard')
         if has('unnamedplus')  " When possible use + register for copy-paste
             set clipboard=unnamed,unnamedplus
         else         " On mac and Windows, use * register for copy-paste
@@ -237,12 +230,14 @@
     set backspace=indent,eol,start  " Backspace for dummies
     set linespace=0                 " No extra spaces between rows
 
-    set number                      " Line numbers on
-    augroup numbertoggle            " Automatic toggling between line number modes
-      autocmd!
-      autocmd BufEnter,FocusGained,InsertLeave,WinEnter * if &nu && mode() != "i" | set rnu   | endif
-      autocmd BufLeave,FocusLost,InsertEnter,WinLeave   * if &nu                  | set nornu | endif
-    augroup END
+    if !has("nvim")
+        set number                      " Line numbers on
+        augroup numbertoggle            " Automatic toggling between line number modes
+            autocmd!
+            autocmd BufEnter,FocusGained,InsertLeave,WinEnter * if &nu && mode() != "i" | set rnu   | endif
+            autocmd BufLeave,FocusLost,InsertEnter,WinLeave   * if &nu                  | set nornu | endif
+        augroup END
+    endif
 
     set showmatch                   " Show matching brackets/parenthesis
     set incsearch                   " Find as you type search

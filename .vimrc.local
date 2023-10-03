@@ -32,10 +32,7 @@ au BufNewFile,BufRead *.groovy  setf groovy
 " let g:mapleader = "\<Space>"
 " let g:C_MapLeader="\<Space>"
 
-if has("gui_running")
-    "windows剪切板设为默认寄存器
-    set clipboard+=unnamed
-
+if !has("nvim") && has("gui_running")
     "添加水平滚动条
     set guioptions+=b
 endif
