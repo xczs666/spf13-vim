@@ -445,7 +445,7 @@
     " vnoremap . :normal .<CR>
 
     " For when you forget to sudo.. Really Write the file.
-    cmap w!! w !sudo tee % >/dev/null
+    " cmap w!! w !sudo tee % >/dev/null
 
     " Some helpers to edit mode
     " http://vimcasts.org/e/14
@@ -761,11 +761,6 @@
             nmap <leader>ss :SessionSave<CR>
             nmap <leader>sc :SessionClose<CR>
         endif
-    " }
-
-    " JSON {
-        nmap <leader>jt <Esc>:%!python -m json.tool<CR><Esc>:set filetype=json<CR>
-        let g:vim_json_syntax_conceal = 0
     " }
 
     " PyMode {
