@@ -88,8 +88,10 @@
 " }
 
 " Use bundles config {
-    if filereadable(expand("~/.vimrc.bundles"))
+    if !has("nvim") && filereadable(expand("~/.vimrc.bundles"))
         source ~/.vimrc.bundles
+    else
+         let g:spf13_bundle_groups=[]
     endif
 " }
 
@@ -125,6 +127,9 @@
             set clipboard=unnamed
         endif
     endif
+
+    " :map!  :noremap! :unmap!    Insert and Command-line
+    noremap! <D-v> <C-r>+
 
     " Most prefer to automatically switch to the current file directory when
     " a new buffer is opened; to prevent this behavior, add the following to
@@ -313,7 +318,7 @@
     " If you prefer that functionality, add the following to your
     " .vimrc.before.local file:
     "   let g:spf13_no_easyWindows = 1
-    if !exists('g:spf13_no_easyWindows') && !count(g:spf13_bundle_groups, 'tmux')
+    if !has("nvim") && !exists('g:spf13_no_easyWindows') && !count(g:spf13_bundle_groups, 'tmux')
         map <C-J> <C-W>j<C-W>_
         map <C-K> <C-W>k<C-W>_
         map <C-L> <C-W>l<C-W>_
@@ -481,7 +486,7 @@
 " Plugins {
 
     " general {
-        if count(g:spf13_bundle_groups, 'general')
+        if !has("nvim") && count(g:spf13_bundle_groups, 'general')
             if isdirectory(expand("~/.vim/bundle/vim-rsi"))
                 " :help rsi, vim-which-key
                 set timeoutlen=500
@@ -499,7 +504,7 @@
     " }
 
     " git {
-        if count(g:spf13_bundle_groups, 'git')
+        if !has("nvim") && count(g:spf13_bundle_groups, 'git')
             " airblade/vim-gitgutter 插件 在git文件中自动显示修改
             " set updatetime=250
             let g:gitgutter_enabled = 0
@@ -978,7 +983,7 @@
     " }
 
     " YouCompleteMe {
-        if count(g:spf13_bundle_groups, 'youcompleteme')
+        if !has("nvim") && count(g:spf13_bundle_groups, 'youcompleteme')
             let g:acp_enableAtStartup = 0
 
             " enable completion from tags
@@ -1020,7 +1025,7 @@
     " }
 
     " neocomplete {
-        if count(g:spf13_bundle_groups, 'neocomplete')
+        if !has("nvim") && count(g:spf13_bundle_groups, 'neocomplete')
             let g:acp_enableAtStartup = 0
             let g:neocomplete#enable_at_startup = 1
             let g:neocomplete#enable_smart_case = 1
@@ -1135,7 +1140,7 @@
     " }
 
     " neocomplcache {
-        elseif count(g:spf13_bundle_groups, 'neocomplcache')
+        elseif !has("nvim") && count(g:spf13_bundle_groups, 'neocomplcache')
             let g:acp_enableAtStartup = 0
             let g:neocomplcache_enable_at_startup = 1
             let g:neocomplcache_enable_camel_case_completion = 1
@@ -1238,7 +1243,7 @@
     " Normal Vim omni-completion {
     " To disable omni complete, add the following to your .vimrc.before.local file:
     "   let g:spf13_no_omni_complete = 1
-        elseif !exists('g:spf13_no_omni_complete')
+        elseif !has("nvim") && !exists('g:spf13_no_omni_complete')
             " Enable omni-completion.
             autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
             autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
@@ -1252,8 +1257,8 @@
     " }
 
     " Snippets {
-        if count(g:spf13_bundle_groups, 'neocomplcache') ||
-                    \ count(g:spf13_bundle_groups, 'neocomplete')
+        if !has("nvim") && (count(g:spf13_bundle_groups, 'neocomplcache') ||
+                    \ count(g:spf13_bundle_groups, 'neocomplete'))
 
             " Use honza's snippets.
             let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
@@ -1279,7 +1284,7 @@
     " }
 
     " deoplete {
-        if count(g:spf13_bundle_groups, 'deoplete')
+        if !has("nvim") && count(g:spf13_bundle_groups, 'deoplete')
             " 先关闭，打开影响性能
             let g:deoplete#enable_at_startup = 0
 
@@ -1309,7 +1314,7 @@
     " Haskell post write lint and check with ghcmod
     " $ `cabal install ghcmod` if missing and ensure
     " ~/.cabal/bin is in your $PATH.
-    if !executable("ghcmod")
+    if !has("nvim") && !executable("ghcmod")
         autocmd BufWritePost *.hs GhcModCheckAndLintAsync
     endif
 
@@ -1322,7 +1327,7 @@
     " }
 
     " indent_guides {
-        if isdirectory(expand("~/.vim/bundle/vim-indent-guides/"))
+        if !has("nvim") &&  isdirectory(expand("~/.vim/bundle/vim-indent-guides/"))
             let g:indent_guides_start_level = 2
             let g:indent_guides_guide_size = 1
             let g:indent_guides_enable_on_vim_startup = 1
@@ -1363,7 +1368,7 @@
 " GUI Settings {
 
     " GVIM- (here instead of .gvimrc)
-    if has('gui_running')
+    if !has("nvim") && has('gui_running')
         set guioptions-=T           " Remove the toolbar
         set lines=40                " 40 lines of text instead of 24
         if !exists("g:spf13_no_big_font")
@@ -1527,22 +1532,8 @@
 
 " }
 
-" Use fork vimrc if available {
-    if filereadable(expand("~/.vimrc.fork"))
-        source ~/.vimrc.fork
-    endif
-" }
-
 " Use local vimrc if available {
     if filereadable(expand("~/.vimrc.local"))
         source ~/.vimrc.local
-    endif
-" }
-
-" Use local gvimrc if available and gui is running {
-    if has('gui_running')
-        if filereadable(expand("~/.gvimrc.local"))
-            source ~/.gvimrc.local
-        endif
     endif
 " }

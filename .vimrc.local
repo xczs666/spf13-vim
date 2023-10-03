@@ -40,17 +40,6 @@ if has("gui_running")
     set guioptions+=b
 endif
 
-" :map!  :noremap! :unmap!    Insert and Command-line
-noremap! <D-v> <C-r>+
-"noremap <D-v> "+p
-"vnoremap <D-v> "+p
-"noremap <D-c> "+y
-"vnoremap <D-c> "+y
-"nnoremap <D-V> :set paste<CR>"+gP:set nopaste<CR>
-"vnoremap <C-c> y
-" <esc>:set paste<cr>a<C-R>+<esc>:set nopaste<cr>
-
-
 "自动保存文件
 "set autowriteall
 
@@ -506,6 +495,10 @@ function! ToggleIsNot()
         let l:new_word = 'is' . l:word[5:]
     elseif l:word[0:1] ==# 'is'
         let l:new_word = 'isNot' . l:word[2:]
+    elseif l:word == 'true'
+        let l:new_word = 'false'
+    elseif l:word == 'false'
+        let l:new_word = 'true'
     else
         echo "No matching prefix found."
         return
