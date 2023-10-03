@@ -1,13 +1,13 @@
 "soruby
 "colorscheme soruby
-"set guifont=Menlo:h16
 "set guifont=HackNF-Regular:h18
-set guifont=HackNFM-Regular:h18
+"set guifont=HackNFM-Regular:h18
 "set guifont=HackNFP-Regular:h18
 
 set encoding=utf-8
 set termencoding=utf-8
 if !has("nvim")
+    set guifont=Menlo:h16
     colorscheme onedark
     set fileencoding=utf-8
 endif
@@ -40,7 +40,8 @@ if has("gui_running")
     set guioptions+=b
 endif
 
-inoremap <D-v> <C-r>+
+" :map!  :noremap! :unmap!    Insert and Command-line
+noremap! <D-v> <C-r>+
 "noremap <D-v> "+p
 "vnoremap <D-v> "+p
 "noremap <D-c> "+y
