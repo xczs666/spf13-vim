@@ -75,6 +75,7 @@ vnoremap <leader>f: :call Transpose(":")<CR>
 vnoremap <leader>uc :!uniq -c \| awk '$1>1 {print $0}'<CR>
 
 nnoremap <leader>st vip:s/\t/\|/g<CR>
+vnoremap <leader>st :s/\t/\|/g<CR>
 
 
 " /ALTER TABLE/ {
