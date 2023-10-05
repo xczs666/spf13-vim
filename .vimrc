@@ -93,16 +93,16 @@
     set background=dark         " Assume a dark background
 
     " Allow to trigger background
-    function! ToggleBG()
-        let s:tbg = &background
-        " Inversion
-        if s:tbg == "dark"
-            set background=light
-        else
-            set background=dark
-        endif
-    endfunction
-    noremap <leader>bg :call ToggleBG()<CR>
+    " function! ToggleBG()
+    "     let s:tbg = &background
+    "     " Inversion
+    "     if s:tbg == "dark"
+    "         set background=light
+    "     else
+    "         set background=dark
+    "     endif
+    " endfunction
+    " noremap <leader>bg :call ToggleBG()<CR>
 
     " if !has('gui')
         "set term=$TERM          " Make arrow and other keys work
@@ -303,7 +303,7 @@
         let mapleader=g:spf13_leader
     endif
     if !exists('g:spf13_localleader')
-        let maplocalleader = ','
+        let maplocalleader = '\'
     else
         let maplocalleader=g:spf13_localleader
     endif
@@ -470,7 +470,7 @@
     map <silent> <F11> :call system("wmctrl -ir " . v:windowid . " -b toggle,fullscreen")<CR>
 
     " 拷贝文件全路径
-    nnoremap <unique><silent> <leader>cp :let @+ = expand('%:p')<cr>
+    nnoremap <unique><silent> <leader>cpf :let @+ = expand('%:p')<cr>
     " 拷贝文件名
     nnoremap <unique><silent> <leader>cpn :let @+ = expand('%')<cr>
     " 用Finder选定文件
@@ -721,21 +721,21 @@
     " }
 
     " Tabularize {
-        if isdirectory(expand("~/.vim/bundle/tabular"))
+        if !has("nvim") && isdirectory(expand("~/.vim/bundle/tabular"))
             nmap <Leader>a& :Tabularize /&<CR>
             vmap <Leader>a& :Tabularize /&<CR>
             nmap <Leader>a= :Tabularize /^[^=]*\zs=<CR>
             vmap <Leader>a= :Tabularize /^[^=]*\zs=<CR>
-            nmap <Leader>a=> :Tabularize /=><CR>
-            vmap <Leader>a=> :Tabularize /=><CR>
+            "nmap <Leader>a=> :Tabularize /=><CR>
+            "vmap <Leader>a=> :Tabularize /=><CR>
             nmap <Leader>a: :Tabularize /:<CR>
             vmap <Leader>a: :Tabularize /:<CR>
-            nmap <Leader>a:: :Tabularize /:\zs<CR>
-            vmap <Leader>a:: :Tabularize /:\zs<CR>
-            nmap <Leader>a, :Tabularize /,<CR>
-            vmap <Leader>a, :Tabularize /,<CR>
-            nmap <Leader>a,, :Tabularize /,\zs<CR>
-            vmap <Leader>a,, :Tabularize /,\zs<CR>
+            "nmap <Leader>a:: :Tabularize /:\zs<CR>
+            "vmap <Leader>a:: :Tabularize /:\zs<CR>
+            "nmap <Leader>a, :Tabularize /,<CR>
+            "vmap <Leader>a, :Tabularize /,<CR>
+            nmap <Leader>a, :Tabularize /,\zs/l0r1<CR>
+            vmap <Leader>a, :Tabularize /,\zs/l0r1<CR>
             nmap <Leader>a<Bar> :Tabularize /<Bar><CR>
             vmap <Leader>a<Bar> :Tabularize /<Bar><CR>
         endif
