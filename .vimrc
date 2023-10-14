@@ -599,7 +599,7 @@
             " 自动进位编号需要md后缀的文件:au TextChanged *.md silent! call mkdx#OnChange()
             " <leader>b 和 CamelCaseMotion冲突了
             " autocmd BufNewFile,BufRead *.md set filetype=markdown|imap <buffer><silent> <Cr> <Plug>(mkdx-enter)|nmap <buffer> <leader>b <Plug>(mkdx-text-bold-n)|vmap <buffer> <leader>b <Plug>(mkdx-text-bold-v)
-            autocmd BufNewFile,BufRead *.md set filetype=markdown|inoremap <buffer><silent> <Cr> <C-R>=mkdx#EnterHandler()<Cr>|nmap <buffer> <leader>b <Plug>(mkdx-text-bold-n)|vmap <buffer> <leader>b <Plug>(mkdx-text-bold-v)
+            autocmd BufNewFile,BufRead *.md set filetype=markdown|inoremap <buffer><silent> <Cr> <C-R>=mkdx#EnterHandler()<Cr>|vmap <buffer> <leader>b <Plug>(mkdx-text-bold-v)
 
             " 折叠粗体,斜体等
             set conceallevel=2

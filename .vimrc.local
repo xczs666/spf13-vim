@@ -10,6 +10,9 @@ if !has("nvim")
     set guifont=Menlo:h16
     colorscheme onedark
     set fileencoding=utf-8
+    nmap <F1> :tabnew 
+    nmap <F2> :tabprevious<CR>
+    nmap <F3> :tabnext<CR>
 endif
 set fileencodings=UCS-bom,utf-8,gb18030,gbk,latin1
 
@@ -231,9 +234,6 @@ endfun
 " @Column(name = "active_time")
 " private String activeTime;
 " 0f	r d$O//pjyypV:s/_\([a-z]\)/\u\1/geki@Column(krkbname = "krkbA")jIprivate String A;j
-nmap <F1> :tabnew 
-nmap <F2> :tabprevious<CR>
-nmap <F3> :tabnext<CR>
 nnoremap <silent> <F4> :NvimTreeToggle<CR>
 nnoremap <F5> :UndotreeToggle<cr>
 "inoremap jk <esc>
