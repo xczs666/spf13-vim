@@ -77,9 +77,13 @@ vnoremap <leader>f: :call Transpose(":")<CR>
 
 vnoremap <leader>uc :!uniq -c \| awk '$1>1 {print $0}'<CR>
 
-nnoremap <leader>st vip:s/\t/\|/g<CR>
-vnoremap <leader>st :s/\t/\|/g<CR>
+nnoremap <leader>st vip:s/\t/,/g<CR>
+vnoremap <leader>st :s/\t/,/g<CR>
+nnoremap <leader>su vip:s/,/\t/g<CR>
+vnoremap <leader>su :s/,/\t/g<CR>
 
+" 列模式转换所在位置
+let @g='omg:let g=col(".")gvo:exec "normal! ".g."|"`go'
 
 " /ALTER TABLE/ {
 "     # gsub(/[0-9]{8}/, sprintf("%08d", count++))
