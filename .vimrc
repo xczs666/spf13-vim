@@ -112,6 +112,11 @@
     set mouse=a                 " Automatically enable mouse usage
     set mousehide               " Hide the mouse cursor while typing
     scriptencoding utf-8
+    set jumpoptions=stack
+    " 关闭 vi . 提示
+    " let g:netrw_banner=0
+    let g:netrw_liststyle=3
+    let g:netrw_winsize=26
 
     if !has("nvim") && has('clipboard')
         if has('unnamedplus')  " When possible use + register for copy-paste
