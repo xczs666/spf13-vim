@@ -188,6 +188,10 @@
             Plug 'michaeljsmith/vim-indent-object'
             " 切换输入法
             Plug 'ybian/smartim'
+            " gs,<c-a>,<c-x> https://github.com/AndrewRadev/switch.vim?tab=readme-ov-file
+            Plug 'AndrewRadev/switch.vim'
+            " <c-a>,<c-x>
+            Plug 'tpope/vim-speeddating'
         endif
     " }
 

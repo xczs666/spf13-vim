@@ -484,6 +484,24 @@
 
 " Plugins {
 
+    " switch.vim and vim-speeddating config
+    fun! SwitchConfig()
+        " Don't use default mappings
+        let g:speeddating_no_mappings = 1
+        let g:switch_mapping = ""
+
+        " Avoid issues because of us remapping <c-a> and <c-x> below
+        nnoremap <Plug>SpeedDatingFallbackUp <c-a>
+        nnoremap <Plug>SpeedDatingFallbackDown <c-x>
+
+        "nnoremap <silent>! :silent! call switch#Switch()<CR>
+        " Manually invoke speeddating in case switch didn't work
+        nnoremap <silent><c-a> :if !switch#Switch() <bar>
+                    \ call speeddating#increment(v:count1) <bar> endif<cr>
+        nnoremap <silent><c-x> :if !switch#Switch({'reverse': 1}) <bar>
+                    \ call speeddating#increment(-v:count1) <bar> endif<cr>
+    endfun
+
     " general {
         if !has("nvim") && count(g:spf13_bundle_groups, 'general')
             if isdirectory(expand("~/.vim/bundle/vim-rsi"))
@@ -498,6 +516,9 @@
             if isdirectory(expand("~/.vim/bundle/CamelCaseMotion"))
                 " https://github.com/bkad/CamelCaseMotion
                 let g:camelcasemotion_key = '<leader>'
+            endif
+            if isdirectory(expand("~/.vim/bundle/switch.vim")) && isdirectory(expand("~/.vim/bundle/vim-speeddating"))
+                call SwitchConfig()
             endif
         endif
     " }
@@ -1408,7 +1429,7 @@
             map <leader><leader>h <Plug>(easymotion-linebackward)
             let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
         endif
-        " }
+    " }
 
 " }
 

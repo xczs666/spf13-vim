@@ -512,4 +512,10 @@ function! ToggleIsNot()
     execute "normal ciw" . l:new_word
 endfunction
 
-nnoremap ! :silent! call ToggleIsNot()<CR>
+let g:switch_custom_definitions =
+            \ [
+            \   switch#NormalizedCase(['one', 'two']),
+            \   switch#Words(['isEmpty', 'isNotEmpty']),
+            \   switch#NormalizedCaseWords(['five', 'six']),
+            \ ]
+
