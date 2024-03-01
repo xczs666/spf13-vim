@@ -13,6 +13,8 @@ if !has("nvim")
     nmap <F1> :tabnew 
     nmap <F2> :tabprevious<CR>
     nmap <F3> :tabnext<CR>
+    let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+    let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 endif
 set fileencodings=UCS-bom,utf-8,gb18030,gbk,latin1
 
@@ -25,9 +27,6 @@ set relativenumber
 
 language messages zh_CN.utf-8
 
-
-"let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-"let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 
 au BufNewFile,BufRead *.groovy  setf groovy
 
