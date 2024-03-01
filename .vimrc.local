@@ -13,8 +13,12 @@ if !has("nvim")
     nmap <F1> :tabnew 
     nmap <F2> :tabprevious<CR>
     nmap <F3> :tabnext<CR>
-    let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-    let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+    "let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+    "let &t_SR = "\<Esc>]50;CursorShape=2\x7"
+    "let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+    let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+    let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=2\x7\<Esc>\\"
+    let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
 endif
 set fileencodings=UCS-bom,utf-8,gb18030,gbk,latin1
 
