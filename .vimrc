@@ -515,7 +515,7 @@
             endif
             if isdirectory(expand("~/.vim/bundle/CamelCaseMotion"))
                 " https://github.com/bkad/CamelCaseMotion
-                let g:camelcasemotion_key = '<leader>'
+                let g:camelcasemotion_key = '<localleader>'
             endif
             if isdirectory(expand("~/.vim/bundle/switch.vim")) && isdirectory(expand("~/.vim/bundle/vim-speeddating"))
                 call SwitchConfig()
