@@ -261,6 +261,15 @@
 
 " }
 
+" Plug {
+    " for https://github.com/dhruvasagar/vim-table-mode
+    let g:table_mode_corner_corner='|'
+    " Markdown and ReST filetypes have automatically configured corners.
+    let b:table_mode_corner='|'
+    " for https://github.com/chaoren/vim-wordmotion
+    let g:camelcasemotion_key = '<localleader>'
+" }
+
 " Formatting {
 
     set nowrap                      " Do not wrap long lines

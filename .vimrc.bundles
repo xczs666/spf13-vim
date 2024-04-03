@@ -244,6 +244,7 @@
             Plug 'scrooloose/nerdcommenter'
             Plug 'tpope/vim-commentary'
             Plug 'godlygeek/tabular'
+            Plug 'dhruvasagar/vim-table-mode'
             " 对齐 https://github.com/junegunn/vim-easy-align
             Plug 'junegunn/vim-easy-align'
             Plug 'luochen1990/rainbow'
