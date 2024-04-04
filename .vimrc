@@ -630,6 +630,74 @@
         " t,ll,lt,',ln,][,/,b,`,s, , ,j,``,[[,]],i,I,gf,gx
         " <CR>和<TAB> 有冲突 可以 verbose imap <CR> 查看,应该是imap <buffer><silent> <Cr> <Plug>(mkdx-enter)
         " 可以call confirm("shifto","&Yes\n&No", 1) debug
+        " 因为gx不好用 所以手动配置以删除gx的map
+        " {
+                let g:mkdx#settings={'map':{'enbale':0}}
+                nmap <Plug> <Plug>(mkdx-gx)
+                " 解决mkdx gx是wget而不是open的问题
+                fun! s:MkdxRemap()
+                    let s:gv       = g:mkdx#settings.restore_visual == 1 ? 'gv' : ''
+                    let s:bindings = [
+                                \ ['Toggle\ checkbox\ backward',      1, 'n', '-',      '<Plug>(mkdx-checkbox-prev-n)',         ':call mkdx#ToggleCheckboxState(1)<cr>'],
+                                \ ['Toggle\ checkbox\ forward',       1, 'n', '=',      '<Plug>(mkdx-checkbox-next-n)',         ':call mkdx#ToggleCheckboxState()<cr>'],
+                                \ ['Toggle\ checkbox\ forward',       1, 'v', '-',      '<Plug>(mkdx-checkbox-prev-v)',         ':call mkdx#ToggleCheckboxState()<cr>:call mkdx#MaybeRestoreVisual()<cr>'],
+                                \ ['Toggle\ checkbox\ backward',      1, 'v', '=',      '<Plug>(mkdx-checkbox-next-v)',         ':call mkdx#ToggleCheckboxState(1)<cr>:call mkdx#MaybeRestoreVisual()<cr>'],
+                                \ ['Promote\ header',                 1, 'n', '[',      '<Plug>(mkdx-promote-header)',          ':<C-U>call mkdx#ToggleHeader(1)<cr>'],
+                                \ ['Demote\ header',                  1, 'n', ']',      '<Plug>(mkdx-demote-header)',           ':<C-U>call mkdx#ToggleHeader()<cr>'],
+                                \ ['Toggle\ quote',                   1, 'n', "'",      '<Plug>(mkdx-toggle-quote-n)',          ':call mkdx#ToggleQuote()<cr>'],
+                                \ ['Toggle\ quote',                   1, 'v', "'",      '<Plug>(mkdx-toggle-quote-v)',          ':call mkdx#ToggleQuote()<cr>:call mkdx#MaybeRestoreVisual()<cr>'],
+                                \ ['Toggle\ checkbox',                1, 'n', "t",      '<Plug>(mkdx-toggle-checkbox-n)',       ':call mkdx#ToggleCheckboxTask()<cr>'],
+                                \ ['Toggle\ checkbox',                1, 'v', "t",      '<Plug>(mkdx-toggle-checkbox-v)',       ':call mkdx#ToggleCheckboxTask()<cr>:call mkdx#MaybeRestoreVisual()<cr>'],
+                                \ ['Toggle\ checklist',               1, 'n', "lt",     '<Plug>(mkdx-toggle-checklist-n)',      ':call mkdx#ToggleChecklist()<cr>'],
+                                \ ['Toggle\ checklist',               1, 'v', "lt",     '<Plug>(mkdx-toggle-checklist-v)',      ':call mkdx#ToggleChecklist()<cr>:call mkdx#MaybeRestoreVisual()<cr>'],
+                                \ ['Toggle\ list',                    1, 'n', "ll",     '<Plug>(mkdx-toggle-list-n)',           ':call mkdx#ToggleList()<cr>'],
+                                \ ['Toggle\ list',                    1, 'v', "ll",     '<Plug>(mkdx-toggle-list-v)',           ':call mkdx#ToggleList()<cr>:call mkdx#MaybeRestoreVisual()<cr>'],
+                                \ ['Wrap\ link',                      1, 'n', 'ln',     '<Plug>(mkdx-wrap-link-n)',             ':<C-U>call mkdx#WrapLink()<cr>'],
+                                \ ['Wrap\ link',                      1, 'v', 'ln',     '<Plug>(mkdx-wrap-link-v)',             ':<C-U>call mkdx#WrapLink("v")<cr>'],
+                                \ ['Italic',                          1, 'n', '/',      '<Plug>(mkdx-text-italic-n)',           ':<C-U>call mkdx#WrapText("n", g:mkdx#settings.tokens.italic, g:mkdx#settings.tokens.italic, "mkdx-text-italic-n")<Cr>'],
+                                \ ['Italic',                          1, 'v', '/',      '<Plug>(mkdx-text-italic-v)',           ':<C-U>call mkdx#WrapText("v", g:mkdx#settings.tokens.italic, g:mkdx#settings.tokens.italic)<Cr>'],
+                                \ ['Bold',                            1, 'n', 'b',      '<Plug>(mkdx-text-bold-n)',             ':<C-U>call mkdx#WrapText("n", g:mkdx#settings.tokens.bold, g:mkdx#settings.tokens.bold, "mkdx-text-bold-n")<Cr>'],
+                                \ ['Bold',                            1, 'v', 'b',      '<Plug>(mkdx-text-bold-v)',             ':<C-U>call mkdx#WrapText("v", g:mkdx#settings.tokens.bold, g:mkdx#settings.tokens.bold)<Cr>'],
+                                \ ['Inline\ code',                    1, 'n', '`',      '<Plug>(mkdx-text-inline-code-n)',      ':<C-U>call mkdx#WrapText("n", "`", "`", "mkdx-text-inline-code-n")<cr>'],
+                                \ ['Inline\ code',                    1, 'v', '`',      '<Plug>(mkdx-text-inline-code-v)',      ':call      mkdx#WrapSelectionInCode()<cr>:call mkdx#MaybeRestoreVisual()<Cr>'],
+                                \ ['Strike\ through',                 1, 'n', 's',      '<Plug>(mkdx-text-strike-n)',           ':<C-U>call mkdx#WrapText("n", "<strike>", "</strike>", "mkdx-text-strike-n")<cr>'],
+                                \ ['Strike\ through',                 1, 'v', 's',      '<Plug>(mkdx-text-strike-v)',           ':<C-U>call mkdx#WrapText("v", "<strike>", "</strike>")<cr>'],
+                                \ ['Convert\ to\ table',              1, 'v', ',',      '<Plug>(mkdx-tableize)',                ':call mkdx#Tableize()<cr>:call mkdx#MaybeRestoreVisual()<Cr>'],
+                                \ ['Generate\ /\ Update\ TOC',        1, 'n', 'i',      '<Plug>(mkdx-gen-or-upd-toc)',          ':call mkdx#GenerateOrUpdateTOC()<cr>'],
+                                \ ['Open\ TOC\ in\ quickfix',         1, 'n', 'I',      '<Plug>(mkdx-quickfix-toc)',            ':call mkdx#QuickfixHeaders()<cr>'],
+                                \ ['Open\ dead\ links\ in\ quickfix', 1, 'n', 'L',      '<Plug>(mkdx-quickfix-links)',          ':call mkdx#QuickfixDeadLinks()<cr>'],
+                                \ ['Jump\ to\ header',                1, 'n', 'j',      '<Plug>(mkdx-jump-to-header)',          ':call mkdx#JumpToHeader()<cr>'],
+                                \ ['Toggle\ to\ kbd\ tag',            1, 'n', 'k',      '<Plug>(mkdx-toggle-to-kbd-n)',         ':call mkdx#ToggleToKbd()<cr>'],
+                                \ ['Toggle\ to\ kbd\ tag',            1, 'v', 'k',      '<Plug>(mkdx-toggle-to-kbd-v)',         ':call mkdx#ToggleToKbd("v")<cr>'],
+                                \ ['Insert\ kbd\ tag',                0, 'i', '<<tab>', '<Plug>(mkdx-insert-kbd)',              '<kbd></kbd>2hcit'],
+                                \ ['Backtick\ fenced\ code\ block',   0, 'i', '```',    '<Plug>(mkdx-fence-backtick)',          '<C-R>=mkdx#FencedCodeBlock("`")<Cr>kA'],
+                                \ ['tilde\ fenced\ code\ block',      0, 'i', '~~~',    '<Plug>(mkdx-fence-tilde)',             '<C-R>=mkdx#FencedCodeBlock("~")<Cr>kA'],
+                                \ ['Jump to file / open URL',         0, 'n', 'gf',     '<Plug>(mkdx-gf)',                      ':<C-U>call mkdx#gf("f")<Cr>'],
+                                \ ['Jump to file / open URL',         1, 'n', 'gx',     '<Plug>(mkdx-gx)',                      ':<C-U>call mkdx#gf("x")<Cr>'],
+                                \ ['Jump to file / open URL',         0, 'v', 'gf',     '<Plug>(mkdx-gf-visual)',               ':<C-U>call mkdx#gf_visual("f")<Cr>'],
+                                \ ['Jump to file / open URL',         0, 'v', 'gx',     '<Plug>(mkdx-gx-visual)',               ':<C-U>call mkdx#gf_visual("x")<Cr>'],
+                                \ ['Jump to next section',            0, 'n', ']]',     '<Plug>(mkdx-next-section)',            ':call mkdx#JumpToSection("next")<Cr>'],
+                                \ ['Jump to prev section',            0, 'n', '[[',     '<Plug>(mkdx-prev-section)',            ':call mkdx#JumpToSection("prev")<Cr>'],
+                                \ ]
+
+                    for [label, prefix, mapmode, binding, plug, cmd] in s:bindings
+                        let mapping = (prefix ? g:mkdx#settings.map.prefix : '') . binding
+
+                        if ((maparg(mapping, mapmode) == "") && !hasmapto(plug, mapmode))
+                            if (!empty(cmd) && has('menu'))
+                                exe mapmode . 'noremenu <silent> <script> Plugin.mkdx.' . label . (mapmode == 'v' ? '\ (Visual)' : '') . '<tab>' . mapping . ' ' . cmd
+                                end
+
+                                exe mapmode . 'map <buffer> ' . mapping . ' ' . plug
+                            endif
+                        endfor
+                    endfun
+
+                    augroup Mkdx
+                        au!
+                        au FileType markdown,mkdx call s:MkdxRemap()
+                    augroup END
+        " }
         if isdirectory(expand("~/.vim/bundle/mkdx"))
             " 自动进位编号需要md后缀的文件:au TextChanged *.md silent! call mkdx#OnChange()
             " <leader>b 和 CamelCaseMotion冲突了
