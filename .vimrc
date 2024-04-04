@@ -632,11 +632,11 @@
         " 可以call confirm("shifto","&Yes\n&No", 1) debug
         " 因为gx不好用 所以手动配置以删除gx的map
         " {
-                let g:mkdx#settings={'map':{'enbale':0}}
+                let g:mkdx#settings = { 'map': { 'enable': 0 } }
                 nmap <Plug> <Plug>(mkdx-gx)
                 " 解决mkdx gx是wget而不是open的问题
                 fun! s:MkdxRemap()
-                    let s:gv       = g:mkdx#settings.restore_visual == 1 ? 'gv' : ''
+                    let s:gv       = 'gv'
                     let s:bindings = [
                                 \ ['Toggle\ checkbox\ backward',      1, 'n', '-',      '<Plug>(mkdx-checkbox-prev-n)',         ':call mkdx#ToggleCheckboxState(1)<cr>'],
                                 \ ['Toggle\ checkbox\ forward',       1, 'n', '=',      '<Plug>(mkdx-checkbox-next-n)',         ':call mkdx#ToggleCheckboxState()<cr>'],
@@ -681,22 +681,21 @@
                                 \ ]
 
                     for [label, prefix, mapmode, binding, plug, cmd] in s:bindings
-                        let mapping = (prefix ? g:mkdx#settings.map.prefix : '') . binding
+                        let mapping = (prefix ? '<leader>' : '') . binding
 
                         if ((maparg(mapping, mapmode) == "") && !hasmapto(plug, mapmode))
                             if (!empty(cmd) && has('menu'))
                                 exe mapmode . 'noremenu <silent> <script> Plugin.mkdx.' . label . (mapmode == 'v' ? '\ (Visual)' : '') . '<tab>' . mapping . ' ' . cmd
-                                end
-
+                            end
                                 exe mapmode . 'map <buffer> ' . mapping . ' ' . plug
-                            endif
-                        endfor
-                    endfun
+                        endif
+                    endfor
+                endfun
 
-                    augroup Mkdx
-                        au!
-                        au FileType markdown,mkdx call s:MkdxRemap()
-                    augroup END
+                augroup Mkdx
+                    au!
+                    au FileType markdown,mkdx call s:MkdxRemap()
+                augroup END
         " }
         if isdirectory(expand("~/.vim/bundle/mkdx"))
             " 自动进位编号需要md后缀的文件:au TextChanged *.md silent! call mkdx#OnChange()
