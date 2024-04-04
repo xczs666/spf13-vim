@@ -1426,10 +1426,21 @@
     " }
 
     " Wildfire {
-    let g:wildfire_objects = {
+        let g:wildfire_objects = {
                 \ "*" : ["i'", 'i"', "i)", "i]", "i}", "ip"],
                 \ "html,xml" : ["at"],
                 \ }
+    " }
+
+    " targets {
+        " https://github.com/wellle/targets.vim
+        " 如果遇到空格后面是行末的情况可以用 viW
+        if !has("nvim") &&  isdirectory(expand("~/.vim/bundle/targets.vim/"))
+            autocmd User targets#mappings#user call targets#mappings#extend({
+                        \ 'o': {'pair': [{'o':'(', 'c':')'}, {'o':'[', 'c':']'}, {'o':'{', 'c':'}'}, {'o':'<', 'c':'>'}]},
+                        \ ' ': {'separator': [{'d':' '}]},
+                        \ })
+        endif
     " }
 
     " vim-airline {
