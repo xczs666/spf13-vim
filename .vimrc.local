@@ -88,9 +88,10 @@ vnoremap <leader>su :s/,/\t/g<CR>
 " 列模式转换所在位置
 let @g='omg:let g=col(".")gvo:exec "normal! ".g."|"`go'
 
-" 表格格式转为markdown的表格 Tableize
-vnoremap <silent> <leader>ta :call Tableize()<cr>:call MaybeRestoreVisual()<cr>
-
+" 向下移动直到列宽不足当前光标，
+" 必须要用<Cmd>不然在命令行模式下得到的列宽为0（:的命令行改变了光标位置）
+xnoremap \| <Cmd>call MoveColumn()<cr>
+onoremap \| <Cmd>call MoveColumn()<cr>
 
 " /ALTER TABLE/ {
 "     # gsub(/[0-9]{8}/, sprintf("%08d", count++))
@@ -516,166 +517,66 @@ function! ToggleIsNot()
     execute "normal ciw" . l:new_word
 endfunction
 
+" switch#NormalizedCase
+" switch#Words
+" switch#NormalizedCaseWords
 let g:switch_custom_definitions =
             \ [
-            \   switch#NormalizedCase(['one', 'two']),
+            \   switch#NormalizedCase(['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten']),
             \   switch#Words(['isEmpty', 'isNotEmpty']),
-            \   switch#NormalizedCaseWords(['five', 'six']),
+            \   switch#Words(['isNull', 'isNotNull']),
+            \   switch#Words(['isFalse', 'isTure']),
+            \   switch#Words(['isSuccess', 'isFail']),
             \ ]
 
 
-" Tableize
-fun! CsvRowToList(...)
-    let line = substitute(get(a:000, 0, getline('.')), '^\s\+|\s\+$', '', 'g')
-    let len  = strlen(line) - 1
+" 向下移动到不足当前宽度到前一行
+function! MoveColumn()
+    " Get the line number of the last line in the buffer
+    let l:lastLnum = line("$")
+    " Get the current row where the cursor is located
+    let l:startRow = getpos('.')[1]
+    " Get the column position of the cursor
+    let l:trueCursorCol = virtcol(".")
+    " Get the count value provided by the user
+    let l:extraColumns = v:count1 - 1
+    " Initialize the variable for the next line number
+    let l:nextLnum = startRow
 
-    if (len < 1) | return [] | endif
+    " Loop through the lines until reaching the end of the buffer or finding a line with shorter length or hitting the indent
+    while 1
+        " Move to the next line
+        let l:nextLnum += 1
+        " Exit the loop if reached the last line
+        if l:nextLnum > l:lastLnum | break | endif
+        " Calculate the length of the line, considering tab indentation
+        let l:trueLineLength = len(substitute(getline(l:nextLnum), '\t', repeat(' ', &tabstop), 'g'))
+        " Check if the line is shorter than the current cursor column
+        let l:shorterLine = l:trueLineLength < l:trueCursorCol
+        " Check if the current cursor column hits the indent of the next line
+        "let l:hitsIndent = l:trueCursorCol <= indent(l:nextLnum)
+        "" Exit the loop if either the cursor column hits the indent or the line is shorter
+        "if l:hitsIndent || l:shorterLine | break | endif
+        if l:shorterLine | break | endif
+    endwhile
 
-    let quote    = ""
-    let escaped  = 0
-    let currcol  = ""
-    let result   = []
+    " Calculate the number of lines to move down
+    let l:linesDown = l:nextLnum - 1 - l:startRow
 
-    for idx in range(0, len)
-        let char = line[idx]
-        if (escaped)
-            let currcol .= char
-            let escaped  = 0
-        elseif (char == "\\")
-            let escaped = 1
-        elseif (!empty(quote))
-            if (char != quote)
-                let currcol .= char
-            else
-                let quote = ""
-            endif
-        elseif ((char == "'") || (char == "\""))
-            let quote = char
-        elseif (char == "\t")
-            call add(result, currcol)
-            let currcol = ""
-        else
-            let currcol .= char
-        endif
-    endfor
-
-    if (!empty(currcol))
-        call add(result, currcol)
+    " Enter visual block mode if not already in it
+    if mode() != "\<C-V>"
+        execute "normal! \<C-V>"
     endif
 
-    return result
-endfun
-
-
-fun! AlignString(str, align, length)
-    let remaining = a:length - strwidth(a:str)
-
-    if (remaining < 0) | return a:str[0:(a:length - 1)] | endif
-
-    let center = !((a:align == 'right') || (a:align == 'left'))
-    let lrem   = center ? float2nr(floor(remaining / 2.0)) : (a:align == 'left' ? 0 : remaining)
-    let rrem   = center ? float2nr(ceil(remaining / 2.0))  : (remaining - lrem)
-
-    return repeat(' ', lrem) . a:str . repeat(' ', rrem)
-endfun
-
-
-fun! InsertLine(line, position)
-    let _z = @z
-    let @z = a:line
-
-    call cursor(a:position, 1)
-    normal! A"zp
-
-    let @z = _z
-endfun
-
-
-fun! TableRowToList(line)
-    return map(split(substitute(a:line, '^\s\+\|\s\+$', '', 'g'),
-                \ g:mkdx#settings.table.divider),
-                \ {idx, ln -> ln})
-    " 字段加双引号
-    " \ {idx, ln -> substitute(ln, '"', '\\"', 'g')})
-endfun
-
-
-fun! MaybeRestoreVisual()
-    if (g:mkdx#settings.restore_visual)
-        normal! gv
+    echo l:linesDown
+    " Move the cursor down by the calculated number of lines
+    if l:linesDown > 0
+        execute "normal! " . l:linesDown . "j"
     endif
-endfun
 
-" 将excel转为markdown table
-fun! Tableize() range
-    let next_nonblank = nextnonblank(a:firstline)
-    let firstline     = getline(next_nonblank)
-    let lines                                   = getline(a:firstline, a:lastline)
-    let [col_maxlen, col_align, col_idx, parts] = [{}, {}, [], []]
-    let [linecount, ld]                         = [range(0, len(lines) - 1), ' ' . g:mkdx#settings.table.divider . ' ']
-
-    if (match(firstline, '[\t]') > -1) " CSV data found, convert it to a table
-        for column in CsvRowToList(firstline)
-            call add(col_idx, column)
-            if (index(map(deepcopy(g:mkdx#settings.table.align.left), {idx, val -> tolower(val)}), tolower(column)) > -1)
-                let col_align[column] = 'left'
-            elseif (index(map(deepcopy(g:mkdx#settings.table.align.right), {idx, val -> tolower(val)}), tolower(column)) > -1)
-                let col_align[column] = 'right'
-            elseif (index(map(deepcopy(g:mkdx#settings.table.align.center), {idx, val -> tolower(val)}), tolower(column)) > -1)
-                let col_align[column] = 'center'
-            else
-                let col_align[column] = g:mkdx#settings.table.align.default
-            endif
-        endfor
-
-        for idx in linecount
-            let lines[idx] = CsvRowToList(lines[idx])
-
-            for column in range(0, len(lines[idx]) - 1)
-                let curr_word_max = strwidth(lines[idx][column])
-                let last_col_max  = get(col_maxlen, column, 0)
-
-                if (curr_word_max > last_col_max) | let col_maxlen[column] = curr_word_max | endif
-            endfor
-        endfor
-
-        for linec in linecount
-            if !empty(filter(copy(lines[linec]), {idx, val -> !empty(val)}))
-                let tmp = map(range(0, len(col_idx) - 1), {idx, val -> get(lines[linec], idx, '')})
-                call setline(a:firstline + linec,
-                            \ ld[1:2] . join(map(tmp, {key, val -> AlignString(val, get(col_align, get(col_idx, key, ''), 'center'), col_maxlen[key])}), ld) . ld[0:1])
-            endif
-        endfor
-
-        for column in keys(col_maxlen)
-            let align = tolower(get(col_align, get(col_idx, column, ''), g:mkdx#settings.table.align.default))
-            let lhs   = index(['right', 'center'], align) ? ':' : g:mkdx#settings.table.header_divider
-            let rhs   = index(['left',  'center'], align) ? ':' : g:mkdx#settings.table.header_divider
-
-            call add(parts, lhs . repeat(g:mkdx#settings.table.header_divider, col_maxlen[column]) . rhs)
-        endfor
-
-        call InsertLine(g:mkdx#settings.table.divider . join(parts, g:mkdx#settings.table.divider) . g:mkdx#settings.table.divider, next_nonblank)
-    elseif (match(firstline, '\%(|.*\)\{-2,}') > -1) " markdown table found, convert to CSV
-        for idx in linecount
-            let npos = a:firstline + idx
-
-            if ((npos != next_nonblank + 1) && !empty(getline(npos)))
-                let tmp = join(map(TableRowToList(lines[idx]),
-                            \ {idx, col -> substitute(col, '^\s\+\|\s\+$', '', 'g')}), '	')
-
-                " 字段加双引号
-                " \ {idx, col -> substitute(col, '^\s\+\|\s\+$', '', 'g')}), '"	"')
-
-                " 字段加双引号
-                " call setline(npos, '"' . tmp . '"')
-                call setline(npos, tmp)
-            endif
-        endfor
-
-        exe ((next_nonblank + 1) . "d_")
-        call cursor(a:lastline - 1, 1)
+    " Move the cursor to the right by the calculated number of extra columns
+    if l:extraColumns > 0
+        execute "normal! " . l:extraColumns . "l"
     endif
-endfun
+endfunction
 
-" Tableize end
