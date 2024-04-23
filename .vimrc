@@ -263,9 +263,20 @@
 
 " Plug {
     " for https://github.com/dhruvasagar/vim-table-mode
-    let g:table_mode_corner_corner='|'
     " Markdown and ReST filetypes have automatically configured corners.
-    let b:table_mode_corner='|'
+    let g:table_mode_corner='|'
+    " 要获得与 ReST 兼容的表，请使用
+    "let g:table_mode_corner_corner='+'
+    "let g:table_mode_header_fillchar='='
+    "
+    "+-----------------+--------------------------+------------+
+    "| name            | address                  | phone      |
+    "+=================+==========================+============+
+    "| John Adams      | 1600 Pennsylvania Avenue | 0123456789 |
+    "+-----------------+--------------------------+------------+
+    "| Sherlock Holmes | 221B Baker Street        | 0987654321 |
+    "+-----------------+--------------------------+------------+
+
     " for https://github.com/chaoren/vim-wordmotion
     let g:camelcasemotion_key = '<localleader>'
 " }
