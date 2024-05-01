@@ -859,6 +859,7 @@
             " see https://cloud.tencent.com/developer/article/1877309
             " see https://blog.csdn.net/lxyoucan/article/details/114365153
             let g:smartim_default = 'com.apple.keylayout.ABC'
+            let g:smartim_disable = 1
             inoremap <C-c> <esc>
             "临时禁用输入法切换插件，可以极大提升宏运行的效率
             nnoremap <silent><leader>s0 <cmd>let g:smartim_disable = 1<CR>

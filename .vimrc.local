@@ -109,6 +109,11 @@ onoremap \| <Cmd>call MoveColumn()<cr>
 "
 " !gawk '/TABLE/ {gsub(/[0-9]{8}_[0-9]{8}/, sprintf("\%08d_\%08d", strftime("\%Y\%m\%d", mktime("2022 01 01 00 00 00") + (count/3 * 86400)),count++\%3));print;next}{print}'
 
+
+"autocmd InsertEnter * execute "silent !macism 'im.rime.inputmethod.Squirrel.Hans' > /dev/null"
+"autocmd InsertLeave * execute "silent !macism 'com.apple.keylayout.ABC' > /dev/null"
+
+
 function! Transpose(includepat) range
     let top = a:firstline
     let bot = a:lastline
