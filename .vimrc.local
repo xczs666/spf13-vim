@@ -5,7 +5,8 @@
 "set guifont=HackNFP-Regular:h18
 
 set encoding=utf-8
-set termencoding=utf-8
+" *'termencoding'* *'tenc'* (Vim 7.4.852 also removed this for Windows)
+"set termencoding=utf-8
 if !has("nvim")
     set guifont=Menlo:h16
     colorscheme onedark
@@ -95,6 +96,10 @@ let @g='omg:let g=col(".")gvo:exec "normal! ".g."|"`go'
 " 必须要用<Cmd>不然在命令行模式下得到的列宽为0（:的命令行改变了光标位置）
 xnoremap \| <Cmd>call MoveColumn()<cr>
 onoremap \| <Cmd>call MoveColumn()<cr>
+
+"'<,'>!awk '/alter table/ {gsub(/[0-9]{8}/, sprintf("\%08d", count)); count++; print; next} {print}'
+vnoremap <leader>nf :!awk '/alter table/ {gsub(/[0-9]{8}/, sprintf("\%08d", count)); count++; print; next} {print}'
+nnoremap <leader>nf :%!awk '/alter table/ {gsub(/[0-9]{8}/, sprintf("\%08d", count)); count++; print; next} {print}'
 
 " /ALTER TABLE/ {
 "     # gsub(/[0-9]{8}/, sprintf("%08d", count++))

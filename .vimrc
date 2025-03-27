@@ -292,8 +292,8 @@
     set nojoinspaces                " Prevents inserting two spaces after punctuation on a join (J)
     set splitright                  " Puts new vsplit windows to the right of the current
     set splitbelow                  " Puts new split windows to the bottom of the current
-    "set matchpairs+=<:>             " Match, to be used with %
-    set pastetoggle=<F12>           " pastetoggle (sane indentation on pastes)
+    "set matchpairs+=<:>            " Match, to be used with %
+    "set pastetoggle=<F12>           " pastetoggle (sane indentation on pastes)
     "set comments=sl:/*,mb:*,elx:*/  " auto format comment blocks
     " Remove trailing whitespaces and ^M chars
     " To disable the stripping of whitespace, add the following to your
@@ -314,7 +314,6 @@
     autocmd FileType haskell,rust setlocal nospell
 
 " }
-
 " Key (re)Mappings {
 
     " The default leader is '\', but many people prefer ',' as it's in a standard
