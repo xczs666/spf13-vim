@@ -131,9 +131,10 @@
             Plug 'ctrlpvim/ctrlp.vim'
             Plug 'tacahiroy/ctrlp-funky'
             " <C-n> <C-p> <C-x> <A-n>
-            " Plug 'terryma/vim-multiple-cursors'
+            Plug 'terryma/vim-multiple-cursors'
+            let g:multi_cursor_select_all_key      = 'g<C-n>'
             " <C-n> Ctrl-Down/Up Shift-Arrows n/N [/] q Q
-            Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+            " Plug 'mg979/vim-visual-multi', {'branch': 'master'}
             " i a I A   n l   aa ia
             Plug 'wellle/targets.vim'
             Plug 'vim-scripts/sessionman.vim'

@@ -28,7 +28,9 @@ set smartcase
 set nospell
 set nrformats=bin
 set relativenumber
-"set lazyredraw
+" 加快宏的办法
+set lazyredraw
+" normal! 10@a
 
 language messages zh_CN.utf-8
 
