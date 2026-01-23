@@ -72,14 +72,16 @@ nmap <silent> <Leader>id <Plug>IndentGuidesDisable
 nnoremap <unique><silent> <leader>fn :call UpdateNumberedList()<cr>
 
 " 行列转换
-nnoremap <leader>f\| :call Transpose("\|")<CR>:Tabularize /\|<CR>
-vnoremap <leader>f\| :call Transpose("\|")<CR>
-nnoremap <leader>f, :call Transpose(",")<CR>:Tabularize /,<CR>
-vnoremap <leader>f, :call Transpose(",")<CR>
-nnoremap <leader>ft :call Transpose("\t")<CR>:Tabularize /\t<CR>
-vnoremap <leader>ft :call Transpose("\t")<CR>
-nnoremap <leader>f: :call Transpose(":")<CR>:Tabularize /:<CR>
-vnoremap <leader>f: :call Transpose(":")<CR>
+"nnoremap <leader>f\| :call Transpose("\|")<CR>:Tabularize /\|<CR>
+"vnoremap <leader>f\| :call Transpose("\|")<CR>
+"nnoremap <leader>f, :call Transpose(",")<CR>:Tabularize /,<CR>
+"vnoremap <leader>f, :call Transpose(",")<CR>
+"nnoremap <leader>ft :call Transpose("\t")<CR>:Tabularize /\t<CR>
+"vnoremap <leader>ft :call Transpose("\t")<CR>
+"nnoremap <leader>f: :call Transpose(":")<CR>:Tabularize /:<CR>
+"vnoremap <leader>f: :call Transpose(":")<CR>
+nnoremap <leader>f :call TransposeAndTabularize(0)<CR>
+vnoremap <leader>f :<C-u>call TransposeAndTabularize(1)<CR>
 
 vnoremap <leader>uc :!uniq -c \| awk '$1>1 {print $0}'<CR>
 
@@ -96,8 +98,15 @@ let @g='omg:let g=col(".")gvo:exec "normal! ".g."|"`go'
 
 " 向下移动直到列宽不足当前光标，
 " 必须要用<Cmd>不然在命令行模式下得到的列宽为0（:的命令行改变了光标位置）
-xnoremap \| <Cmd>call MoveColumn()<cr>
-onoremap \| <Cmd>call MoveColumn()<cr>
+" 向下
+nnoremap <silent> g] :<C-u>call MoveToLastValidColumn('down')<CR>
+xnoremap <silent> g] <Cmd>call MoveToLastValidColumn('down')<CR>
+onoremap <silent> g] <Cmd>call MoveToLastValidColumn('down')<CR>
+
+" 向上
+nnoremap <silent> g[ :<C-u>call MoveToLastValidColumn('up')<CR>
+xnoremap <silent> g[ <Cmd>call MoveToLastValidColumn('up')<CR>
+onoremap <silent> g[ <Cmd>call MoveToLastValidColumn('up')<CR>
 
 "'<,'>!awk '/alter table/ {gsub(/[0-9]{8}/, sprintf("\%08d", count)); count++; print; next} {print}'
 vnoremap <leader>nf :!awk '/alter table/ {gsub(/[0-9]{8}/, sprintf("\%08d", count)); count++; print; next} {print}'
@@ -119,6 +128,23 @@ nnoremap <leader>nf :%!awk '/alter table/ {gsub(/[0-9]{8}/, sprintf("\%08d", cou
 
 "autocmd InsertEnter * execute "silent !macism 'im.rime.inputmethod.Squirrel.Hans' > /dev/null"
 "autocmd InsertLeave * execute "silent !macism 'com.apple.keylayout.ABC' > /dev/null"
+
+
+function! TransposeAndTabularize(is_visual)
+    " 获取用户输入的字符
+    echo "Enter separator: "
+    let char = nr2char(getchar())
+    redraw
+    
+    " 处理特殊字符的转义
+    let escaped = escape(char, '\|')
+    
+    call Transpose(char)
+    
+    if !a:is_visual
+        exe "Tabularize /" . escaped
+    endif
+endfunction
 
 
 function! Transpose(includepat) range
@@ -545,53 +571,47 @@ let g:switch_custom_definitions =
             \ ]
 
 
-" 向下移动到不足当前宽度到前一行
-function! MoveColumn()
-    " Get the line number of the last line in the buffer
-    let l:lastLnum = line("$")
-    " Get the current row where the cursor is located
-    let l:startRow = getpos('.')[1]
-    " Get the column position of the cursor
-    let l:trueCursorCol = virtcol(".")
-    " Get the count value provided by the user
-    let l:extraColumns = v:count1 - 1
-    " Initialize the variable for the next line number
-    let l:nextLnum = startRow
-
-    " Loop through the lines until reaching the end of the buffer or finding a line with shorter length or hitting the indent
-    while 1
-        " Move to the next line
-        let l:nextLnum += 1
-        " Exit the loop if reached the last line
-        if l:nextLnum > l:lastLnum | break | endif
-        " Calculate the length of the line, considering tab indentation
-        let l:trueLineLength = len(substitute(getline(l:nextLnum), '\t', repeat(' ', &tabstop), 'g'))
-        " Check if the line is shorter than the current cursor column
-        let l:shorterLine = l:trueLineLength < l:trueCursorCol
-        " Check if the current cursor column hits the indent of the next line
-        "let l:hitsIndent = l:trueCursorCol <= indent(l:nextLnum)
-        "" Exit the loop if either the cursor column hits the indent or the line is shorter
-        "if l:hitsIndent || l:shorterLine | break | endif
-        if l:shorterLine | break | endif
-    endwhile
-
-    " Calculate the number of lines to move down
-    let l:linesDown = l:nextLnum - 1 - l:startRow
-
-    " Enter visual block mode if not already in it
-    if mode() != "\<C-V>"
-        execute "normal! \<C-V>"
+" 向下/向上移动到当前列存在字符的最后一行
+function! MoveToLastValidColumn(direction)
+    let target_col = virtcol('.')
+    let current_line = line('.')
+    let extra_cols = v:count1 - 1
+    
+    if a:direction ==# 'down'
+        let last_line = line('$')
+        while current_line < last_line
+            let next_line = current_line + 1
+            if virtcol([next_line, '$']) - 1 < target_col
+                break
+            endif
+            let current_line = next_line
+        endwhile
+    else  " up
+        while current_line > 1
+            let prev_line = current_line - 1
+            if virtcol([prev_line, '$']) - 1 < target_col
+                break
+            endif
+            let current_line = prev_line
+        endwhile
     endif
 
-    echo l:linesDown
-    " Move the cursor down by the calculated number of lines
-    if l:linesDown > 0
-        execute "normal! " . l:linesDown . "j"
+    let lines_move = abs(current_line - line('.'))
+    
+    " 普通模式直接跳转
+    if mode() ==# 'n'
+        call cursor(current_line, 0)
+        exe "normal! " . target_col . "|"
+        return
     endif
-
-    " Move the cursor to the right by the calculated number of extra columns
-    if l:extraColumns > 0
-        execute "normal! " . l:extraColumns . "l"
+    
+    " 可视模式/操作符模式：保持模式并移动
+    if lines_move > 0
+        let move_key = a:direction ==# 'down' ? 'j' : 'k'
+        exe "normal! " . lines_move . move_key
+    endif
+    if extra_cols > 0
+        exe "normal! " . extra_cols . "l"
     endif
 endfunction
 

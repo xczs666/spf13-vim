@@ -142,6 +142,7 @@
     set shortmess+=filmnrxoOtT          " Abbrev. of messages (avoids 'hit enter')
     set viewoptions=folds,options,cursor,unix,slash " Better Unix / Windows compatibility
     set virtualedit=onemore             " Allow for cursor beyond last character
+    set nosol                           " startofline(sol) 选项控制 G、gg、Ctrl-D 等命令是否跳到行首。
     set history=1000                    " Store a ton of history (default is 20)
     set spell                           " Spell checking on
     set hidden                          " Allow buffer switching without saving
@@ -327,7 +328,7 @@
         let mapleader=g:spf13_leader
     endif
     if !exists('g:spf13_localleader')
-        let maplocalleader = '\'
+        let maplocalleader = ','
     else
         let maplocalleader=g:spf13_localleader
     endif
@@ -833,23 +834,27 @@
     " }
 
     " Tabularize {
-        if !has("nvim") && isdirectory(expand("~/.vim/bundle/tabular"))
-            nmap <Leader>a& :Tabularize /&<CR>
-            vmap <Leader>a& :Tabularize /&<CR>
-            nmap <Leader>a= :Tabularize /^[^=]*\zs=<CR>
-            vmap <Leader>a= :Tabularize /^[^=]*\zs=<CR>
-            "nmap <Leader>a=> :Tabularize /=><CR>
-            "vmap <Leader>a=> :Tabularize /=><CR>
-            nmap <Leader>a: :Tabularize /:<CR>
-            vmap <Leader>a: :Tabularize /:<CR>
-            "nmap <Leader>a:: :Tabularize /:\zs<CR>
-            "vmap <Leader>a:: :Tabularize /:\zs<CR>
-            "nmap <Leader>a, :Tabularize /,<CR>
-            "vmap <Leader>a, :Tabularize /,<CR>
-            nmap <Leader>a, :Tabularize /,\zs/l0r1<CR>
-            vmap <Leader>a, :Tabularize /,\zs/l0r1<CR>
-            nmap <Leader>a<Bar> :Tabularize /<Bar><CR>
-            vmap <Leader>a<Bar> :Tabularize /<Bar><CR>
+        if isdirectory(expand("~/.vim/bundle/tabular"))
+            let g:tabularize_patterns = {
+                        \ '&': '/&',
+                        \ '=': '/^[^=]*\zs=',
+                        \ ':': '/:',
+                        \ ',': '/,\zs/l0r1',
+                        \ '|': '/<Bar>',
+                        \ }
+
+            function! TabularizeWithChar()
+                let char = nr2char(getchar())
+                if has_key(g:tabularize_patterns, char)
+                    exe "Tabularize " . g:tabularize_patterns[char]
+                else
+                    " 默认直接用输入的字符
+                    exe "Tabularize /" . escape(char, '/\|')
+                endif
+            endfunction
+
+            nmap <Leader>a :call TabularizeWithChar()<CR>
+            vmap <Leader>a :call TabularizeWithChar()<CR>
         endif
     " }
 
