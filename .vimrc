@@ -858,6 +858,18 @@
         endif
     " }
 
+    " AutoPairs {
+        if isdirectory(expand("~/.vim/bundle/auto-pairs"))
+            let g:AutoPairsShortcutJump = ''
+        endif
+    " }
+
+    " vim-multiple-cursor {
+        if isdirectory(expand("~/.vim/bundle/vim-multiple-cursors"))
+            let g:multi_cursor_select_all_key = 'g<C-n>'
+        endif
+    " }
+
     " smartim {
         if isdirectory(expand("~/.vim/bundle/smartim"))
             " see https://cloud.tencent.com/developer/article/1877309
