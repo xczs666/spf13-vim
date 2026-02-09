@@ -118,12 +118,10 @@
     let g:netrw_liststyle=3
     let g:netrw_winsize=26
 
-    if !has("nvim") && has('clipboard')
-        if has('unnamedplus')  " When possible use + register for copy-paste
-            set clipboard=unnamed,unnamedplus
-        else         " On mac and Windows, use * register for copy-paste
-            set clipboard=unnamed
-        endif
+    if has('unnamedplus')  " When possible use + register for copy-paste
+        set clipboard=unnamed,unnamedplus
+    else         " On mac and Windows, use * register for copy-paste
+        set clipboard=unnamed
     endif
 
     " :map!  :noremap! :unmap!    Insert and Command-line
