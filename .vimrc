@@ -521,23 +521,160 @@
     endfun
 
     " general {
-        if !has("nvim") && count(g:spf13_bundle_groups, 'general')
-            if isdirectory(expand("~/.vim/bundle/vim-rsi"))
-                " :help rsi, vim-which-key
-                set timeoutlen=500
-            endif
-            if !has('nvim') && isdirectory(expand("~/.vim/bundle/vim-which-key"))
-                " https://github.com/liuchengxu/vim-which-key
-                nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
-                nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
-            endif
-            if isdirectory(expand("~/.vim/bundle/CamelCaseMotion"))
-                " https://github.com/bkad/CamelCaseMotion
-                let g:camelcasemotion_key = '<localleader>'
-            endif
-            if isdirectory(expand("~/.vim/bundle/switch.vim")) && isdirectory(expand("~/.vim/bundle/vim-speeddating"))
-                call SwitchConfig()
-            endif
+        if isdirectory(expand("~/.vim/bundle/vim-rsi"))
+            " :help rsi, vim-which-key
+            set timeoutlen=500
+        endif
+        if !has('nvim') && isdirectory(expand("~/.vim/bundle/vim-which-key"))
+            " https://github.com/liuchengxu/vim-which-key
+            nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
+            nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
+        endif
+        if isdirectory(expand("~/.vim/bundle/CamelCaseMotion"))
+            " https://github.com/bkad/CamelCaseMotion
+            let g:camelcasemotion_key = '<localleader>'
+
+            " ===== CamelCase 连续跳转模式（带映射诊断）=====
+            let g:camelcase_sticky_mode = 0
+            let g:camelcase_timer = -1
+            let g:camelcase_timeout = 1000  " 1秒超时（毫秒）
+
+            function! CamelCaseSticky(motion, mode)
+                " echom "[CamelCase] 函数被调用: motion=" . a:motion . ", mode=" . a:mode . ", count=" . v:count1
+
+                " 检查函数是否存在
+                if !exists('*camelcasemotion#Motion')
+                    " echom "[CamelCase] 错误: camelcasemotion#Motion 函数不存在!"
+                    " echom "[CamelCase] 请确认 CamelCaseMotion 插件已加载"
+                    return
+                endif
+
+                " echom "[CamelCase] 正在调用 camelcasemotion#Motion..."
+
+                " 直接调用 CamelCaseMotion 函数
+                try
+                    call camelcasemotion#Motion(a:motion, v:count1, a:mode)
+                    " echom "[CamelCase] camelcasemotion#Motion 调用成功"
+                catch
+                    " echom "[CamelCase] 错误: " . v:exception
+                    return
+                endtry
+
+                " 进入粘性模式
+                if !g:camelcase_sticky_mode
+                    " echom "[CamelCase] 进入粘性模式，创建临时映射..."
+                    let g:camelcase_sticky_mode = 1
+
+                    " 临时映射 w/b/e 到 CamelCase 版本
+                    nnoremap <silent> w :<C-U>call CamelCaseSticky('w', 'n')<CR>
+                    xnoremap <silent> w :<C-U>call CamelCaseSticky('w', 'v')<CR>
+                    onoremap <silent> w :<C-U>call CamelCaseSticky('w', 'o')<CR>
+
+                    nnoremap <silent> b :<C-U>call CamelCaseSticky('b', 'n')<CR>
+                    xnoremap <silent> b :<C-U>call CamelCaseSticky('b', 'v')<CR>
+                    onoremap <silent> b :<C-U>call CamelCaseSticky('b', 'o')<CR>
+
+                    nnoremap <silent> e :<C-U>call CamelCaseSticky('e', 'n')<CR>
+                    xnoremap <silent> e :<C-U>call CamelCaseSticky('e', 'v')<CR>
+                    onoremap <silent> e :<C-U>call CamelCaseSticky('e', 'o')<CR>
+
+                    " echom "[CamelCase] 临时映射已创建"
+                else
+                    " echom "[CamelCase] 已在粘性模式中"
+                endif
+
+                " 重置计时器
+                if g:camelcase_timer != -1
+                    " echom "[CamelCase] 停止旧计时器: " . g:camelcase_timer
+                    call timer_stop(g:camelcase_timer)
+                endif
+
+                " 设置新计时器，超时后退出模式
+                let g:camelcase_timer = timer_start(g:camelcase_timeout, 'CamelCaseExit')
+                " echom "[CamelCase] 启动新计时器: " . g:camelcase_timer . " (超时: " . g:camelcase_timeout . "ms)"
+            endfunction
+
+            function! CamelCaseExit(timer)
+                " echom "[CamelCase] 计时器触发，退出粘性模式: timer=" . a:timer
+                let g:camelcase_sticky_mode = 0
+                let g:camelcase_timer = -1
+
+                " 恢复原来的映射
+                silent! nunmap w
+                silent! xunmap w
+                silent! ounmap w
+                silent! nunmap b
+                silent! xunmap b
+                silent! ounmap b
+                silent! nunmap e
+                silent! xunmap e
+                silent! ounmap e
+
+                " echom "[CamelCase] 临时映射已删除，恢复正常模式"
+            endfunction
+
+            " 检查映射状态的函数
+            function! CamelCaseCheckMapping()
+                " echom "========== CamelCase 映射诊断 =========="
+                " echom "localleader = " . (exists('g:maplocalleader') ? string(g:maplocalleader) : '未设置')
+                " echom "按键序列应该是: " . (exists('g:maplocalleader') ? g:maplocalleader . "w" : "?,w")
+                " echom ""
+
+                " 检查 normal 模式下 ,w 的映射
+                redir => mapping_output
+                silent nmap ,w
+                redir END
+
+                " echom "当前 ,w 的映射:"
+                " echom mapping_output
+                " echom "=========================================="
+            endfunction
+
+            " 延迟创建映射（确保在所有插件加载之后）
+            function! CamelCaseInitMappings()
+                " echom "[CamelCase] 开始创建映射..."
+
+                " 使用 <unique> 检测冲突
+                try
+                    nnoremap <unique> <localleader>w :<C-U>call CamelCaseSticky('w', 'n')<CR>
+                    " echom "[CamelCase] 成功创建 normal 模式 <localleader>w 映射"
+                catch
+                    " echom "[CamelCase] 警告: <localleader>w 已存在，强制覆盖"
+                    silent! nunmap <localleader>w
+                    nnoremap <localleader>w :<C-U>call CamelCaseSticky('w', 'n')<CR>
+                endtry
+
+                xnoremap <localleader>w :<C-U>call CamelCaseSticky('w', 'v')<CR>
+                onoremap <localleader>w :<C-U>call CamelCaseSticky('w', 'o')<CR>
+
+                nnoremap <localleader>b :<C-U>call CamelCaseSticky('b', 'n')<CR>
+                xnoremap <localleader>b :<C-U>call CamelCaseSticky('b', 'v')<CR>
+                onoremap <localleader>b :<C-U>call CamelCaseSticky('b', 'o')<CR>
+
+                nnoremap <localleader>e :<C-U>call CamelCaseSticky('e', 'n')<CR>
+                xnoremap <localleader>e :<C-U>call CamelCaseSticky('e', 'v')<CR>
+                onoremap <localleader>e :<C-U>call CamelCaseSticky('e', 'o')<CR>
+
+                " echom "[CamelCase] 映射创建完成!"
+
+                " 显示诊断信息
+                call CamelCaseCheckMapping()
+            endfunction
+
+            " 使用 VimEnter 事件确保在所有插件加载后创建映射
+            augroup CamelCaseSetup
+                autocmd!
+                autocmd VimEnter * call CamelCaseInitMappings()
+            augroup END
+
+            " echom "[CamelCase] 配置加载完成! 将在 VimEnter 后创建映射"
+
+            " 添加手动检查命令
+            "command! CamelCaseCheck call CamelCaseCheckMapping()
+            "command! CamelCaseInit call CamelCaseInitMappings()
+        endif
+        if isdirectory(expand("~/.vim/bundle/switch.vim")) && isdirectory(expand("~/.vim/bundle/vim-speeddating"))
+            call SwitchConfig()
         endif
     " }
 

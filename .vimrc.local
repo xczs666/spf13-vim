@@ -11,7 +11,7 @@ if !has("nvim")
     set guifont=Menlo:h16
     colorscheme onedark
     set fileencoding=utf-8
-    nmap <F1> :tabnew 
+    nmap <F1> :tabnew
     nmap <F2> :tabprevious<CR>
     nmap <F3> :tabnext<CR>
     "let &t_SI = "\<Esc>]50;CursorShape=1\x7"
