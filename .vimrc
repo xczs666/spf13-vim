@@ -975,7 +975,7 @@
                         \ '=': '/^[^=]*\zs=',
                         \ ':': '/:',
                         \ ',': '/,\zs/l0r1',
-                        \ '|': '/<Bar>',
+                        \ '/': '/\//l0r0',
                         \ }
 
             function! TabularizeWithChar()
@@ -984,7 +984,7 @@
                     exe "Tabularize " . g:tabularize_patterns[char]
                 else
                     " 默认直接用输入的字符
-                    exe "Tabularize /" . escape(char, '/\|')
+                    exe "Tabularize /" . escape(char, '/\')
                 endif
             endfunction
 
