@@ -1125,7 +1125,10 @@
             " do not display the auto-save notification
             let g:auto_save_silent = 1
             " :h autocmd-events
-            let g:auto_save_events = ["InsertLeave", "TextChanged"]
+            " 只在 TextChanged 时自动保存，避免 InsertLeave 时卡顿
+            let g:auto_save_events = ["TextChanged"]
+            " 增加保存延迟，减少频繁保存
+            let g:auto_save_write_all_buffers = 0
         endif
     " }
 
@@ -1726,6 +1729,29 @@
         endfor
     endfunction
     call InitializeDirectories()
+    " }
+
+    " Large file optimizations {
+    " 针对大文件（>100KB）进行性能优化
+    function! LargeFileOptimizations()
+        let file_size = getfsize(expand('<afile>'))
+        " 文件大于 100KB 或无法获取大小时优化
+        if file_size > 100 * 1024 || file_size == -2
+            " 禁用自动保存（最大性能杀手）
+            let b:auto_save = 0
+            " 禁用 coc.nvim 自动补全和高亮
+            let b:coc_enabled = 0
+            " 标记为大文件
+            let b:large_file = 1
+            " 提示用户
+            echomsg "Large file detected (>100KB), optimizations applied (auto-save disabled)"
+        endif
+    endfunction
+
+    augroup LargeFile
+        autocmd!
+        autocmd BufReadPre * call LargeFileOptimizations()
+    augroup END
     " }
 
     " Initialize NERDTree as needed {
