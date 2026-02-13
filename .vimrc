@@ -778,7 +778,6 @@
         " 可以call confirm("shifto","&Yes\n&No", 1) debug
         " 因为gx不好用 所以手动配置以删除gx的map
         " {
-                let g:mkdx#settings = { 'map': { 'enable': 0 } }
                 nmap <Plug> <Plug>(mkdx-gx)
                 " 解决mkdx gx是wget而不是open的问题
                 fun! s:MkdxRemap()
@@ -806,8 +805,8 @@
                                 \ ['Bold',                            1, 'v', 'b',      '<Plug>(mkdx-text-bold-v)',             ':<C-U>call mkdx#WrapText("v", g:mkdx#settings.tokens.bold, g:mkdx#settings.tokens.bold)<Cr>'],
                                 \ ['Inline\ code',                    1, 'n', '`',      '<Plug>(mkdx-text-inline-code-n)',      ':<C-U>call mkdx#WrapText("n", "`", "`", "mkdx-text-inline-code-n")<cr>'],
                                 \ ['Inline\ code',                    1, 'v', '`',      '<Plug>(mkdx-text-inline-code-v)',      ':call      mkdx#WrapSelectionInCode()<cr>:call mkdx#MaybeRestoreVisual()<Cr>'],
-                                \ ['Strike\ through',                 1, 'n', 's',      '<Plug>(mkdx-text-strike-n)',           ':<C-U>call mkdx#WrapText("n", "<strike>", "</strike>", "mkdx-text-strike-n")<cr>'],
-                                \ ['Strike\ through',                 1, 'v', 's',      '<Plug>(mkdx-text-strike-v)',           ':<C-U>call mkdx#WrapText("v", "<strike>", "</strike>")<cr>'],
+                                \ ['Strike\ through',                 1, 'n', 's',      '<Plug>(mkdx-text-strike-n)',           ':<C-U>call mkdx#WrapText("n", g:mkdx#settings.tokens.strike, g:mkdx#settings.tokens.strike, "mkdx-text-strike-n")<cr>'],
+                                \ ['Strike\ through',                 1, 'v', 's',      '<Plug>(mkdx-text-strike-v)',           ':<C-U>call mkdx#WrapText("v", g:mkdx#settings.tokens.strike, g:mkdx#settings.tokens.strike,)<cr>'],
                                 \ ['Convert\ to\ table',              1, 'v', ',',      '<Plug>(mkdx-tableize)',                ':call mkdx#Tableize()<cr>:call mkdx#MaybeRestoreVisual()<Cr>'],
                                 \ ['Generate\ /\ Update\ TOC',        1, 'n', 'i',      '<Plug>(mkdx-gen-or-upd-toc)',          ':call mkdx#GenerateOrUpdateTOC()<cr>'],
                                 \ ['Open\ TOC\ in\ quickfix',         1, 'n', 'I',      '<Plug>(mkdx-quickfix-toc)',            ':call mkdx#QuickfixHeaders()<cr>'],
@@ -851,7 +850,10 @@
 
             " 折叠粗体,斜体等
             set conceallevel=2
-            let g:mkdx#settings = { 'highlight': { 'enable': 1 },
+            let g:mkdx#settings = {
+                        \ 'map': { 'enable': 0 },
+                        \ 'tokens': { 'strike': '~~' },
+                        \ 'highlight': { 'enable': 1 },
                         \ 'tab': { 'enable': 0 },
                         \ 'table': { 'align': {'default': 'left'} },
                         \ 'enter': { 'o': 1, 'shift': 1, 'shifto': 1 },
@@ -1496,7 +1498,7 @@
             let g:neocomplcache_omni_patterns.ruby = '[^. *\t]\.\h\w*\|\h\w*::'
             let g:neocomplcache_omni_patterns.go = '\h\w*\.\?'
     " }
- 
+
     " Normal Vim omni-completion {
     " To disable omni complete, add the following to your .vimrc.before.local file:
     "   let g:spf13_no_omni_complete = 1

@@ -116,6 +116,7 @@
             Plug 'vim-scripts/ReplaceWithRegister'
             " cs ys ds S
             " Plug 'tpope/vim-surround'
+            " sa,sd,sr
             Plug 'machakann/vim-sandwich'
             " 快捷交换 cx cxc cxx
             Plug 'tommcdo/vim-exchange'
