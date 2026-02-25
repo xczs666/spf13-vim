@@ -535,8 +535,10 @@
         endif
         if !has('nvim') && isdirectory(expand("~/.vim/bundle/vim-which-key"))
             " https://github.com/liuchengxu/vim-which-key
-            nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
-            nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
+            nnoremap <silent> <leader> :WhichKey '<leader>'<CR>
+            vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<leader>'<CR>
+            nnoremap <silent> <localleader> :<c-u>WhichKey  '<localleader>'<CR>
+            vnoremap <silent> <localleader> :<c-u>WhichKeyVisual '<localleader>'<CR>
         endif
         if isdirectory(expand("~/.vim/bundle/CamelCaseMotion"))
             " https://github.com/bkad/CamelCaseMotion
