@@ -262,8 +262,16 @@
 
 " Plug {
     " for https://github.com/dhruvasagar/vim-table-mode
+    " | 按键        | 功能                             |
+    " |-------------|----------------------------------|
+    " | <Leader>tdd | Delete Row                       |
+    " | <Leader>tdc | Delete Column                    |
+    " | <Leader>tic | Insert Column                    |
+    " | [|,]|,{|,}| | 向左、向右、向上、向下移动单元格 |
     " Markdown and ReST filetypes have automatically configured corners.
     let g:table_mode_corner='|'
+    let g:table_mode_corner_corner='|'
+    let g:table_mode_header_fillchar='-'
     " 要获得与 ReST 兼容的表，请使用
     "let g:table_mode_corner_corner='+'
     "let g:table_mode_header_fillchar='='
