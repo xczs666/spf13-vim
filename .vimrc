@@ -58,8 +58,8 @@
           set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,$HOME/.vim/after
         endif
 
-        " macvim
-        if OSX() && has("gui_running") && !exists("g:neovide")
+        " macvim (macmeta is MacVim-only, not supported by Neovim)
+        if OSX() && has("gui_running") && !exists("g:neovide") && !has("nvim")
             set macmeta
         endif
     " }
