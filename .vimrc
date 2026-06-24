@@ -1011,11 +1011,95 @@
         endif
     " }
 
+    function! s:MultiCursorSessionStart()
+        let w:multi_cursor_auto_save = get(g:, 'auto_save', 0)
+        let w:multi_cursor_smartim_disable = get(g:, 'smartim_disable', 0)
+        let b:multi_cursor_coc_suggest_disable = get(b:, 'coc_suggest_disable', 0)
+
+        if exists('g:auto_save')
+            let g:auto_save = 0
+        endif
+
+        if exists('g:smartim_disable')
+            let g:smartim_disable = 1
+        endif
+
+        let b:coc_suggest_disable = 1
+        if exists('*coc#pum#visible') && coc#pum#visible()
+            call coc#pum#cancel()
+        endif
+    endfunction
+
+    function! s:MultiCursorSessionEnd()
+        if exists('w:multi_cursor_auto_save')
+            let g:auto_save = w:multi_cursor_auto_save
+            unlet w:multi_cursor_auto_save
+        endif
+
+        if exists('w:multi_cursor_smartim_disable')
+            let g:smartim_disable = w:multi_cursor_smartim_disable
+            unlet w:multi_cursor_smartim_disable
+        endif
+
+        if exists('b:multi_cursor_coc_suggest_disable')
+            let b:coc_suggest_disable = b:multi_cursor_coc_suggest_disable
+            unlet b:multi_cursor_coc_suggest_disable
+        else
+            unlet! b:coc_suggest_disable
+        endif
+    endfunction
+
     " vim-multiple-cursor {
         if isdirectory(expand("~/.vim/bundle/vim-multiple-cursors"))
-            let g:multi_cursor_select_all_key = 'g<C-n>'
+            let g:multi_cursor_use_default_mapping = 0
+            let g:multi_cursor_start_word_key = '<C-n>'
+            let g:multi_cursor_select_all_word_key = '<Leader>ma'
+            let g:multi_cursor_start_key = 'g<C-n>'
+            let g:multi_cursor_select_all_key = '<Leader>mA'
+            let g:multi_cursor_next_key = '<C-n>'
+            let g:multi_cursor_prev_key = '<C-p>'
+            let g:multi_cursor_skip_key = '<C-x>'
+            let g:multi_cursor_quit_key = '<Esc>'
+            let g:multi_cursor_support_imap = 1
         endif
     " }
+
+    function! Multiple_cursors_before()
+        if isdirectory(expand("~/.vim/bundle/vim-multiple-cursors"))
+            call s:MultiCursorSessionStart()
+        endif
+    endfunction
+
+    function! Multiple_cursors_after()
+        if isdirectory(expand("~/.vim/bundle/vim-multiple-cursors"))
+            call s:MultiCursorSessionEnd()
+        endif
+    endfunction
+
+    " vim-visual-multi {
+        if isdirectory(expand("~/.vim/bundle/vim-visual-multi"))
+            let g:VM_single_mode_maps = 0
+            let g:VM_maps = get(g:, 'VM_maps', {})
+            let g:VM_maps['Find Under'] = '<C-n>'
+            let g:VM_maps['Find Subword Under'] = '<C-n>'
+            let g:VM_maps['Select All'] = 'g<C-n>'
+            let g:VM_maps['Visual All'] = 'g<C-n>'
+            let g:VM_maps['Skip Region'] = '<C-x>'
+            let g:VM_maps['Exit'] = '<Esc>'
+        endif
+    " }
+
+    function! VM_Start()
+        if isdirectory(expand("~/.vim/bundle/vim-visual-multi"))
+            call s:MultiCursorSessionStart()
+        endif
+    endfunction
+
+    function! VM_Exit()
+        if isdirectory(expand("~/.vim/bundle/vim-visual-multi"))
+            call s:MultiCursorSessionEnd()
+        endif
+    endfunction
 
     " smartim {
         if isdirectory(expand("~/.vim/bundle/smartim"))
