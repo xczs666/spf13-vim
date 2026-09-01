@@ -1727,6 +1727,13 @@
             endif
         endif
     " }
+
+    " vim-bufferline {
+        if !has("nvim") && isdirectory(expand("~/.vim/bundle/vim-bufferline/"))
+            " 关闭 vim-bufferline 在命令行区域的自动回显，避免覆盖 ;bc 的计算结果
+            let g:bufferline_echo = 0
+        endif
+    " }
 " }
 
 " GUI Settings {
